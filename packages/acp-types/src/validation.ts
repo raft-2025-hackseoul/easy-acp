@@ -1,4 +1,10 @@
-import { ACPProduct, PartialACPProduct, ValidationResult, ValidationError, ValidationWarning } from './acp-product';
+import {
+  ACPProduct,
+  PartialACPProduct,
+  ValidationResult,
+  ValidationError,
+  ValidationWarning,
+} from './acp-product';
 import { ACP_FIELDS, getRequiredFields, getRecommendedFields } from './acp-fields';
 
 /**
@@ -175,7 +181,8 @@ function validateImages(product: PartialACPProduct, warnings: ValidationWarning[
   if (product.image_link && !urlRegex.test(String(product.image_link))) {
     warnings.push({
       field: 'image_link',
-      message: 'Image URL should be a valid HTTP(S) URL ending in .jpg, .jpeg, .png, .gif, or .webp',
+      message:
+        'Image URL should be a valid HTTP(S) URL ending in .jpg, .jpeg, .png, .gif, or .webp',
       value: product.image_link,
     });
   }
@@ -231,8 +238,6 @@ export function validateACPProducts(products: PartialACPProduct[]): ValidationRe
  * Get summary of validation results
  */
 export function getValidationSummary(results: ValidationResult[]) {
-  const totalErrors = results.reduce((sum, r) => sum + r.errors.length, 0);
-  const totalWarnings = results.reduce((sum, r) => sum + r.warnings.length, 0);
   const validProducts = results.filter((r) => r.isValid).length;
   const invalidProducts = results.filter((r) => !r.isValid).length;
 
@@ -240,18 +245,32 @@ export function getValidationSummary(results: ValidationResult[]) {
   const allMissingRequired = new Set<string>();
   const allMissingRecommended = new Set<string>();
 
+  // Count total errors and warnings (duplicates across products)
+  let totalErrorInstances = 0;
+  let totalWarningInstances = 0;
+
   results.forEach((result) => {
     result.missingRequired.forEach((field) => allMissingRequired.add(field));
     result.missingRecommended.forEach((field) => allMissingRecommended.add(field));
+    totalErrorInstances += result.errors.length;
+    totalWarningInstances += result.warnings.length;
   });
+
+  const uniqueMissingRequired = Array.from(allMissingRequired);
+  const uniqueMissingRecommended = Array.from(allMissingRecommended);
 
   return {
     totalProducts: results.length,
     validProducts,
     invalidProducts,
-    totalErrors,
-    totalWarnings,
-    missingRequired: Array.from(allMissingRequired),
-    missingRecommended: Array.from(allMissingRecommended),
+    // Total error/warning instances across all products
+    totalErrors: totalErrorInstances,
+    totalWarnings: totalWarningInstances,
+    // Unique missing fields (not duplicated per product)
+    missingRequired: uniqueMissingRequired,
+    missingRecommended: uniqueMissingRecommended,
+    // Clearer breakdown
+    uniqueMissingRequiredCount: uniqueMissingRequired.length,
+    uniqueMissingRecommendedCount: uniqueMissingRecommended.length,
   };
 }
