@@ -1,3 +1,6 @@
+// Load environment variables from .env file
+import 'dotenv/config';
+
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import productFeedRoutes from './routes/product-feed.routes';
@@ -32,4 +35,28 @@ app.use('/api/product-feed', productFeedRoutes);
 app.listen(PORT, () => {
   console.log(`🚀 API server running on http://localhost:${PORT}`);
   console.log(`📡 Health check: http://localhost:${PORT}/api/health`);
+
+  // Display environment variable status
+  console.log('\n📋 Environment Configuration:');
+  console.log(`   PORT: ${PORT}`);
+  console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+
+  // Check API keys
+  const hasOpenAI = !!process.env.OPENAI_API_KEY &&
+    process.env.OPENAI_API_KEY !== 'your-openai-api-key-here';
+  const hasOpenRouter = !!process.env.OPENROUTER_API_KEY &&
+    process.env.OPENROUTER_API_KEY !== 'your-openrouter-api-key-here';
+
+  console.log(`   OPENAI_API_KEY: ${hasOpenAI ? '✅ Configured' : '❌ Not configured'}`);
+  console.log(`   OPENROUTER_API_KEY: ${hasOpenRouter ? '✅ Configured' : '❌ Not configured'}`);
+
+  if (hasOpenRouter) {
+    const model = process.env.OPENROUTER_MODEL || 'anthropic/claude-3.5-sonnet';
+    console.log(`   OPENROUTER_MODEL: ${model}`);
+  }
+
+  console.log('\n💡 Features:');
+  console.log(`   AI Field Mapping: ${hasOpenAI ? '✅ Enabled' : '⚠️  Disabled (using basic mapping)'}`);
+  console.log(`   LLM Validation: ${hasOpenRouter ? '✅ Enabled' : '⚠️  Disabled (traditional validation only)'}`);
+  console.log('');
 });
