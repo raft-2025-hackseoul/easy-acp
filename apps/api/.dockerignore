@@ -1,0 +1,13 @@
+node_modules
+dist
+.turbo
+.env
+.env.local
+*.log
+uploads/*
+!uploads/.gitkeep
+.git
+.gitignore
+README.md
+*.test.ts
+*.spec.ts
