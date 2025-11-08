@@ -13,6 +13,7 @@
   "dependencies": {
     "@repo/acp-types": "*",
     "@repo/workflow-types": "*",
+    "framer-motion": "^12.23.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
