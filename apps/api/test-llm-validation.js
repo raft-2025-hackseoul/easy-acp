@@ -12,12 +12,15 @@ console.log('🧪 Testing LLM Validation Setup\n');
 console.log('1️⃣ Checking environment variables...');
 require('dotenv').config();
 
-const hasOpenRouterKey = !!process.env.OPENROUTER_API_KEY &&
+const hasOpenRouterKey =
+  !!process.env.OPENROUTER_API_KEY &&
   process.env.OPENROUTER_API_KEY !== 'your-openrouter-api-key-here';
-const hasOpenAIKey = !!process.env.OPENAI_API_KEY &&
-  process.env.OPENAI_API_KEY !== 'your-openai-api-key-here';
+const hasOpenAIKey =
+  !!process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your-openai-api-key-here';
 
-console.log(`   OPENROUTER_API_KEY: ${hasOpenRouterKey ? '✅ Set' : '❌ Not set or using placeholder'}`);
+console.log(
+  `   OPENROUTER_API_KEY: ${hasOpenRouterKey ? '✅ Set' : '❌ Not set or using placeholder'}`
+);
 console.log(`   OPENAI_API_KEY: ${hasOpenAIKey ? '✅ Set' : '❌ Not set or using placeholder'}`);
 console.log(`   OPENROUTER_MODEL: ${process.env.OPENROUTER_MODEL || '(using default)'}`);
 

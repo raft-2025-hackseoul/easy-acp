@@ -60,7 +60,7 @@ async function testUpload() {
     availability: 'in_stock',
     inventory_quantity: 10,
     enable_search: true,
-    enable_checkout: false
+    enable_checkout: false,
   };
 
   try {
@@ -70,7 +70,7 @@ async function testUpload() {
     const validateResponse = await fetch(`${API_URL}/api/product-feed/llm/validate-one`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ product: testProduct })
+      body: JSON.stringify({ product: testProduct }),
     });
 
     const duration = Date.now() - startTime;
@@ -115,7 +115,7 @@ async function testUpload() {
     const uploadResponse = await fetch(`${API_URL}/api/product-feed/upload-with-llm`, {
       method: 'POST',
       body: form,
-      headers: form.getHeaders()
+      headers: form.getHeaders(),
     });
 
     const duration = Date.now() - startTime;
@@ -143,7 +143,6 @@ async function testUpload() {
       console.log('   This is the issue - LLM did not respond during CSV upload');
     }
     console.log('');
-
   } catch (error) {
     console.log('   ❌ Error during upload:', error.message);
     console.log('   Stack:', error.stack);

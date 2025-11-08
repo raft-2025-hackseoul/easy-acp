@@ -50,7 +50,9 @@ async function testValidation() {
     const fieldMappings = await suggestFieldMapping(parseResult.headers, sampleData);
     console.log(`   ✅ Suggested ${fieldMappings.length} field mappings`);
     fieldMappings.slice(0, 5).forEach((m) => {
-      console.log(`      ${m.sourceField} → ${m.targetField} (${(m.confidence * 100).toFixed(0)}%)`);
+      console.log(
+        `      ${m.sourceField} → ${m.targetField} (${(m.confidence * 100).toFixed(0)}%)`
+      );
     });
     console.log('');
 
@@ -68,7 +70,9 @@ async function testValidation() {
     console.log(`   Total warnings: ${traditional.summary.totalWarnings}`);
 
     if (traditional.summary.missingRequired.length > 0) {
-      console.log(`   Missing required fields: ${traditional.summary.missingRequired.slice(0, 5).join(', ')}`);
+      console.log(
+        `   Missing required fields: ${traditional.summary.missingRequired.slice(0, 5).join(', ')}`
+      );
     }
     console.log('');
 
@@ -111,8 +115,11 @@ async function testValidation() {
       if (validation.issues.length > 0) {
         console.log('Issues:');
         validation.issues.slice(0, 10).forEach((issue, idx) => {
-          const icon = issue.severity === 'error' ? '❌' : issue.severity === 'warning' ? '⚠️' : 'ℹ️';
-          console.log(`  ${idx + 1}. ${icon} [${issue.severity.toUpperCase()}] ${issue.field || 'General'}`);
+          const icon =
+            issue.severity === 'error' ? '❌' : issue.severity === 'warning' ? '⚠️' : 'ℹ️';
+          console.log(
+            `  ${idx + 1}. ${icon} [${issue.severity.toUpperCase()}] ${issue.field || 'General'}`
+          );
           console.log(`     ${issue.message}`);
           if (issue.suggestion) {
             console.log(`     💡 ${issue.suggestion}`);
@@ -135,7 +142,6 @@ async function testValidation() {
       console.log('✅ CSV validation test completed successfully!');
       console.log('\n💡 To validate all products, use the API endpoint:');
       console.log('   POST /api/product-feed/upload-with-llm\n');
-
     } catch (error) {
       console.error('   ❌ LLM validation failed:', error.message);
       console.log('\nPossible causes:');
@@ -144,7 +150,6 @@ async function testValidation() {
       console.log('  - Network connectivity issues');
       console.log('  - Model not available\n');
     }
-
   } catch (error) {
     console.error('❌ Test failed:', error);
     console.error('\nStack trace:', error.stack);
