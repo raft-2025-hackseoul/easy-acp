@@ -1,0 +1,42 @@
+.App {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: #646cff;
+}
+
+h2 {
+  color: #535bf2;
+}
+
+.card {
+  padding: 2em;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  margin: 2em 0;
+}
+
+.message {
+  font-size: 1.2em;
+  color: #61dafb;
+  font-weight: bold;
+}
+
+.info {
+  color: #888;
+  font-size: 0.9em;
+  margin-top: 2em;
+}
+
+code {
+  background-color: #2a2a2a;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}
