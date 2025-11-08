@@ -38,3 +38,11 @@ yarn-error.log*
 *.swp
 *.swo
 *~
+
+# Deployment
+.env.production
+uploads/
+!uploads/.gitkeep
+
+# Docker
+docker-compose.override.yml
