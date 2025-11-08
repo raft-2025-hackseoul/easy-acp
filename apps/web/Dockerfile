@@ -33,9 +33,9 @@ COPY apps/web ./apps/web
 COPY turbo.json ./
 COPY package*.json ./
 
-# Build the application
-WORKDIR /app/apps/web
-RUN npm run build
+# Build the application using turbo (builds dependencies first)
+WORKDIR /app
+RUN npx turbo build --filter=@repo/web...
 
 # Production image with nginx
 FROM nginx:alpine AS runner
