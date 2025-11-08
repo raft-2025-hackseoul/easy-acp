@@ -69,13 +69,14 @@ router.post('/upload', upload.single('file'), async (req: Request, res: Response
         fieldMappings: fieldMappings.map((m) => ({
           source: m.sourceField,
           target: m.targetField,
-          confidence: m.confidence,
         })),
         unmappedColumns,
         dataValidation,
         validation: {
           missingRequired: categorized.summary.missingRequired,
           missingRecommended: categorized.summary.missingRecommended,
+          uniqueMissingRequiredCount: categorized.summary.uniqueMissingRequiredCount,
+          uniqueMissingRecommendedCount: categorized.summary.uniqueMissingRecommendedCount,
           totalErrors: categorized.summary.totalErrors,
           totalWarnings: categorized.summary.totalWarnings,
         },

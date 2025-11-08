@@ -42,9 +42,10 @@ app.listen(PORT, () => {
   console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
 
   // Check API keys
-  const hasOpenAI = !!process.env.OPENAI_API_KEY &&
-    process.env.OPENAI_API_KEY !== 'your-openai-api-key-here';
-  const hasOpenRouter = !!process.env.OPENROUTER_API_KEY &&
+  const hasOpenAI =
+    !!process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your-openai-api-key-here';
+  const hasOpenRouter =
+    !!process.env.OPENROUTER_API_KEY &&
     process.env.OPENROUTER_API_KEY !== 'your-openrouter-api-key-here';
 
   console.log(`   OPENAI_API_KEY: ${hasOpenAI ? '✅ Configured' : '❌ Not configured'}`);
@@ -56,7 +57,11 @@ app.listen(PORT, () => {
   }
 
   console.log('\n💡 Features:');
-  console.log(`   AI Field Mapping: ${hasOpenAI ? '✅ Enabled' : '⚠️  Disabled (using basic mapping)'}`);
-  console.log(`   LLM Validation: ${hasOpenRouter ? '✅ Enabled' : '⚠️  Disabled (traditional validation only)'}`);
+  console.log(
+    `   AI Field Mapping: ${hasOpenAI ? '✅ Enabled' : '⚠️  Disabled (using basic mapping)'}`
+  );
+  console.log(
+    `   LLM Validation: ${hasOpenRouter ? '✅ Enabled' : '⚠️  Disabled (traditional validation only)'}`
+  );
   console.log('');
 });
