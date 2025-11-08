@@ -28,15 +28,47 @@ import { aiSEOService, FieldOptimization, ProductOptimization } from './ai-seo.s
 const REQUIRED_OPENAI_FIELDS = ['id', 'title', 'description', 'link', 'price'];
 
 const DEFAULT_FIELD_MAPPING: FieldMapping[] = [
-  { providerField: 'product_id', openAIField: 'id', description: 'Unique product identifier', required: true },
-  { providerField: 'product_name', openAIField: 'title', description: 'Product title', required: true },
-  { providerField: 'product_description', openAIField: 'description', description: 'Detailed description', required: true },
+  {
+    providerField: 'product_id',
+    openAIField: 'id',
+    description: 'Unique product identifier',
+    required: true,
+  },
+  {
+    providerField: 'product_name',
+    openAIField: 'title',
+    description: 'Product title',
+    required: true,
+  },
+  {
+    providerField: 'product_description',
+    openAIField: 'description',
+    description: 'Detailed description',
+    required: true,
+  },
   { providerField: 'product_url', openAIField: 'link', description: 'Product URL', required: true },
-  { providerField: 'main_image', openAIField: 'image_link', description: 'Primary product image URL' },
-  { providerField: 'price_usd', openAIField: 'price', description: 'Price with currency', required: true },
-  { providerField: 'stock_status', openAIField: 'availability', description: 'Inventory availability' },
+  {
+    providerField: 'main_image',
+    openAIField: 'image_link',
+    description: 'Primary product image URL',
+  },
+  {
+    providerField: 'price_usd',
+    openAIField: 'price',
+    description: 'Price with currency',
+    required: true,
+  },
+  {
+    providerField: 'stock_status',
+    openAIField: 'availability',
+    description: 'Inventory availability',
+  },
   { providerField: 'brand_name', openAIField: 'brand', description: 'Brand or manufacturer' },
-  { providerField: 'category', openAIField: 'google_product_category', description: 'Product category' },
+  {
+    providerField: 'category',
+    openAIField: 'google_product_category',
+    description: 'Product category',
+  },
   { providerField: 'upc_code', openAIField: 'gtin', description: 'Global Trade Item Number' },
   { providerField: 'color', openAIField: 'color' },
   { providerField: 'size', openAIField: 'size' },

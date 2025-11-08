@@ -29,7 +29,9 @@ export function AISEOPage() {
       const state = await ensureSuggestions();
       setProviderSyncState(state);
       if (state.suggestions.productOptimizations.length > 0) {
-        setCurrentIndex((index) => Math.min(index, state.suggestions.productOptimizations.length - 1));
+        setCurrentIndex((index) =>
+          Math.min(index, state.suggestions.productOptimizations.length - 1)
+        );
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to load AI SEO suggestions.');
@@ -147,8 +149,8 @@ export function AISEOPage() {
         <div className="empty-state">
           <h2>No AI suggestions yet</h2>
           <p>
-            Generate a mapping on the Product Feed page first, then return here to review
-            AI-powered improvements.
+            Generate a mapping on the Product Feed page first, then return here to review AI-powered
+            improvements.
           </p>
           <button className="primary" onClick={handleBackToFeed}>
             Go to Product Feed setup
@@ -189,7 +191,9 @@ export function AISEOPage() {
                   <div className="comparison-columns">
                     <button
                       className={`value-card ${originalSelected ? 'selected' : ''}`}
-                      onClick={() => handleSelect(optimization.field, false, optimization.currentValue)}
+                      onClick={() =>
+                        handleSelect(optimization.field, false, optimization.currentValue)
+                      }
                       disabled={pendingField === optimization.field}
                     >
                       <span className="label">Current listing</span>
@@ -198,7 +202,9 @@ export function AISEOPage() {
                     </button>
                     <button
                       className={`value-card suggested ${suggestedSelected ? 'selected' : ''}`}
-                      onClick={() => handleSelect(optimization.field, true, optimization.suggestedValue)}
+                      onClick={() =>
+                        handleSelect(optimization.field, true, optimization.suggestedValue)
+                      }
                       disabled={pendingField === optimization.field}
                     >
                       <span className="label">AI suggestion</span>
@@ -216,4 +222,3 @@ export function AISEOPage() {
     </div>
   );
 }
-

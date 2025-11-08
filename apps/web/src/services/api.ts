@@ -418,7 +418,10 @@ export async function resetProviderSync(): Promise<ProviderSyncState> {
   return apiRequest<ProviderSyncState>('/provider-sync/reset', { method: 'POST' });
 }
 
-export async function connectProvider(provider: 'woocommerce', token: string): Promise<ProviderSyncState> {
+export async function connectProvider(
+  provider: 'woocommerce',
+  token: string
+): Promise<ProviderSyncState> {
   return apiRequest<ProviderSyncState>('/provider-sync/connect', {
     method: 'POST',
     headers: {
@@ -434,7 +437,10 @@ export async function fetchProviderFeed(): Promise<{ feed: ProviderFeedSnapshot 
   });
 }
 
-export async function mapProviderFeed(): Promise<{ mapping: ProviderFieldMapping[]; validation: ProviderValidationSummary }> {
+export async function mapProviderFeed(): Promise<{
+  mapping: ProviderFieldMapping[];
+  validation: ProviderValidationSummary;
+}> {
   return apiRequest<{ mapping: ProviderFieldMapping[]; validation: ProviderValidationSummary }>(
     '/provider-sync/map',
     {
@@ -463,7 +469,11 @@ export async function setMerchantUrl(merchantUrl: string): Promise<ProviderSyncS
   });
 }
 
-export async function acceptSuggestion(productId: string, field: string, value: string): Promise<ProviderSyncState> {
+export async function acceptSuggestion(
+  productId: string,
+  field: string,
+  value: string
+): Promise<ProviderSyncState> {
   return apiRequest<ProviderSyncState>('/provider-sync/suggestions/accept', {
     method: 'POST',
     headers: {
@@ -473,7 +483,10 @@ export async function acceptSuggestion(productId: string, field: string, value: 
   });
 }
 
-export async function removeSuggestion(productId: string, field: string): Promise<ProviderSyncState> {
+export async function removeSuggestion(
+  productId: string,
+  field: string
+): Promise<ProviderSyncState> {
   return apiRequest<ProviderSyncState>('/provider-sync/suggestions/remove', {
     method: 'POST',
     headers: {

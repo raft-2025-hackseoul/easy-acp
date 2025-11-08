@@ -42,9 +42,7 @@ export function EcommerceIntegration({ onConnect, isLoading }: EcommerceIntegrat
                 }
               }}
             />
-            <p className="input-help">
-              Demo mode: any token will work
-            </p>
+            <p className="input-help">Demo mode: any token will work</p>
           </div>
 
           <button

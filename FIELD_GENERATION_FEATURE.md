@@ -48,6 +48,7 @@ After CSV upload and validation, if missing fields are detected:
 ### Backend Components
 
 #### 1. Missing Field Generator Service
+
 **Location**: `apps/api/src/services/missing-field-generator.service.ts`
 
 ```typescript
@@ -60,21 +61,25 @@ interface MissingFieldGenerationResult {
 ```
 
 **Key Methods**:
+
 - `generateMissingFields()`: Generate fields for multiple products
 - `generateSpecificFields()`: Generate specific fields for a single product
 - `estimateProcessingTime()`: Estimate processing duration
 - `isAvailable()`: Check if service is configured
 
 #### 2. Product Enhancer Service (Existing)
+
 **Location**: `apps/api/src/services/product-enhancer.service.ts`
 
 Powers the field generation with:
+
 - LLM-based product enhancement
 - ACP specification compliance
 - Intelligent field inference
 - Change tracking and explanation
 
 #### 3. API Routes
+
 **Location**: `apps/api/src/routes/product-feed.routes.ts`
 
 **New Endpoints**:
@@ -95,9 +100,11 @@ GET /api/product-feed/generation-status
 ### Frontend Components
 
 #### 1. FieldGenerationPanel Component
+
 **Location**: `apps/web/src/components/FieldGenerationPanel.tsx`
 
 **Features**:
+
 - Generate button with loading state
 - Progress indicator during generation
 - Success summary with statistics
@@ -106,9 +113,11 @@ GET /api/product-feed/generation-status
 - Availability status warning
 
 #### 2. ProductFeedPage Integration
+
 **Location**: `apps/web/src/pages/ProductFeedPage.tsx`
 
 **State Management**:
+
 - `isGenerationAvailable`: Service availability
 - `isGenerating`: Generation in progress
 - `generationResult`: Generation results
@@ -116,9 +125,11 @@ GET /api/product-feed/generation-status
 - Product data update after generation
 
 #### 3. API Client
+
 **Location**: `apps/web/src/services/api.ts`
 
 **New Functions**:
+
 ```typescript
 checkFieldGenerationStatus(): Promise<FieldGenerationStatus>
 generateMissingFields(products, missingRequired, missingRecommended): Promise<MissingFieldGenerationResult>
@@ -144,6 +155,7 @@ APP_URL=http://localhost:3000  # Optional, for API referrer
 5. Add the key to your `.env` file
 
 **Cost Estimate**:
+
 - ~$0.01-0.03 per product enhanced (using Claude 3.5 Sonnet)
 - Batch processing 100 products ≈ $1-3
 
@@ -189,6 +201,7 @@ node test-field-generation.js
 ```
 
 The test script will:
+
 - Check service availability
 - Generate fields for sample products
 - Display detailed results
@@ -257,6 +270,7 @@ Potential improvements:
 **Problem**: "Field generation requires OPENROUTER_API_KEY to be configured"
 
 **Solution**:
+
 1. Check `.env` file has `OPENROUTER_API_KEY=...`
 2. Restart API server after adding the key
 3. Verify API key is valid on OpenRouter dashboard
@@ -266,6 +280,7 @@ Potential improvements:
 **Problem**: All products show errors in the results
 
 **Solution**:
+
 1. Check OpenRouter account has credits
 2. Verify network connectivity
 3. Check API server logs for detailed errors
@@ -276,6 +291,7 @@ Potential improvements:
 **Problem**: Generation takes too long
 
 **Solution**:
+
 1. Process smaller batches (< 100 products at a time)
 2. Check OpenRouter model selection (some models are faster)
 3. Consider using a faster model for development
@@ -286,6 +302,7 @@ Potential improvements:
 **Problem**: AI generates unrealistic or incorrect values
 
 **Solution**:
+
 1. Ensure input data has good quality (title, price, etc.)
 2. Provide more context fields in the CSV
 3. Review and manually correct after generation
@@ -336,6 +353,7 @@ export class MissingFieldGeneratorService {
 ## Support
 
 For issues or questions:
+
 1. Check the troubleshooting section above
 2. Review existing GitHub issues
 3. Create a new issue with:

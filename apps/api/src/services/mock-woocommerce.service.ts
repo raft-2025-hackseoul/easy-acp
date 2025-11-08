@@ -121,8 +121,12 @@ export function validateWooToken(token: string | undefined | null): boolean {
   return Boolean(token && token.trim().length > 0);
 }
 
-export async function fetchMockWooCommerceProducts(): Promise<{ products: MockWooCommerceProduct[]; syncId: string; syncedAt: string; total: number; }>
-{
+export async function fetchMockWooCommerceProducts(): Promise<{
+  products: MockWooCommerceProduct[];
+  syncId: string;
+  syncedAt: string;
+  total: number;
+}> {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 400));
 

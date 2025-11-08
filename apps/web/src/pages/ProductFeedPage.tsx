@@ -214,8 +214,8 @@ export function ProductFeedPage() {
       <div className="page-header">
         <h1>Product Feed Automation</h1>
         <p className="page-subtitle">
-          Automate WooCommerce ingestion, mapping, validation, and publishing to OpenAI&apos;s merchant
-          API.
+          Automate WooCommerce ingestion, mapping, validation, and publishing to OpenAI&apos;s
+          merchant API.
         </p>
       </div>
 
@@ -293,11 +293,7 @@ export function ProductFeedPage() {
             <p className="placeholder">No feed imported yet.</p>
           )}
           <div className="actions">
-            <button
-              onClick={handleFetch}
-              disabled={!canFetch || loading.fetch}
-              className="primary"
-            >
+            <button onClick={handleFetch} disabled={!canFetch || loading.fetch} className="primary">
               {loading.fetch ? 'Importing…' : 'Import product feed'}
             </button>
           </div>
@@ -395,11 +391,7 @@ export function ProductFeedPage() {
             />
           </div>
           <div className="actions">
-            <button
-              onClick={handleMerchantSave}
-              disabled={!canSaveMerchant}
-              className="primary"
-            >
+            <button onClick={handleMerchantSave} disabled={!canSaveMerchant} className="primary">
               {loading.merchant ? 'Saving…' : 'Save merchant URL'}
             </button>
           </div>
@@ -416,7 +408,9 @@ export function ProductFeedPage() {
             <div className="push-summary">
               <div>
                 <span className="label">Last push</span>
-                <strong>{new Date(providerSyncState.pushStatus.lastPushedAt).toLocaleString()}</strong>
+                <strong>
+                  {new Date(providerSyncState.pushStatus.lastPushedAt).toLocaleString()}
+                </strong>
               </div>
               <div>
                 <span className="label">Destination</span>
