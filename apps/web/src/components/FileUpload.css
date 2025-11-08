@@ -4,24 +4,24 @@
 }
 
 .dropzone {
-  border: 2px dashed #646cff;
+  border: 2px dashed #2c3e50;
   border-radius: 12px;
   padding: 3rem 2rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
 }
 
 .dropzone:hover:not(.disabled) {
-  border-color: #535bf2;
-  background-color: #242424;
+  border-color: #34495e;
+  background-color: #f8f9fa;
   transform: translateY(-2px);
 }
 
 .dropzone.active {
-  border-color: #61dafb;
-  background-color: #1e2a3a;
+  border-color: #2c3e50;
+  background-color: #f8f9fa;
 }
 
 .dropzone.disabled {
@@ -37,11 +37,11 @@
 }
 
 .upload-icon {
-  color: #646cff;
+  color: #2c3e50;
 }
 
 .dropzone:hover:not(.disabled) .upload-icon {
-  color: #535bf2;
+  color: #34495e;
   transform: translateY(-4px);
   transition: all 0.3s ease;
 }
@@ -50,28 +50,29 @@
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
-  color: rgba(255, 255, 255, 0.87);
+  color: #1a1a1a;
 }
 
 .secondary {
   font-size: 0.9rem;
-  color: #888;
+  color: #445566;
   margin: 0;
 }
 
 .file-name {
-  color: #61dafb;
+  color: #2c3e50;
   margin: 0;
+  font-weight: 600;
 }
 
 .file-name small {
-  color: #888;
+  color: #445566;
   font-size: 0.8rem;
 }
 
 .spinner {
-  border: 3px solid #333;
-  border-top: 3px solid #646cff;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #2c3e50;
   border-radius: 50%;
   width: 40px;
   height: 40px;
