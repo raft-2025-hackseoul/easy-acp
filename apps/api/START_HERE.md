@@ -7,6 +7,7 @@ CSV upload with LLM validation was not responding because it tried to validate A
 ## The Solution
 
 Now validates only a **sample** of products with LLM by default for fast response:
+
 - Default: First **5 products** validated with LLM
 - Configurable: Use `?llmSampleSize=N` to adjust (max 50)
 - All products still get traditional validation
@@ -34,6 +35,7 @@ npm run dev
 ```
 
 You should see:
+
 ```
 ✅ Loaded ACP spec from: .../src/specs/acp-product-feed-spec.md
 🚀 API server running on http://localhost:3001
@@ -61,6 +63,7 @@ curl -X POST http://localhost:3001/api/product-feed/upload-with-llm \
 ```
 
 **What happens:**
+
 1. Parses all 15 products
 2. Maps CSV columns to ACP fields using AI
 3. Validates all 15 products traditionally
@@ -68,6 +71,7 @@ curl -X POST http://localhost:3001/api/product-feed/upload-with-llm \
 5. Returns in ~15-20 seconds
 
 **Response includes:**
+
 ```json
 {
   "success": true,
@@ -98,11 +102,13 @@ curl -X POST http://localhost:3001/api/product-feed/upload-with-llm \
 ### ✅ CSV Columns Are Flexible
 
 Your CSV can have ANY column names! The system:
+
 1. Uses AI to map your columns to ACP fields automatically
 2. Works with various CSV formats
 3. LLM validation understands context, not just fixed rules
 
 Example CSV column names that work:
+
 - `product_name` → maps to `title`
 - `SKU` → maps to `id`
 - `price_usd` → maps to `price`
@@ -127,7 +133,7 @@ curl -X POST "http://localhost:3001/api/product-feed/upload-with-llm?llmSampleSi
 Each LLM validation ~$0.01-0.02 depending on model:
 
 | Sample Size | Estimated Cost |
-|-------------|----------------|
+| ----------- | -------------- |
 | 5 (default) | ~$0.05         |
 | 10          | ~$0.10         |
 | 20          | ~$0.20         |
@@ -138,17 +144,20 @@ Each LLM validation ~$0.01-0.02 depending on model:
 ## API Endpoints
 
 ### 1. Check LLM Status
+
 ```bash
 GET /api/product-feed/llm/status
 ```
 
 ### 2. Upload CSV with LLM Validation
+
 ```bash
 POST /api/product-feed/upload-with-llm?llmSampleSize=5
 Form-Data: file=<csv_file>
 ```
 
 ### 3. Validate Specific Products
+
 ```bash
 POST /api/product-feed/llm/validate
 Content-Type: application/json
@@ -156,6 +165,7 @@ Body: { "products": [...] }
 ```
 
 ### 4. Validate Single Product
+
 ```bash
 POST /api/product-feed/llm/validate-one
 Content-Type: application/json
@@ -169,6 +179,7 @@ Body: { "product": {...} }
 ### "LLM validation is not available"
 
 **Fix:**
+
 1. Check `.env` has `OPENROUTER_API_KEY`
 2. Verify key is not the placeholder value
 3. Restart server: `npm run dev`
@@ -177,12 +188,14 @@ Body: { "product": {...} }
 ### "hasLLMValidation: false" in response
 
 **Possible causes:**
+
 1. LLM validation failed (check server logs)
 2. API key invalid or out of credits
 3. Rate limit hit
 4. Network issues
 
 **Check server console for:**
+
 ```
 🤖 LLM validating 5 of 15 products...
 ❌ LLM validation failed, continuing with traditional validation only: <error>
@@ -191,6 +204,7 @@ Body: { "product": {...} }
 ### Timeout or very slow response
 
 **Solutions:**
+
 1. Use default sample size (5) - fastest
 2. Reduce sample: `?llmSampleSize=3`
 3. Check server isn't processing other requests
@@ -245,6 +259,7 @@ When working correctly, you'll see:
 ## Support
 
 If issues persist:
+
 1. Check server console logs
 2. Run diagnostic: `node test-llm-validation.js`
 3. Test upload: `node debug-upload.js`
