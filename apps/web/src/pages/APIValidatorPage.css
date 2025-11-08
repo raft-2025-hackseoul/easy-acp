@@ -12,21 +12,21 @@
 .page-header h1 {
   font-size: 2.5rem;
   margin: 0;
-  color: #646cff;
+  color: #1a1a1a;
 }
 
 .page-subtitle {
   font-size: 1.1rem;
-  color: #aaa;
+  color: #34495e;
   margin: 0.5rem 0 0 0;
 }
 
 .api-step {
   margin-bottom: 3rem;
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
 }
 
 .step-header {
@@ -35,12 +35,12 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #e0e0e0;
 }
 
 .step-header h2 {
   margin: 0;
-  color: #fff;
+  color: #1a1a1a;
 }
 
 .step-badge {
@@ -50,20 +50,23 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid;
 }
 
 .step-badge.completed {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
+  background-color: #e8f5e9;
+  color: #1e8449;
+  border-color: #27ae60;
 }
 
 .step-badge.verified {
-  background-color: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-color: #2196f3;
 }
 
 .step-content p {
-  color: #aaa;
+  color: #34495e;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
 }
@@ -71,14 +74,14 @@
 .code-example {
   margin: 1.5rem 0;
   padding: 1.5rem;
-  background-color: #0d0d0d;
+  background-color: #f8f9fa;
   border-radius: 8px;
-  border: 1px solid #333;
+  border: 1px solid #dee2e6;
 }
 
 .code-example h4 {
   margin: 0 0 1rem 0;
-  color: #61dafb;
+  color: #2c3e50;
   font-size: 1rem;
 }
 
@@ -91,16 +94,16 @@
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: #ddd;
+  color: #1a1a1a;
 }
 
 .primary-button {
   padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: 600;
-  border: none;
+  border: 2px solid #2c3e50;
   border-radius: 8px;
-  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  background: #2c3e50;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -108,7 +111,8 @@
 
 .primary-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4);
+  background: #34495e;
+  border-color: #34495e;
 }
 
 .primary-button:disabled {
@@ -118,24 +122,24 @@
 
 .completion-info {
   padding: 1rem;
-  background-color: rgba(76, 175, 80, 0.1);
+  background-color: #e8f5e9;
   border-radius: 8px;
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid #27ae60;
 }
 
 .completion-info p {
   margin: 0.5rem 0;
-  color: #ddd;
+  color: #1a1a1a;
 }
 
 .api-response-input {
   width: 100%;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: #0d0d0d;
-  border: 2px solid #333;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
   border-radius: 8px;
-  color: #ddd;
+  color: #1a1a1a;
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   line-height: 1.5;
@@ -144,7 +148,7 @@
 
 .api-response-input:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: #2c3e50;
 }
 
 .validation-result {
@@ -154,34 +158,34 @@
 }
 
 .validation-result.valid {
-  background-color: rgba(76, 175, 80, 0.1);
-  border-left: 4px solid #4caf50;
+  background-color: #e8f5e9;
+  border-left: 4px solid #27ae60;
 }
 
 .validation-result.invalid {
-  background-color: rgba(244, 67, 54, 0.1);
-  border-left: 4px solid #f44336;
+  background-color: #ffebee;
+  border-left: 4px solid #dc3545;
 }
 
 .success-message h3 {
   margin: 0 0 0.5rem 0;
-  color: #4caf50;
+  color: #27ae60;
 }
 
 .success-message p {
   margin: 0;
-  color: #ddd;
+  color: #1a1a1a;
 }
 
 .error-message h3 {
   margin: 0 0 1rem 0;
-  color: #f44336;
+  color: #dc3545;
 }
 
 .error-message ul {
   margin: 0;
   padding-left: 1.5rem;
-  color: #ddd;
+  color: #1a1a1a;
 }
 
 .error-message li {
@@ -191,14 +195,14 @@
 .api-resources {
   margin-top: 3rem;
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #f8f9fa;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
 }
 
 .api-resources h3 {
   margin: 0 0 1rem 0;
-  color: #646cff;
+  color: #2c3e50;
 }
 
 .api-resources ul {
@@ -211,13 +215,14 @@
 }
 
 .api-resources a {
-  color: #61dafb;
+  color: #2c3e50;
   text-decoration: none;
+  font-weight: 600;
   transition: color 0.3s ease;
 }
 
 .api-resources a:hover {
-  color: #535bf2;
+  color: #34495e;
   text-decoration: underline;
 }
 

@@ -1,4 +1,3 @@
-import { WorkflowRoadmap } from '../components/workflow/WorkflowRoadmap';
 import { useWorkflow } from '../context/WorkflowContext';
 import './Dashboard.css';
 
@@ -14,7 +13,7 @@ export function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>🚀 Easy ACP Platform</h1>
+        <h1>Easy ACP Platform</h1>
         <p className="dashboard-tagline">Complete ACP Integration in 3 Simple Steps</p>
       </div>
 
@@ -31,11 +30,8 @@ export function Dashboard() {
         </div>
       </div>
 
-      <WorkflowRoadmap />
-
       <div className="tool-cards">
         <div className="tool-card">
-          <div className="tool-icon">🔌</div>
           <h3>API Validator</h3>
           <p>Create and validate your ACP-compliant API endpoints</p>
           <div className="tool-status">
@@ -47,7 +43,6 @@ export function Dashboard() {
         </div>
 
         <div className="tool-card">
-          <div className="tool-icon">💳</div>
           <h3>PSP Connector</h3>
           <p>Connect your payment service provider (Stripe or own PSP)</p>
           <div className="tool-status">
@@ -59,7 +54,6 @@ export function Dashboard() {
         </div>
 
         <div className="tool-card">
-          <div className="tool-icon">📦</div>
           <h3>Product Feed Automator</h3>
           <p>Convert your product catalog to ACP-compliant format</p>
           <div className="tool-status">

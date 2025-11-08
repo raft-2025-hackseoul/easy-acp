@@ -3,7 +3,6 @@ import { FileUpload } from '../components/FileUpload';
 import { ValidationSummary } from '../components/ValidationSummary';
 import { FieldMapping } from '../components/FieldMapping';
 import { ExportOptions } from '../components/ExportOptions';
-import { PricingTiers } from '../components/PricingTiers';
 import { uploadCSV, UploadResponse } from '../services/api';
 import { useWorkflow } from '../context/WorkflowContext';
 import './ProductFeedPage.css';
@@ -76,13 +75,15 @@ export function ProductFeedPage() {
   return (
     <div className="product-feed-page">
       <div className="page-header">
-        <h1>📦 Product Feed Automator</h1>
+        <h1>Product Feed Automator</h1>
         <p className="page-subtitle">
           Transform your product CSV into ACP-compliant feeds with AI-powered field mapping
         </p>
       </div>
 
-      <FileUpload onFileSelect={handleFileSelect} isUploading={isUploading} />
+      {!uploadResult && (
+        <FileUpload onFileSelect={handleFileSelect} isUploading={isUploading} />
+      )}
 
       {error && (
         <div className="error-message">
@@ -97,14 +98,18 @@ export function ProductFeedPage() {
             totalRows={uploadResult.data.totalRows}
             validProducts={uploadResult.data.validProducts}
             invalidProducts={uploadResult.data.invalidProducts}
+            dataValidation={uploadResult.data.dataValidation}
           />
 
-          <FieldMapping mappings={uploadResult.data.fieldMappings} />
+          <FieldMapping
+            mappings={uploadResult.data.fieldMappings}
+            unmappedColumns={uploadResult.data.unmappedColumns}
+          />
 
           <div onClick={handleExport}>
             <ExportOptions
               products={uploadResult.data.products}
-              disabled={uploadResult.data.products.length === 0}
+              disabled={false}
             />
           </div>
 
@@ -115,8 +120,6 @@ export function ProductFeedPage() {
           </div>
         </>
       )}
-
-      <PricingTiers />
     </div>
   );
 }

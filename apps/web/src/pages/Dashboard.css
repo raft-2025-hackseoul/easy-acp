@@ -12,15 +12,12 @@
 .dashboard-header h1 {
   font-size: 3rem;
   margin: 0;
-  background: linear-gradient(135deg, #646cff 0%, #61dafb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1a1a1a;
 }
 
 .dashboard-tagline {
   font-size: 1.2rem;
-  color: #aaa;
+  color: #34495e;
   margin: 0.5rem 0 0 0;
 }
 
@@ -28,28 +25,29 @@
   max-width: 800px;
   margin: 0 auto 3rem;
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
 }
 
 .dashboard-progress h3 {
   margin: 0 0 1rem 0;
-  color: #646cff;
+  color: #2c3e50;
   text-align: center;
 }
 
 .progress-bar {
   height: 30px;
-  background-color: #242424;
+  background-color: #f5f5f5;
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 1rem;
+  border: 1px solid #dee2e6;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #646cff 0%, #61dafb 100%);
+  background: #2c3e50;
   transition: width 0.5s ease;
   display: flex;
   align-items: center;
@@ -63,14 +61,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #aaa;
+  color: #34495e;
   font-size: 0.9rem;
 }
 
 .progress-percentage {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #646cff;
+  color: #2c3e50;
 }
 
 .tool-cards {
@@ -82,37 +80,31 @@
 
 .tool-card {
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
   transition: all 0.3s ease;
 }
 
 .tool-card:hover {
-  border-color: #646cff;
+  border-color: #2c3e50;
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(100, 108, 255, 0.2);
-}
-
-.tool-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
 }
 
 .tool-card h3 {
   margin: 0 0 0.5rem 0;
-  color: #fff;
+  color: #1a1a1a;
 }
 
 .tool-card p {
-  color: #aaa;
+  color: #34495e;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
 }
 
 .tool-status {
   font-size: 0.9rem;
-  color: #888;
+  color: #445566;
 }
 
 .status-badge {
@@ -123,26 +115,31 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid;
 }
 
 .status-badge.not-started {
-  background-color: rgba(128, 128, 128, 0.2);
-  color: #888;
+  background-color: #f8f9fa;
+  color: #445566;
+  border-color: #dee2e6;
 }
 
 .status-badge.in-progress {
-  background-color: rgba(255, 152, 0, 0.2);
-  color: #ff9800;
+  background-color: #fff4e6;
+  color: #c77700;
+  border-color: #f39c12;
 }
 
 .status-badge.completed {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
+  background-color: #e8f5e9;
+  color: #1e8449;
+  border-color: #27ae60;
 }
 
 .status-badge.verified {
-  background-color: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-color: #2196f3;
 }
 
 .dashboard-footer {
@@ -152,24 +149,25 @@
 
 .help-section {
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #f8f9fa;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
 }
 
 .help-section h4 {
   margin: 0 0 0.5rem 0;
-  color: #646cff;
+  color: #2c3e50;
 }
 
 .help-section p {
   margin: 0;
-  color: #aaa;
+  color: #34495e;
 }
 
 .help-section a {
-  color: #61dafb;
+  color: #2c3e50;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .help-section a:hover {

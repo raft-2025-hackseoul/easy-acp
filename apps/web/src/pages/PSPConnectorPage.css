@@ -10,7 +10,7 @@
 
 .psp-selection h2 {
   text-align: center;
-  color: #646cff;
+  color: #1a1a1a;
   margin-bottom: 2rem;
 }
 
@@ -22,37 +22,37 @@
 
 .psp-option {
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .psp-option:hover {
-  border-color: #646cff;
+  border-color: #2c3e50;
   transform: translateY(-4px);
 }
 
 .psp-option.selected {
-  border-color: #4caf50;
-  background-color: rgba(76, 175, 80, 0.05);
+  border-color: #27ae60;
+  background-color: #e8f5e9;
 }
 
 .psp-option h3 {
   margin: 0 0 0.5rem 0;
-  color: #fff;
+  color: #1a1a1a;
 }
 
 .psp-option p {
-  color: #aaa;
+  color: #34495e;
   margin: 0 0 1rem 0;
 }
 
 .psp-option ul {
   margin: 0;
   padding-left: 1.5rem;
-  color: #ddd;
+  color: #1a1a1a;
 }
 
 .psp-option ul li {
@@ -62,14 +62,14 @@
 .psp-checklist {
   margin: 3rem 0;
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
 }
 
 .psp-checklist h3 {
   margin: 0 0 1.5rem 0;
-  color: #646cff;
+  color: #2c3e50;
 }
 
 .checklist-items {
@@ -83,14 +83,15 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background-color: #242424;
+  background-color: #f8f9fa;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border: 1px solid #e0e0e0;
 }
 
 .checklist-item:hover {
-  background-color: #2a2a2a;
+  background-color: #e9ecef;
 }
 
 .checklist-item input[type="checkbox"] {
@@ -100,21 +101,21 @@
 }
 
 .checklist-item span {
-  color: #ddd;
+  color: #1a1a1a;
   font-size: 1rem;
 }
 
 .psp-resources {
   margin-top: 3rem;
   padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #f8f9fa;
   border-radius: 12px;
-  border: 2px solid #333;
+  border: 2px solid #e0e0e0;
 }
 
 .psp-resources h3 {
   margin: 0 0 1rem 0;
-  color: #646cff;
+  color: #2c3e50;
 }
 
 .psp-resources ul {
@@ -127,8 +128,9 @@
 }
 
 .psp-resources a {
-  color: #61dafb;
+  color: #2c3e50;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .psp-resources a:hover {
@@ -138,12 +140,12 @@
 .completion-info {
   margin-top: 2rem;
   padding: 1.5rem;
-  background-color: rgba(76, 175, 80, 0.1);
+  background-color: #e8f5e9;
   border-radius: 8px;
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid #27ae60;
 }
 
 .completion-info p {
   margin: 0.5rem 0;
-  color: #ddd;
+  color: #1a1a1a;
 }
