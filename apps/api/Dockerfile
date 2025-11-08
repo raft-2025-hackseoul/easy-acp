@@ -48,14 +48,11 @@ ENV PORT=8080
 # Create uploads directory
 RUN mkdir -p uploads && chmod 755 uploads
 
-# Copy built application
+# Copy built application and shared packages
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/package*.json ./
 COPY --from=builder /app/package-lock.json ./
-COPY --from=builder /app/packages/acp-types/dist ./packages/acp-types/dist
-COPY --from=builder /app/packages/acp-types/package.json ./packages/acp-types/package.json
-COPY --from=builder /app/packages/workflow-types/dist ./packages/workflow-types/dist
-COPY --from=builder /app/packages/workflow-types/package.json ./packages/workflow-types/package.json
+COPY --from=builder /app/packages ./packages
 
 # Copy specs directory if exists
 COPY --from=builder /app/apps/api/src/specs ./src/specs
