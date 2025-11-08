@@ -1,15 +1,20 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from 'react';
 import type { Workflow, WorkflowStep, User, WorkflowData } from '@repo/workflow-types';
+import { ProviderSyncState, getProviderSyncState } from '../services/api';
 
 interface WorkflowContextType {
   workflow: Workflow;
   workflowData: WorkflowData;
   updateStep: (stepId: string, updates: Partial<WorkflowStep>) => void;
+  updateProductFeed: (data: Partial<WorkflowData['productFeed']>) => void;
   updateAPIValidator: (data: Partial<WorkflowData['apiValidator']>) => void;
   updatePSPConnector: (data: Partial<WorkflowData['pspConnector']>) => void;
-  updateProductFeed: (data: Partial<WorkflowData['productFeed']>) => void;
   currentUser: User;
   setCurrentUser: (user: User) => void;
+  providerSyncState: ProviderSyncState | null;
+  providerSyncLoading: boolean;
+  refreshProviderSync: () => Promise<void>;
+  setProviderSyncState: React.Dispatch<React.SetStateAction<ProviderSyncState | null>>;
 }
 
 const WorkflowContext = createContext<WorkflowContextType | undefined>(undefined);
@@ -22,12 +27,21 @@ const initialWorkflow: Workflow = {
   currentStep: 0,
   steps: [
     {
+      id: 'step-feed',
+      tool: 'product-feed',
+      title: 'Product Feed Automator',
+      description: 'Convert your product catalog to ACP format',
+      status: 'not-started',
+      order: 1,
+      required: true,
+    },
+    {
       id: 'step-api',
       tool: 'api-validator',
       title: 'API Validator',
-      description: 'Create and validate your ACP-compliant API',
+      description: 'Create and validate ACP-compliant API endpoints',
       status: 'not-started',
-      order: 1,
+      order: 2,
       required: true,
     },
     {
@@ -36,15 +50,6 @@ const initialWorkflow: Workflow = {
       title: 'PSP Connector',
       description: 'Connect your payment service provider',
       status: 'not-started',
-      order: 2,
-      required: true,
-    },
-    {
-      id: 'step-feed',
-      tool: 'product-feed',
-      title: 'Product Feed Automator',
-      description: 'Convert your product catalog to ACP format',
-      status: 'not-started',
       order: 3,
       required: true,
     },
@@ -52,14 +57,15 @@ const initialWorkflow: Workflow = {
 };
 
 const initialWorkflowData: WorkflowData = {
+  productFeed: {
+    status: 'not-started',
+  },
   apiValidator: {
     status: 'not-started',
     apiCreated: false,
+    validationErrors: [],
   },
   pspConnector: {
-    status: 'not-started',
-  },
-  productFeed: {
     status: 'not-started',
   },
 };
@@ -75,12 +81,37 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
   const [workflow, setWorkflow] = useState<Workflow>(initialWorkflow);
   const [workflowData, setWorkflowData] = useState<WorkflowData>(initialWorkflowData);
   const [currentUser, setCurrentUser] = useState<User>(defaultUser);
+  const [providerSyncState, setProviderSyncState] = useState<ProviderSyncState | null>(null);
+  const [providerSyncLoading, setProviderSyncLoading] = useState<boolean>(false);
+
+  const refreshProviderSync = useCallback(async () => {
+    setProviderSyncLoading(true);
+    try {
+      const state = await getProviderSyncState();
+      setProviderSyncState(state);
+    } catch (error) {
+      console.error('Failed to load provider sync state', error);
+    } finally {
+      setProviderSyncLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshProviderSync();
+  }, [refreshProviderSync]);
 
   const updateStep = (stepId: string, updates: Partial<WorkflowStep>) => {
     setWorkflow((prev) => ({
       ...prev,
       steps: prev.steps.map((step) => (step.id === stepId ? { ...step, ...updates } : step)),
       updatedAt: new Date(),
+    }));
+  };
+
+  const updateProductFeed = (data: Partial<WorkflowData['productFeed']>) => {
+    setWorkflowData((prev) => ({
+      ...prev,
+      productFeed: { ...prev.productFeed, ...data },
     }));
   };
 
@@ -98,24 +129,21 @@ export function WorkflowProvider({ children }: { children: ReactNode }) {
     }));
   };
 
-  const updateProductFeed = (data: Partial<WorkflowData['productFeed']>) => {
-    setWorkflowData((prev) => ({
-      ...prev,
-      productFeed: { ...prev.productFeed, ...data },
-    }));
-  };
-
   return (
     <WorkflowContext.Provider
       value={{
         workflow,
         workflowData,
         updateStep,
+        updateProductFeed,
         updateAPIValidator,
         updatePSPConnector,
-        updateProductFeed,
         currentUser,
         setCurrentUser,
+        providerSyncState,
+        providerSyncLoading,
+        refreshProviderSync,
+        setProviderSyncState,
       }}
     >
       {children}

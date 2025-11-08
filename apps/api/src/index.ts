@@ -4,6 +4,10 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import productFeedRoutes from './routes/product-feed.routes';
+import aiSEORoutes from './routes/ai-seo.routes';
+import woocommerceMockRoutes from './routes/woocommerce-mock.routes';
+import providerSyncRoutes from './routes/provider-sync.routes';
+import mockOpenAIRoutes from './routes/mock-openai.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +34,18 @@ app.get('/api/hello', (_req: Request, res: Response) => {
 
 // Product feed routes
 app.use('/api/product-feed', productFeedRoutes);
+
+// AI SEO routes
+app.use('/api/ai-seo', aiSEORoutes);
+
+// Mock WooCommerce API routes
+app.use('/api/woocommerce', woocommerceMockRoutes);
+
+// Provider sync workflow routes
+app.use('/api/provider-sync', providerSyncRoutes);
+
+// Mock OpenAI merchant endpoint
+app.use('/api/mock-openai', mockOpenAIRoutes);
 
 // Start server
 app.listen(PORT, () => {

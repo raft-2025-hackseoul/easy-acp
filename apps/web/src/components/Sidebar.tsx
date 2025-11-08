@@ -27,6 +27,7 @@ export function Sidebar() {
     { path: '/api-validator', label: 'API Validator' },
     { path: '/psp-connector', label: 'PSP Connector' },
     { path: '/product-feed', label: 'Product Feed' },
+    { path: '/ai-seo', label: 'AI SEO' },
   ];
 
   return (
