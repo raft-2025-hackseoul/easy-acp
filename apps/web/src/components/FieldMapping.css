@@ -18,8 +18,28 @@
 
 .mapping-description {
   color: #34495e;
-  margin: 0;
+  margin: 0 0 1rem 0;
   font-size: 0.95rem;
+}
+
+.mapping-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.mapping-stats .stat {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.mapping-stats .stat strong {
+  color: #212529;
+  font-size: 1.1rem;
+  margin-right: 0.25rem;
 }
 
 /* Missing Required Fields Alert */
@@ -59,6 +79,56 @@
 }
 
 /* Section Headers */
+.field-category-section {
+  margin-bottom: 2rem;
+}
+
+.field-category-section.optional-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.category-header {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.category-badge.required {
+  background-color: #dc3545;
+}
+
+.category-badge.recommended {
+  background-color: #f39c12;
+}
+
+.category-badge.optional {
+  background-color: #6c757d;
+}
+
+.field-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .mapped-fields-section,
 .unmapped-columns-section {
   margin-bottom: 2rem;

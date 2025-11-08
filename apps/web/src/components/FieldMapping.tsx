@@ -1,94 +1,246 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ACP_FIELDS } from '@repo/acp-types/src/acp-fields';
+import type { ACPFieldMetadata } from '@repo/acp-types';
+import { FieldMappingCard } from './FieldMappingCard/FieldMappingCard';
+import type {
+  FieldMapping as FieldMappingType,
+  FieldValidation,
+  FieldResolution,
+} from './FieldMappingCard/FieldMappingCard';
 import './FieldMapping.css';
 
 interface FieldMappingProps {
   mappings: Array<{
-    source: string;
-    target: string;
+    source?: string;
+    sourceField?: string;
+    target?: string;
+    targetField?: string;
     confidence: number;
+    sampleData?: string[];
   }>;
   unmappedColumns?: string[];
   onMappingChange?: (mappings: Array<{ source: string; target: string }>) => void;
 }
 
-export function FieldMapping({ mappings, unmappedColumns = [], onMappingChange }: FieldMappingProps) {
-  const [localMappings, setLocalMappings] = useState(mappings);
-  const [editedMappings, setEditedMappings] = useState<Set<string>>(new Set());
+export function FieldMapping({
+  mappings,
+  unmappedColumns = [],
+  onMappingChange,
+}: FieldMappingProps) {
+  const [resolvedFields, setResolvedFields] = useState<Set<string>>(new Set());
+  const [editedMappings, setEditedMappings] = useState<
+    Record<string, { csvColumn: string; acpField: string }>
+  >({});
+
+  // Normalize mappings to handle both formats (source/target and sourceField/targetField)
+  const normalizedMappings = useMemo(() => {
+    return mappings.map((m) => ({
+      source: m.source || m.sourceField || '',
+      target: m.target || m.targetField || '',
+      confidence: m.confidence,
+      sampleData: m.sampleData || [],
+    }));
+  }, [mappings]);
+
+  // Get all CSV columns for the dropdown
+  const availableColumns = useMemo(() => {
+    const csvColumns = normalizedMappings.map((m) => m.source).filter(Boolean);
+    return [...csvColumns, ...unmappedColumns];
+  }, [normalizedMappings, unmappedColumns]);
+
+  // Group fields by category
+  const fieldsByCategory = useMemo(() => {
+    const mapped = new Map(
+      normalizedMappings
+        .filter((m) => m.target)
+        .map((m) => [m.target, m])
+    );
+
+    const required: typeof normalizedMappings = [];
+    const recommended: typeof normalizedMappings = [];
+    const optional: typeof normalizedMappings = [];
+    const missing: ACPFieldMetadata[] = [];
+
+    ACP_FIELDS.forEach((field) => {
+      const mapping = mapped.get(field.name);
+
+      if (mapping) {
+        if (field.required) {
+          required.push(mapping);
+        } else if (field.category === 'recommended') {
+          recommended.push(mapping);
+        } else {
+          optional.push(mapping);
+        }
+      } else if (field.required) {
+        missing.push(field);
+      }
+    });
+
+    return { required, recommended, optional, missing };
+  }, [normalizedMappings]);
+
+  const handleResolve = (fieldName: string) => {
+    setResolvedFields((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(fieldName);
+      return newSet;
+    });
+  };
+
+  const handleEditMapping = (fieldName: string, newColumn: string) => {
+    setEditedMappings((prev) => ({
+      ...prev,
+      [fieldName]: { csvColumn: newColumn, acpField: fieldName },
+    }));
+
+    // Notify parent of the change
+    if (onMappingChange) {
+      const updatedMappings = normalizedMappings.map((m) => {
+        if (m.target === fieldName) {
+          return { source: newColumn, target: fieldName };
+        }
+        return { source: m.source, target: m.target };
+      });
+      onMappingChange(updatedMappings);
+    }
+  };
+
+  const createFieldMappingData = (
+    mapping: typeof normalizedMappings[0]
+  ): FieldMappingType => {
+    const edited = editedMappings[mapping.target];
+
+    return {
+      csvColumn: edited?.csvColumn || mapping.source,
+      acpField: mapping.target,
+      confidence: edited ? 0.5 : mapping.confidence,
+      sampleData: mapping.sampleData || [],
+      totalCount: mapping.sampleData?.length || 0,
+      nullCount: 0,
+    };
+  };
+
+  const createValidation = (
+    mapping: typeof normalizedMappings[0],
+    field: ACPFieldMetadata
+  ): FieldValidation => {
+    const messages: Array<{
+      type: 'error' | 'warning' | 'info';
+      message: string;
+      line?: number;
+      suggestion?: string;
+    }> = [];
+
+    // Check for low confidence
+    if (mapping.confidence < 0.6) {
+      messages.push({
+        type: 'warning' as const,
+        message: 'Low confidence mapping. Please verify this is correct.',
+        suggestion: 'Review the sample data to ensure the mapping makes sense.',
+      });
+    }
+
+    // Check for missing data
+    if (!mapping.sampleData || mapping.sampleData.length === 0) {
+      messages.push({
+        type: 'warning' as const,
+        message: 'No sample data available for validation.',
+      });
+    }
+
+    // Check for required fields
+    if (field.required && !mapping.source) {
+      messages.push({
+        type: 'error' as const,
+        message: 'This is a required field and must be mapped.',
+        suggestion: 'Select a CSV column that contains this information.',
+      });
+    }
+
+    return {
+      status: messages.some((m) => m.type === 'error')
+        ? 'error'
+        : messages.some((m) => m.type === 'warning')
+          ? 'warning'
+          : 'valid',
+      messages,
+    };
+  };
+
+  const createResolution = (fieldName: string): FieldResolution => {
+    return {
+      isResolved: resolvedFields.has(fieldName),
+      resolvedAt: resolvedFields.has(fieldName) ? new Date() : undefined,
+    };
+  };
+
+  const renderFieldCards = (
+    mappings: typeof normalizedMappings
+  ) => {
+    return mappings.map((mapping) => {
+      const field = ACP_FIELDS.find((f) => f.name === mapping.target);
+      if (!field) return null;
+
+      const enhancedField: ACPFieldMetadata & {
+        chatgptUsage?: string;
+        validationRules?: Array<{ rule: string; value?: unknown; message: string }>;
+        bestPractices?: string[];
+      } = {
+        ...field,
+        chatgptUsage: `This field helps ChatGPT ${field.required ? 'accurately display and process' : 'better understand'} your products.`,
+      };
+
+      return (
+        <FieldMappingCard
+          key={mapping.target}
+          field={enhancedField}
+          mapping={createFieldMappingData(mapping)}
+          validation={createValidation(mapping, field)}
+          resolution={createResolution(mapping.target)}
+          availableColumns={availableColumns}
+          onResolve={handleResolve}
+          onEditMapping={handleEditMapping}
+        />
+      );
+    });
+  };
 
   if (mappings.length === 0 && unmappedColumns.length === 0) {
     return null;
   }
 
-  // Get field category/requirement level
-  const getFieldCategory = (fieldName: string): 'required' | 'recommended' | 'optional' => {
-    const field = ACP_FIELDS.find((f) => f.name === fieldName);
-    if (!field) return 'optional';
-    if (field.required) return 'required';
-    if (field.category === 'recommended') return 'recommended';
-    return 'optional';
-  };
-
-  // Get all ACP field options for dropdown
-  const acpFieldOptions = ACP_FIELDS.map((field) => ({
-    value: field.name,
-    label: `${field.label} (${field.name})`,
-    category: field.required ? 'required' : field.category === 'recommended' ? 'recommended' : 'optional',
-  }));
-
-  // Add "Unmapped" option
-  const allOptions = [
-    { value: '', label: '-- Unmapped --', category: 'unmapped' },
-    ...acpFieldOptions,
-  ];
-
-  const handleMappingChange = (source: string, newTarget: string, originalMapping: any) => {
-    const updated = localMappings.map((m) =>
-      m.source === source
-        ? { ...m, target: newTarget, confidence: newTarget === originalMapping.target ? originalMapping.confidence : 0.5 }
-        : m
-    );
-    setLocalMappings(updated);
-    setEditedMappings(new Set(editedMappings).add(source));
-
-    if (onMappingChange) {
-      onMappingChange(updated.filter(m => m.target).map(({ source, target }) => ({ source, target })));
-    }
-  };
-
-  const handleUnmapField = (source: string) => {
-    const updated = localMappings.map((m) =>
-      m.source === source ? { ...m, target: '', confidence: 0 } : m
-    );
-    setLocalMappings(updated);
-    setEditedMappings(new Set(editedMappings).add(source));
-
-    if (onMappingChange) {
-      onMappingChange(updated.filter(m => m.target).map(({ source, target }) => ({ source, target })));
-    }
-  };
-
-  // Get missing required fields
-  const mappedTargets = new Set(localMappings.filter(m => m.target).map((m) => m.target));
-  const requiredFields = ACP_FIELDS.filter((f) => f.required);
-  const missingRequired = requiredFields.filter((f) => !mappedTargets.has(f.name));
+  const totalMapped = normalizedMappings.filter((m) => m.target).length;
+  const totalResolved = resolvedFields.size;
 
   return (
     <div className="field-mapping">
       <div className="mapping-header">
-        <h3>Field Mapping</h3>
+        <h3>Field Mapping Review</h3>
         <p className="mapping-description">
-          AI-powered column mapping to ACP format. Review and adjust mappings as needed.
+          AI has mapped {totalMapped} columns to ACP fields. Review each mapping and mark as
+          resolved when verified.
         </p>
+        <div className="mapping-stats">
+          <span className="stat">
+            <strong>{totalMapped}</strong> mapped
+          </span>
+          <span className="stat">
+            <strong>{totalResolved}</strong> resolved
+          </span>
+          <span className="stat">
+            <strong>{fieldsByCategory.missing.length}</strong> missing required
+          </span>
+        </div>
       </div>
 
       {/* Missing Required Fields Alert */}
-      {missingRequired.length > 0 && (
+      {fieldsByCategory.missing.length > 0 && (
         <div className="missing-required-alert">
-          <strong>⚠ Missing Required Fields ({missingRequired.length})</strong>
+          <strong>⚠ Missing Required Fields ({fieldsByCategory.missing.length})</strong>
           <p>The following required ACP fields are not mapped:</p>
           <ul>
-            {missingRequired.map((field) => (
+            {fieldsByCategory.missing.map((field) => (
               <li key={field.name}>
                 <code>{field.name}</code> - {field.description}
               </li>
@@ -97,66 +249,41 @@ export function FieldMapping({ mappings, unmappedColumns = [], onMappingChange }
         </div>
       )}
 
-      {/* Mapped Fields */}
-      {localMappings.filter(m => m.target).length > 0 && (
-        <div className="mapped-fields-section">
-          <h4>Mapped Fields ({localMappings.filter(m => m.target).length})</h4>
-          <div className="mapping-grid">
-            {localMappings
-              .filter((m) => m.target)
-              .map((mapping, index) => {
-                const category = getFieldCategory(mapping.target);
-                const wasEdited = editedMappings.has(mapping.source);
+      {/* Required Fields Section */}
+      {fieldsByCategory.required.length > 0 && (
+        <div className="field-category-section">
+          <h4 className="category-header">
+            <span className="category-badge required">Required</span>
+            Required Fields ({fieldsByCategory.required.length})
+          </h4>
+          <div className="field-cards-container">
+            {renderFieldCards(fieldsByCategory.required)}
+          </div>
+        </div>
+      )}
 
-                return (
-                  <div key={index} className={`mapping-item ${category}`}>
-                    <div className="mapping-source">
-                      <span className="mapping-label">CSV Column:</span>
-                      <code>{mapping.source}</code>
-                    </div>
+      {/* Recommended Fields Section */}
+      {fieldsByCategory.recommended.length > 0 && (
+        <div className="field-category-section">
+          <h4 className="category-header">
+            <span className="category-badge recommended">Recommended</span>
+            Recommended Fields ({fieldsByCategory.recommended.length})
+          </h4>
+          <div className="field-cards-container">
+            {renderFieldCards(fieldsByCategory.recommended)}
+          </div>
+        </div>
+      )}
 
-                    <div className="mapping-arrow">→</div>
-
-                    <div className="mapping-target">
-                      <span className="mapping-label">
-                        ACP Field {category === 'required' && <span className="required-badge">Required</span>}
-                        {category === 'recommended' && <span className="recommended-badge">Recommended</span>}
-                      </span>
-                      <select
-                        value={mapping.target}
-                        onChange={(e) => handleMappingChange(mapping.source, e.target.value, mapping)}
-                        className="target-selector"
-                      >
-                        {allOptions.map((opt) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="mapping-confidence">
-                      <div className="confidence-bar">
-                        <div
-                          className="confidence-fill"
-                          style={{
-                            width: `${mapping.confidence * 100}%`,
-                            backgroundColor:
-                              mapping.confidence > 0.8
-                                ? '#27ae60'
-                                : mapping.confidence > 0.6
-                                ? '#f39c12'
-                                : '#e67e22',
-                          }}
-                        ></div>
-                      </div>
-                      <span className="confidence-text">
-                        {wasEdited ? 'Edited' : `${Math.round(mapping.confidence * 100)}% confidence`}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+      {/* Optional Fields Section */}
+      {fieldsByCategory.optional.length > 0 && (
+        <div className="field-category-section optional-section">
+          <h4 className="category-header">
+            <span className="category-badge optional">Optional</span>
+            Optional Fields ({fieldsByCategory.optional.length})
+          </h4>
+          <div className="field-cards-container">
+            {renderFieldCards(fieldsByCategory.optional)}
           </div>
         </div>
       )}
@@ -166,45 +293,17 @@ export function FieldMapping({ mappings, unmappedColumns = [], onMappingChange }
         <div className="unmapped-columns-section">
           <h4>Unmapped CSV Columns ({unmappedColumns.length})</h4>
           <p className="section-description">
-            These columns from your CSV weren't automatically mapped. You can manually map them if needed.
+            These columns weren't automatically mapped. They can be mapped manually if needed.
           </p>
           <div className="unmapped-list">
             {unmappedColumns.map((column, index) => (
               <div key={index} className="unmapped-item">
-                <div className="unmapped-column">
-                  <code>{column}</code>
-                </div>
-                <div className="unmapped-actions">
-                  <select className="target-selector" defaultValue="">
-                    <option value="">-- Select ACP field to map --</option>
-                    {acpFieldOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <code>{column}</code>
               </div>
             ))}
           </div>
         </div>
       )}
-
-      {/* Field Legend */}
-      <div className="mapping-legend">
-        <div className="legend-item">
-          <span className="legend-color required"></span>
-          <span>Required Field</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-color recommended"></span>
-          <span>Recommended Field</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-color optional"></span>
-          <span>Optional Field</span>
-        </div>
-      </div>
     </div>
   );
 }
