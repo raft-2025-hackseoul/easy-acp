@@ -98,12 +98,10 @@ export function ProductFeedPage() {
             totalRows={uploadResult.data.totalRows}
             validProducts={uploadResult.data.validProducts}
             invalidProducts={uploadResult.data.invalidProducts}
-            dataValidation={uploadResult.data.dataValidation}
           />
 
           <FieldMapping
             mappings={uploadResult.data.fieldMappings}
-            unmappedColumns={uploadResult.data.unmappedColumns}
           />
 
           <div onClick={handleExport}>
