@@ -403,7 +403,7 @@ const ExpandedView: React.FC<{
         <div className="field-info">
           <h3>{field.label}</h3>
           <p className="field-name">
-            ACP Field: <code>{field.name}</code>
+            Field ID: <code>{field.name}</code>
           </p>
         </div>
         <button className="close-button" onClick={onClose} aria-label="Close expanded view">
@@ -442,7 +442,7 @@ const ExpandedView: React.FC<{
             </span>
             <span className="mapping-arrow">→</span>
             <span>
-              ACP Field: <code>{field.name}</code>
+              ACP Field: <code>{field.label}</code>
             </span>
           </div>
         )}

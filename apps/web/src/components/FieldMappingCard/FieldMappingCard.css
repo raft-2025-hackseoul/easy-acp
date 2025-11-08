@@ -2,24 +2,25 @@
 
 /* CSS Variables for theming and consistency */
 :root {
-  /* Status Colors */
-  --color-required: #DC3545;
-  --color-recommended: #F39C12;
-  --color-optional: #6C757D;
-  --color-resolved: #28A745;
-  --color-error: #DC3545;
-  --color-warning: #FFC107;
-  --color-info: #17A2B8;
+  /* Status Colors - Enhanced for better visibility */
+  --color-required: #DC2626;
+  --color-recommended: #EA580C;
+  --color-optional: #475569;
+  --color-resolved: #16A34A;
+  --color-error: #DC2626;
+  --color-warning: #F59E0B;
+  --color-info: #0EA5E9;
 
-  /* UI Colors */
+  /* UI Colors - Improved contrast */
   --color-background: #FFFFFF;
-  --color-surface: #F8F9FA;
-  --color-border: #DEE2E6;
-  --color-text-primary: #212529;
-  --color-text-secondary: #6C757D;
-  --color-interactive: #0066CC;
-  --color-interactive-hover: #0052A3;
-  --color-resolved-bg: #F0FFF4;
+  --color-surface: #F1F5F9;
+  --color-border: #CBD5E1;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #64748B;
+  --color-interactive: #2563EB;
+  --color-interactive-hover: #1D4ED8;
+  --color-resolved-bg: #ECFDF5;
 
   /* Typography */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -42,12 +43,13 @@
 .field-mapping-card {
   position: relative;
   background: var(--color-background);
-  border-radius: 8px;
-  border-left: 3px solid transparent;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06);
   transition: all var(--transition-normal);
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   cursor: pointer;
 }
 
@@ -80,8 +82,9 @@
 
 /* Hover state */
 .field-mapping-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.06);
+  transform: translateY(-2px);
+  border-color: var(--color-interactive);
 }
 
 /* Focus state for accessibility */
@@ -202,11 +205,12 @@
 
 .data-preview {
   font-size: 12px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 300px;
+  font-weight: 500;
 }
 
 .mapping-stats {
@@ -503,10 +507,10 @@
 .info-section h4 {
   margin: 0 0 var(--space-sm) 0;
   color: var(--color-text-primary);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.75px;
 }
 
 .info-section p {
@@ -526,17 +530,19 @@
 }
 
 .example-box {
-  background: var(--color-surface);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
+  background: #1E293B;
+  padding: var(--space-md);
+  border-radius: 8px;
+  border: 1px solid #334155;
   margin-top: var(--space-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .example-box code {
   font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--color-text-primary);
+  color: #E2E8F0;
+  line-height: 1.6;
 }
 
 /* Validation Tab */
@@ -563,13 +569,16 @@
 
 .validation-status h4 {
   margin: 0 0 var(--space-xs) 0;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 .validation-status p {
   margin: 0;
   font-size: 14px;
+  color: var(--color-text-primary);
+  font-weight: 500;
 }
 
 .validation-messages {
@@ -578,10 +587,11 @@
 
 .validation-messages h4 {
   margin: 0 0 var(--space-md) 0;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.75px;
+  color: var(--color-text-primary);
 }
 
 .validation-message {
@@ -649,8 +659,9 @@
 
 .confidence-info h4 {
   margin: 0 0 var(--space-sm) 0;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 .confidence-meter {
@@ -684,17 +695,18 @@
 
 .data-section h4 {
   margin: 0 0 var(--space-md) 0;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.75px;
   color: var(--color-text-primary);
 }
 
 .sample-values {
   background: var(--color-surface);
-  border-radius: 6px;
-  padding: var(--space-sm);
+  border-radius: 8px;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
 }
 
 .sample-value {
@@ -723,6 +735,7 @@
   word-break: break-all;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 500;
 }
 
 .no-data {
@@ -777,13 +790,14 @@
 }
 
 .action-button {
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
   font-family: var(--font-family);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .action-button.primary {
@@ -795,7 +809,12 @@
 .action-button.primary:hover:not(:disabled) {
   background: var(--color-interactive-hover);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.action-button.primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .action-button.primary:disabled {
@@ -804,16 +823,21 @@
 }
 
 .action-button.secondary {
-  background: transparent;
-  color: var(--color-interactive);
-  border: 1px solid var(--color-interactive);
+  background: white;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
 }
 
 .action-button.secondary:hover {
-  background: var(--color-interactive);
-  color: white;
+  background: var(--color-surface);
+  border-color: var(--color-text-secondary);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+}
+
+.action-button.secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
 }
 
 /* Mobile Responsive Styles */

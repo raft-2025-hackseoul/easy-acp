@@ -64,6 +64,8 @@ export function validateACPProduct(product: PartialACPProduct): ValidationResult
   validateImages(product, warnings);
   validatePopularityScore(product, warnings);
   validateReturnRate(product, warnings);
+  validateConditionalRequirements(product, errors);
+  validateCharacterLimits(product, errors, warnings);
 
   return {
     isValid: errors.length === 0 && missingRequired.length === 0,
@@ -225,6 +227,75 @@ function validateReturnRate(product: PartialACPProduct, warnings: ValidationWarn
       });
     }
   }
+}
+
+function validateConditionalRequirements(
+  product: PartialACPProduct,
+  errors: ValidationError[]
+): void {
+  // Check all fields with conditional requirements
+  ACP_FIELDS.forEach((field) => {
+    if (field.conditionallyRequired) {
+      const { when, equals, message } = field.conditionallyRequired;
+      const triggerValue = product[when as keyof ACPProduct];
+      const fieldValue = product[field.name as keyof ACPProduct];
+
+      // If the condition is met but the field is missing
+      if (triggerValue === equals && (fieldValue === undefined || fieldValue === null || fieldValue === '')) {
+        errors.push({
+          field: field.name,
+          message: message || `${field.label} is required when ${when} is ${equals}`,
+        });
+      }
+    }
+  });
+
+  // Additional validation: at least one of GTIN or MPN must be present
+  if (!product.gtin && !product.mpn) {
+    errors.push({
+      field: 'gtin',
+      message: 'Either GTIN or MPN is required',
+    });
+  }
+
+  // Validate availability_date when availability is preorder
+  if (product.availability === 'preorder' && !product.availability_date) {
+    errors.push({
+      field: 'availability_date',
+      message: 'availability_date is required when availability is "preorder"',
+    });
+  }
+}
+
+function validateCharacterLimits(
+  product: PartialACPProduct,
+  errors: ValidationError[],
+  warnings: ValidationWarning[]
+): void {
+  ACP_FIELDS.forEach((field) => {
+    if (field.maxLength && field.type === 'string') {
+      const value = product[field.name as keyof ACPProduct];
+      if (value !== undefined && value !== null) {
+        const strValue = String(value);
+        if (strValue.length > field.maxLength) {
+          // Critical fields get errors, others get warnings
+          if (field.required) {
+            errors.push({
+              field: field.name,
+              message: `${field.label} exceeds maximum length of ${field.maxLength} characters (current: ${strValue.length})`,
+              value,
+            });
+          } else {
+            warnings.push({
+              field: field.name,
+              message: `${field.label} exceeds recommended maximum length of ${field.maxLength} characters (current: ${strValue.length})`,
+              value,
+            });
+          }
+        }
+      }
+    }
+  });
 }
 
 /**

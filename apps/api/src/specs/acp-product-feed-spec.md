@@ -1,5 +1,19 @@
 # OpenAI Agent Commerce Protocol (ACP) Product Feed Specification
 
+## 🔒 AUTHORITATIVE SCHEMA - SINGLE SOURCE OF TRUTH
+
+**This document defines the deterministic, fixed schema for all ACP product feeds.**
+
+### Schema Rules
+
+1. **Field Names**: All field names MUST use `snake_case` format (e.g., `product_id`, `image_link`, `seller_name`)
+2. **Deterministic Output**: Input data is converted to match these exact field names - no variations allowed
+3. **Fixed Categorization**: Field requirements (required/recommended/optional) are fixed per OpenAI specification
+4. **No Label Substitution**: Field labels are for UI display only - exports always use snake_case field names
+5. **Validation Enforcement**: All character limits, formats, and conditional requirements must be enforced
+
+---
+
 ## Overview
 
 The Product Feed Spec enables merchants to share structured product data with OpenAI so ChatGPT can accurately index and display their catalog. Merchants must first register at chatgpt.com/merchants.
@@ -107,12 +121,12 @@ The Product Feed Spec enables merchants to share structured product data with Op
 - **Validation**: Required except for movies, books, and music
 - **Example**: "Sony"
 
-#### material (Required, String)
+#### material (Recommended, String)
 
 - **Type**: String
 - **Max Length**: 100 characters
 - **Description**: Primary material composition
-- **Validation**: Required field
+- **Validation**: Recommended for physical products
 - **Example**: "Plastic, Metal, Foam"
 
 #### weight (Required, String)

@@ -64,6 +64,50 @@ npm run clean
 
 Removes all build artifacts and node_modules.
 
+## 🔒 ACP Schema - Deterministic & Fixed
+
+This project implements the **OpenAI Agent Commerce Protocol (ACP)** with a deterministic, fixed schema.
+
+### Key Schema Principles
+
+1. **snake_case Field Names**: All field names use `snake_case` format
+   - Examples: `product_id`, `image_link`, `seller_name`, `enable_checkout`
+   - This is the ONLY format accepted by OpenAI's ACP specification
+   - Never use camelCase or other formats in exported data
+
+2. **Deterministic Output**: Same input always produces identical output
+   - Field names are never transformed at runtime
+   - CSV/JSON exports preserve exact snake_case field names
+   - No variations or label substitutions
+
+3. **Single Source of Truth**: The authoritative schema is defined in:
+   - `/apps/api/src/specs/acp-product-feed-spec.md` - Complete field specification
+   - `/packages/acp-types/src/acp-product.ts` - TypeScript type definitions
+   - `/packages/acp-types/src/acp-fields.ts` - Field metadata with validation rules
+
+4. **Strict Validation**:
+   - Character limits enforced (e.g., title max 150 chars, description max 5,000 chars)
+   - Conditional requirements (e.g., `seller_tos` required when `enable_checkout=true`)
+   - Format validation (prices, URLs, dates, enums)
+   - Either `gtin` or `mpn` must be present
+
+### Example: Input → Output Conversion
+
+```typescript
+// Input CSV (any case)
+Product_ID, Product_Name, Image_URL
+SKU123, Headphones, https://example.com/img.jpg
+
+// Output JSON (always snake_case)
+{
+  "id": "SKU123",
+  "title": "Headphones",
+  "image_link": "https://example.com/img.jpg"
+}
+```
+
+See the [ACP Specification](apps/api/src/specs/acp-product-feed-spec.md) for complete field definitions.
+
 ## What's Inside?
 
 This monorepo includes:

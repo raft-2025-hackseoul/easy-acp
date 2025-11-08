@@ -1,6 +1,31 @@
 /**
  * OpenAI Agentic Commerce Protocol (ACP) Product Feed Types
  * Based on OpenAI Commerce Platform specifications
+ *
+ * 🔒 DETERMINISTIC SCHEMA - SINGLE SOURCE OF TRUTH
+ *
+ * IMPORTANT SCHEMA RULES:
+ *
+ * 1. **Field Names**: All field names use snake_case format (e.g., product_id, image_link, seller_name)
+ *    - This is the ONLY format accepted by OpenAI's ACP spec
+ *    - Input data is converted to match these exact field names
+ *    - Output always uses these field names - no variations allowed
+ *
+ * 2. **No Label Substitution**: Field labels (e.g., "Product ID") are for UI display only
+ *    - Labels are NEVER used in exported data or API responses
+ *    - Always use the snake_case field name from these TypeScript interfaces
+ *
+ * 3. **Fixed Types**: All type definitions are based on the official OpenAI specification
+ *    - Changes must align with OpenAI's official documentation
+ *    - See /apps/api/src/specs/acp-product-feed-spec.md for full specification
+ *
+ * 4. **Validation**: Character limits, formats, and conditional requirements are enforced
+ *    - See validation.ts for complete validation logic
+ *    - Conditional requirements (e.g., seller_tos required when enable_checkout=true)
+ *
+ * 5. **Deterministic Output**: Same input always produces identical output field names
+ *    - No runtime transformations of field names
+ *    - CSV/JSON exports preserve snake_case field names exactly
  */
 
 export type Availability = 'in_stock' | 'out_of_stock' | 'preorder';
@@ -298,6 +323,12 @@ export interface ACPFieldMetadata {
   example?: string;
   enumValues?: string[];
   category: 'core' | 'recommended' | 'optional';
+  maxLength?: number; // Character limit for string fields
+  conditionallyRequired?: {
+    when: keyof ACPProduct; // Field that determines if this field is required
+    equals: any; // Value that triggers the requirement
+    message?: string; // Custom validation message
+  };
 }
 
 /**

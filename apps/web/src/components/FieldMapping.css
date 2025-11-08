@@ -2,8 +2,9 @@
   margin: 2rem 0;
   padding: 2rem;
   background-color: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  border: 1px solid #CBD5E1;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06);
 }
 
 .mapping-header {
@@ -12,59 +13,68 @@
 
 .mapping-header h3 {
   margin: 0 0 0.5rem 0;
-  color: #1a1a1a;
+  color: #0F172A;
   font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .mapping-description {
-  color: #34495e;
+  color: #475569;
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .mapping-stats {
   display: flex;
   gap: 1.5rem;
   margin-top: 1rem;
-  padding: 0.75rem;
-  background-color: #f8f9fa;
-  border-radius: 6px;
+  padding: 1rem;
+  background-color: #F1F5F9;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
 }
 
 .mapping-stats .stat {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: #475569;
+  font-weight: 500;
 }
 
 .mapping-stats .stat strong {
-  color: #212529;
-  font-size: 1.1rem;
+  color: #0F172A;
+  font-size: 1.2rem;
   margin-right: 0.25rem;
+  font-weight: 700;
 }
 
 /* Missing Required Fields Alert */
 .missing-required-alert {
-  background-color: #fee;
-  border-left: 4px solid #dc3545;
+  background-color: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  border-left: 4px solid #DC2626;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.1);
 }
 
 .missing-required-alert strong {
-  color: #721c24;
+  color: #991B1B;
   display: block;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .missing-required-alert p {
-  color: #721c24;
+  color: #B91C1C;
   margin: 0.5rem 0;
+  font-weight: 500;
 }
 
 .missing-required-alert ul {
   margin: 0.75rem 0 0 1.5rem;
-  color: #721c24;
+  color: #B91C1C;
 }
 
 .missing-required-alert li {
@@ -74,8 +84,9 @@
 .missing-required-alert code {
   background: #fff;
   padding: 0.2rem 0.4rem;
-  border-radius: 3px;
+  border-radius: 4px;
   font-weight: 600;
+  border: 1px solid #FCA5A5;
 }
 
 /* Section Headers */
@@ -90,10 +101,10 @@
 }
 
 .category-header {
-  color: #2c3e50;
+  color: #0F172A;
   margin: 0 0 1rem 0;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.75rem;
