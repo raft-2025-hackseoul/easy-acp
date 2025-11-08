@@ -34,9 +34,9 @@ COPY apps/api ./apps/api
 COPY turbo.json ./
 COPY package*.json ./
 
-# Build the application
-WORKDIR /app/apps/api
-RUN npm run build
+# Build all packages including dependencies using Turbo
+WORKDIR /app
+RUN npx turbo build --filter=@repo/api...
 
 # Production image
 FROM base AS runner
@@ -52,7 +52,10 @@ RUN mkdir -p uploads && chmod 755 uploads
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/package*.json ./
 COPY --from=builder /app/package-lock.json ./
-COPY --from=builder /app/packages/acp-types ./packages/acp-types
+COPY --from=builder /app/packages/acp-types/dist ./packages/acp-types/dist
+COPY --from=builder /app/packages/acp-types/package.json ./packages/acp-types/package.json
+COPY --from=builder /app/packages/workflow-types/dist ./packages/workflow-types/dist
+COPY --from=builder /app/packages/workflow-types/package.json ./packages/workflow-types/package.json
 
 # Copy specs directory if exists
 COPY --from=builder /app/apps/api/src/specs ./src/specs
