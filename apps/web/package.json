@@ -11,8 +11,10 @@
     "clean": "rm -rf dist .turbo node_modules"
   },
   "dependencies": {
+    "@repo/acp-types": "*",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3"
   },
   "devDependencies": {
     "@repo/tsconfig": "*",

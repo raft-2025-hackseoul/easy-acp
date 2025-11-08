@@ -1,0 +1,68 @@
+.export-options {
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.export-options h3 {
+  margin-top: 0;
+  color: #646cff;
+}
+
+.export-description {
+  color: #aaa;
+  margin-bottom: 1.5rem;
+}
+
+.export-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.export-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 2px solid;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: white;
+}
+
+.export-button.csv {
+  border-color: #4caf50;
+}
+
+.export-button.csv:hover:not(:disabled) {
+  background-color: #4caf50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.export-button.json {
+  border-color: #2196f3;
+}
+
+.export-button.json:hover:not(:disabled) {
+  background-color: #2196f3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.export-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.export-button svg {
+  flex-shrink: 0;
+}

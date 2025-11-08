@@ -1,42 +1,133 @@
 .App {
-  max-width: 1280px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  text-align: center;
+  padding: 3rem 2rem 1rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a3a 100%);
+  border-bottom: 2px solid #333;
+}
+
+.app-header h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  background: linear-gradient(135deg, #646cff 0%, #61dafb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #aaa;
+  margin: 0.5rem 0 0;
+}
+
+.app-main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.intro-section {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  color: #646cff;
+.intro-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ddd;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-h2 {
-  color: #535bf2;
-}
-
-.card {
-  padding: 2em;
-  background-color: #1a1a1a;
+.error-message {
+  padding: 1.5rem;
+  margin: 2rem 0;
+  background-color: rgba(244, 67, 54, 0.1);
+  border-left: 4px solid #f44336;
   border-radius: 8px;
-  margin: 2em 0;
+  color: #f44336;
 }
 
-.message {
-  font-size: 1.2em;
-  color: #61dafb;
-  font-weight: bold;
+.error-message strong {
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-.info {
+.reset-section {
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.reset-button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 2px solid #646cff;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #646cff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  background-color: #646cff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+.app-footer {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 4rem;
+  background-color: #1a1a1a;
+  border-top: 2px solid #333;
   color: #888;
-  font-size: 0.9em;
-  margin-top: 2em;
 }
 
-code {
-  background-color: #2a2a2a;
-  padding: 0.2em 0.4em;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
+.app-footer p {
+  margin: 0.5rem 0;
+}
+
+.app-footer a {
+  color: #646cff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.app-footer a:hover {
+  color: #535bf2;
+  text-decoration: underline;
+}
+
+.footer-note {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+
+  .intro-text {
+    font-size: 1rem;
+  }
 }

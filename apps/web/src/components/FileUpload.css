@@ -1,0 +1,88 @@
+.file-upload-container {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.dropzone {
+  border: 2px dashed #646cff;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #1a1a1a;
+}
+
+.dropzone:hover:not(.disabled) {
+  border-color: #535bf2;
+  background-color: #242424;
+  transform: translateY(-2px);
+}
+
+.dropzone.active {
+  border-color: #61dafb;
+  background-color: #1e2a3a;
+}
+
+.dropzone.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-icon {
+  color: #646cff;
+}
+
+.dropzone:hover:not(.disabled) .upload-icon {
+  color: #535bf2;
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+}
+
+.primary {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.secondary {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+}
+
+.file-name {
+  color: #61dafb;
+  margin: 0;
+}
+
+.file-name small {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.spinner {
+  border: 3px solid #333;
+  border-top: 3px solid #646cff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

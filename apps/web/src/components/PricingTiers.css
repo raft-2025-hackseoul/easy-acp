@@ -1,0 +1,190 @@
+.pricing-tiers {
+  margin: 3rem 0;
+  padding: 2rem;
+}
+
+.pricing-tiers h2 {
+  text-align: center;
+  color: #646cff;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-subtitle {
+  text-align: center;
+  color: #aaa;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tier-card {
+  position: relative;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  border: 2px solid #333;
+  transition: all 0.3s ease;
+}
+
+.tier-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(100, 108, 255, 0.2);
+}
+
+.tier-card.managed {
+  border-color: #646cff;
+  background: linear-gradient(135deg, #1a1a1a 0%, #1e1e2e 100%);
+}
+
+.tier-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tier-badge.premium {
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+}
+
+.tier-card h3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.tier-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #646cff;
+}
+
+.period {
+  font-size: 1rem;
+  color: #888;
+}
+
+.tier-description {
+  color: #aaa;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.tier-features {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.tier-features li {
+  padding: 0.6rem 0;
+  color: #ddd;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.check {
+  color: #4caf50;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.tier-note {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(100, 108, 255, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #646cff;
+}
+
+.tier-note.premium {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.15) 0%, rgba(83, 91, 242, 0.15) 100%);
+  border-color: #535bf2;
+}
+
+.tier-note strong {
+  display: block;
+  color: #646cff;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.tier-note p {
+  margin: 0;
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tier-cta {
+  width: 100%;
+  padding: 1rem 2rem;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #646cff 0%, #535bf2 100%);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.tier-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4);
+}
+
+.comparison-note {
+  max-width: 700px;
+  margin: 3rem auto 0;
+  padding: 1.5rem;
+  background-color: #242424;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.comparison-note p {
+  margin: 0;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.comparison-note strong {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .pricing-tiers h2 {
+    font-size: 2rem;
+  }
+
+  .tiers-grid {
+    grid-template-columns: 1fr;
+  }
+}
