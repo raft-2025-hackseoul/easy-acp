@@ -31,7 +31,7 @@ print_step() {
 }
 
 # Configuration
-EC2_HOST="${1:-ubuntu@temp-instance-hackathon}"  # Default or from argument
+EC2_HOST="${1:-ec2-user@13.124.182.10}"  # Default or from argument
 SSH_KEY="$HOME/.ssh/workith-mail-dev.pem"
 APP_DIR="/opt/easy-acp"
 REPO_URL=$(git config --get remote.origin.url 2>/dev/null || echo "")

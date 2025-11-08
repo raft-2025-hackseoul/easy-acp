@@ -12,7 +12,7 @@ The application is currently deployed on AWS EC2 with Docker Compose, Nginx, SSL
 
 ```bash
 # Deploy to EC2 from your local machine
-./deploy-ec2.sh ubuntu@temp-instance-hackathon
+./deploy-ec2.sh ec2-user@13.124.182.10
 ```
 
 ### Architecture Overview
@@ -22,7 +22,7 @@ Internet (HTTPS)
     ↓
 Route53 DNS (acp.wrkth.in)
     ↓
-EC2 Instance (temp-instance-hackathon)
+EC2 Instance (13.124.182.10 - Amazon Linux)
     ↓
 Nginx (SSL termination, reverse proxy)
     ├─→ Web Container (port 3000) - React frontend
@@ -31,7 +31,7 @@ Nginx (SSL termination, reverse proxy)
 
 ### Key Components
 
-- **EC2 Instance**: Ubuntu server running Docker
+- **EC2 Instance**: Amazon Linux 2 server running Docker
 - **Docker Compose**: Orchestrates API and Web containers
 - **Nginx**: Handles SSL and reverse proxy
 - **Let's Encrypt**: Free SSL certificates with auto-renewal
@@ -67,19 +67,19 @@ APP_URL=https://acp.wrkth.in
 
 ```bash
 # SSH to EC2
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon
+ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10
 
 # Deploy updates
-./deploy-ec2.sh ubuntu@temp-instance-hackathon
+./deploy-ec2.sh ec2-user@13.124.182.10
 
 # View logs
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon "cd /opt/easy-acp && docker-compose logs -f"
+ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10 "cd /opt/easy-acp && docker-compose logs -f"
 
 # Restart services
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon "cd /opt/easy-acp && docker-compose restart"
+ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10 "cd /opt/easy-acp && docker-compose restart"
 
 # Check SSL certificate
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon "sudo certbot certificates"
+ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10 "sudo certbot certificates"
 ```
 
 ## Alternative Deployment Options
