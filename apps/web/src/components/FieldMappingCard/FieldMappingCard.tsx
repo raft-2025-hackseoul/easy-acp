@@ -117,7 +117,7 @@ const CollapsedView: React.FC<{
       <div className="mapping-display">
         <code className="csv-column">{mapping.csvColumn || 'Not mapped'}</code>
         <span className="mapping-arrow">→</span>
-        <code className="acp-field">{field.label}</code>
+        <code className="acp-field">{field.name}</code>
       </div>
 
       <div className="data-info">
@@ -442,7 +442,7 @@ const ExpandedView: React.FC<{
             </span>
             <span className="mapping-arrow">→</span>
             <span>
-              ACP Field: <code>{field.label}</code>
+              ACP Field: <code>{field.name}</code>
             </span>
           </div>
         )}
