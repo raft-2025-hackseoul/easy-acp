@@ -183,3 +183,65 @@ export async function uploadCSVWithLLM(file: File): Promise<UploadResponse & {
 
   return response.json();
 }
+
+export interface ProductChange {
+  field: string;
+  oldValue: any;
+  newValue: any;
+  reason: string;
+}
+
+export interface ProductEnhancementResult {
+  enhancedProduct: any;
+  changes: ProductChange[];
+  summary: string;
+  qualityImprovement: number;
+}
+
+export async function enhanceProduct(product: any): Promise<ProductEnhancementResult> {
+  const response = await fetch(`${API_BASE_URL}/product-feed/llm/enhance`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ product }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Product enhancement failed');
+  }
+
+  const result = await response.json();
+  return result.data;
+}
+
+export interface IssueResolutionResult {
+  suggestedFix: {
+    field: string;
+    value: any;
+    reason: string;
+  };
+  updatedProduct: any;
+}
+
+export async function resolveProductIssue(
+  product: any,
+  issue: LLMValidationIssue
+): Promise<IssueResolutionResult> {
+  const response = await fetch(`${API_BASE_URL}/product-feed/llm/resolve-issue`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ product, issue }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Issue resolution failed');
+  }
+
+  const result = await response.json();
+  return result.data;
+}
