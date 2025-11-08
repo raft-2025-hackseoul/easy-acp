@@ -123,9 +123,7 @@ export async function checkLLMValidationStatus(): Promise<LLMValidationStatus> {
   return result.data;
 }
 
-export async function validateProductsWithLLM(
-  products: any[]
-): Promise<BatchLLMValidationResult> {
+export async function validateProductsWithLLM(products: any[]): Promise<BatchLLMValidationResult> {
   const response = await fetch(`${API_BASE_URL}/product-feed/llm/validate`, {
     method: 'POST',
     headers: {
@@ -161,13 +159,15 @@ export async function validateProductWithLLM(product: any): Promise<LLMValidatio
   return result.data;
 }
 
-export async function uploadCSVWithLLM(file: File): Promise<UploadResponse & {
-  validation: {
-    traditional: any;
-    llm: BatchLLMValidationResult | null;
-    hasLLMValidation: boolean;
-  };
-}> {
+export async function uploadCSVWithLLM(file: File): Promise<
+  UploadResponse & {
+    validation: {
+      traditional: any;
+      llm: BatchLLMValidationResult | null;
+      hasLLMValidation: boolean;
+    };
+  }
+> {
   const formData = new FormData();
   formData.append('file', file);
 

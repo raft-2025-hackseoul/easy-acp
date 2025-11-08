@@ -88,9 +88,7 @@ export function APIValidatorPage() {
     <div className="api-validator-page">
       <div className="page-header">
         <h1>🔌 API Validator</h1>
-        <p className="page-subtitle">
-          Create and validate your ACP-compliant API endpoints
-        </p>
+        <p className="page-subtitle">Create and validate your ACP-compliant API endpoints</p>
       </div>
 
       {/* Step 1 */}

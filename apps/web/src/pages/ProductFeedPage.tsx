@@ -81,9 +81,7 @@ export function ProductFeedPage() {
         </p>
       </div>
 
-      {!uploadResult && (
-        <FileUpload onFileSelect={handleFileSelect} isUploading={isUploading} />
-      )}
+      {!uploadResult && <FileUpload onFileSelect={handleFileSelect} isUploading={isUploading} />}
 
       {error && (
         <div className="error-message">
@@ -100,15 +98,10 @@ export function ProductFeedPage() {
             invalidProducts={uploadResult.data.invalidProducts}
           />
 
-          <FieldMapping
-            mappings={uploadResult.data.fieldMappings}
-          />
+          <FieldMapping mappings={uploadResult.data.fieldMappings} />
 
           <div onClick={handleExport}>
-            <ExportOptions
-              products={uploadResult.data.products}
-              disabled={false}
-            />
+            <ExportOptions products={uploadResult.data.products} disabled={false} />
           </div>
 
           <div className="reset-section">

@@ -23,7 +23,8 @@ function App() {
           </main>
           <footer className="app-footer">
             <p>
-              Built for merchants | <a href="#docs">Documentation</a> | <a href="#support">Support</a>
+              Built for merchants | <a href="#docs">Documentation</a> |{' '}
+              <a href="#support">Support</a>
             </p>
           </footer>
         </div>

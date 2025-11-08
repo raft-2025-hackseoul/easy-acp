@@ -140,12 +140,20 @@ export function PSPConnectorPage() {
         ) : selectedPSP === 'own-psp' ? (
           <ul>
             <li>
-              <a href="https://www.pcisecuritystandards.org/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.pcisecuritystandards.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 PCI DSS Standards
               </a>
             </li>
             <li>
-              <a href="https://developers.openai.com/commerce" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://developers.openai.com/commerce"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 ACP Payment Integration Guide
               </a>
             </li>

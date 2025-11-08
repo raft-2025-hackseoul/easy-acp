@@ -55,9 +55,7 @@ export function PricingTiers() {
             <span className="price">Contact Us</span>
           </div>
 
-          <p className="tier-description">
-            Let us handle everything - just upload and forget
-          </p>
+          <p className="tier-description">Let us handle everything - just upload and forget</p>
 
           <ul className="tier-features">
             <li>
@@ -88,7 +86,9 @@ export function PricingTiers() {
 
           <div className="tier-note premium">
             <strong>Fire and Forget</strong>
-            <p>We deploy, manage, and maintain your ACP feed. You don't need to do anything else!</p>
+            <p>
+              We deploy, manage, and maintain your ACP feed. You don't need to do anything else!
+            </p>
           </div>
 
           <button className="tier-cta">Contact Sales</button>

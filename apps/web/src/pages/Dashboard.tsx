@@ -68,7 +68,9 @@ export function Dashboard() {
       <div className="dashboard-footer">
         <div className="help-section">
           <h4>Need Help?</h4>
-          <p>Check out our <a href="#docs">ACP Guidelines</a> or contact support</p>
+          <p>
+            Check out our <a href="#docs">ACP Guidelines</a> or contact support
+          </p>
         </div>
       </div>
     </div>
