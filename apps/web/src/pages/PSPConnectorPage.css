@@ -1,0 +1,149 @@
+.psp-connector-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.psp-selection {
+  margin: 2rem 0;
+}
+
+.psp-selection h2 {
+  text-align: center;
+  color: #646cff;
+  margin-bottom: 2rem;
+}
+
+.psp-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.psp-option {
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.psp-option:hover {
+  border-color: #646cff;
+  transform: translateY(-4px);
+}
+
+.psp-option.selected {
+  border-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.psp-option h3 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+}
+
+.psp-option p {
+  color: #aaa;
+  margin: 0 0 1rem 0;
+}
+
+.psp-option ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #ddd;
+}
+
+.psp-option ul li {
+  margin: 0.5rem 0;
+}
+
+.psp-checklist {
+  margin: 3rem 0;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+}
+
+.psp-checklist h3 {
+  margin: 0 0 1.5rem 0;
+  color: #646cff;
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #242424;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.checklist-item:hover {
+  background-color: #2a2a2a;
+}
+
+.checklist-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.checklist-item span {
+  color: #ddd;
+  font-size: 1rem;
+}
+
+.psp-resources {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+}
+
+.psp-resources h3 {
+  margin: 0 0 1rem 0;
+  color: #646cff;
+}
+
+.psp-resources ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.psp-resources li {
+  margin: 0.75rem 0;
+}
+
+.psp-resources a {
+  color: #61dafb;
+  text-decoration: none;
+}
+
+.psp-resources a:hover {
+  text-decoration: underline;
+}
+
+.completion-info {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+}
+
+.completion-info p {
+  margin: 0.5rem 0;
+  color: #ddd;
+}

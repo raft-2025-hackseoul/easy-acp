@@ -1,0 +1,191 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dashboard-header h1 {
+  font-size: 3rem;
+  margin: 0;
+  background: linear-gradient(135deg, #646cff 0%, #61dafb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dashboard-tagline {
+  font-size: 1.2rem;
+  color: #aaa;
+  margin: 0.5rem 0 0 0;
+}
+
+.dashboard-progress {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+}
+
+.dashboard-progress h3 {
+  margin: 0 0 1rem 0;
+  color: #646cff;
+  text-align: center;
+}
+
+.progress-bar {
+  height: 30px;
+  background-color: #242424;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #646cff 0%, #61dafb 100%);
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  color: white;
+  font-weight: bold;
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.progress-percentage {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #646cff;
+}
+
+.tool-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.tool-card {
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+  transition: all 0.3s ease;
+}
+
+.tool-card:hover {
+  border-color: #646cff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(100, 108, 255, 0.2);
+}
+
+.tool-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.tool-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+}
+
+.tool-card p {
+  color: #aaa;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.tool-status {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.not-started {
+  background-color: rgba(128, 128, 128, 0.2);
+  color: #888;
+}
+
+.status-badge.in-progress {
+  background-color: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+}
+
+.status-badge.completed {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.status-badge.verified {
+  background-color: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+}
+
+.dashboard-footer {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.help-section {
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+}
+
+.help-section h4 {
+  margin: 0 0 0.5rem 0;
+  color: #646cff;
+}
+
+.help-section p {
+  margin: 0;
+  color: #aaa;
+}
+
+.help-section a {
+  color: #61dafb;
+  text-decoration: none;
+}
+
+.help-section a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .tool-cards {
+    grid-template-columns: 1fr;
+  }
+}

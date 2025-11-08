@@ -1,0 +1,183 @@
+.workflow-roadmap {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a3a 100%);
+  border-radius: 16px;
+  border: 2px solid #333;
+}
+
+.workflow-roadmap h2 {
+  margin: 0 0 0.5rem 0;
+  color: #646cff;
+  text-align: center;
+}
+
+.roadmap-subtitle {
+  text-align: center;
+  color: #aaa;
+  margin: 0 0 2rem 0;
+}
+
+.roadmap-steps {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.roadmap-step-wrapper {
+  margin-bottom: 1rem;
+}
+
+.roadmap-step {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 2px solid #333;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.roadmap-step:hover {
+  border-color: #646cff;
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(100, 108, 255, 0.2);
+}
+
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #666;
+}
+
+.step-indicator.in-progress .step-number {
+  border-color: #ff9800;
+  color: #ff9800;
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.step-indicator.completed .step-number {
+  border-color: #4caf50;
+  color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.step-status-icon {
+  font-size: 1.2rem;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.step-content p {
+  margin: 0 0 0.75rem 0;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+.step-assignment,
+.step-completion {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.assignment-label,
+.completion-label {
+  color: #888;
+  margin-right: 0.5rem;
+}
+
+.assignment-user,
+.completion-user {
+  color: #61dafb;
+  font-weight: 500;
+}
+
+.completion-time {
+  color: #888;
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.step-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+
+.step-badge.not-started {
+  background-color: rgba(128, 128, 128, 0.2);
+  color: #888;
+}
+
+.step-badge.in-progress {
+  background-color: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+}
+
+.step-badge.completed {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.step-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.connector-line {
+  width: 3px;
+  height: 20px;
+  background: linear-gradient(180deg, #333 0%, #646cff 100%);
+}
+
+.connector-arrow {
+  color: #646cff;
+  font-size: 1.5rem;
+  margin-top: -8px;
+}
+
+@media (max-width: 768px) {
+  .roadmap-step {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .step-indicator {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .step-badge {
+    align-self: center;
+  }
+}
