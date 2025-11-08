@@ -84,6 +84,7 @@ GET /api/product-feed/llm/status
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -113,6 +114,7 @@ Content-Type: application/json
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -157,6 +159,7 @@ file: <CSV file>
 ```
 
 Response includes both traditional and LLM validation results:
+
 ```json
 {
   "success": true,
@@ -202,7 +205,9 @@ console.log(status.available); // true or false
 
 // Validate products with LLM
 const result = await validateProductsWithLLM(products);
-console.log(`Average score: ${result.results.reduce((sum, r) => sum + r.validation.overallScore, 0) / result.results.length}`);
+console.log(
+  `Average score: ${result.results.reduce((sum, r) => sum + r.validation.overallScore, 0) / result.results.length}`
+);
 
 // Upload CSV with LLM validation
 const uploadResult = await uploadCSVWithLLM(file);
@@ -217,11 +222,11 @@ if (uploadResult.data.validation.hasLLMValidation) {
 
 ```typescript
 interface LLMValidationResult {
-  isValid: boolean;           // True if no errors (warnings OK)
-  overallScore: number;        // 0-100 quality score
+  isValid: boolean; // True if no errors (warnings OK)
+  overallScore: number; // 0-100 quality score
   issues: LLMValidationIssue[]; // List of validation issues
-  suggestions: string[];       // Overall improvement suggestions
-  summary: string;             // Brief validation summary
+  suggestions: string[]; // Overall improvement suggestions
+  summary: string; // Brief validation summary
 }
 ```
 
@@ -229,16 +234,17 @@ interface LLMValidationResult {
 
 ```typescript
 interface LLMValidationIssue {
-  field?: string;              // Field name (if applicable)
+  field?: string; // Field name (if applicable)
   severity: 'error' | 'warning' | 'info';
-  message: string;             // Clear issue description
-  suggestion?: string;         // How to fix (if available)
+  message: string; // Clear issue description
+  suggestion?: string; // How to fix (if available)
 }
 ```
 
 ## Benefits Over Traditional Validation
 
 ### Traditional Validation
+
 - Rule-based checking
 - Fixed validation logic
 - Binary pass/fail
@@ -246,6 +252,7 @@ interface LLMValidationIssue {
 - No quality scoring
 
 ### LLM Validation
+
 - Context-aware validation
 - Understands business rules and intent
 - Quality scoring (0-100)
@@ -257,17 +264,20 @@ interface LLMValidationIssue {
 ## Performance & Cost
 
 ### Batch Processing
+
 - Default concurrency: 5 products at a time
 - Configurable via `maxConcurrent` parameter
 - Prevents API rate limiting
 
 ### Cost Optimization
+
 - Uses efficient models (Claude 3.5 Sonnet recommended)
 - Batch validation reduces overhead
 - Only validates when explicitly requested
 - Falls back to traditional validation if unavailable
 
 ### Typical Response Times
+
 - Single product: 2-5 seconds
 - 10 products (batch): 10-20 seconds
 - 100 products (batch): 60-120 seconds
@@ -284,13 +294,17 @@ The LLM validator gracefully handles errors:
 ## Best Practices
 
 ### 1. Use Combined Validation
+
 Get both traditional and LLM validation for comprehensive results:
+
 ```typescript
 const result = await validateProductsCombined(products);
 ```
 
 ### 2. Check Availability First
+
 Always check if LLM validation is available:
+
 ```typescript
 if (await checkLLMValidationStatus().available) {
   // Use LLM validation
@@ -300,17 +314,19 @@ if (await checkLLMValidationStatus().available) {
 ```
 
 ### 3. Monitor Quality Scores
+
 Track average quality scores to monitor feed improvements:
+
 ```typescript
-const avgScore = results.reduce((sum, r) =>
-  sum + r.validation.overallScore, 0
-) / results.length;
+const avgScore = results.reduce((sum, r) => sum + r.validation.overallScore, 0) / results.length;
 ```
 
 ### 4. Act on Suggestions
+
 LLM provides actionable suggestions - use them:
+
 ```typescript
-result.suggestions.forEach(suggestion => {
+result.suggestions.forEach((suggestion) => {
   console.log('Improvement:', suggestion);
 });
 ```
@@ -322,6 +338,7 @@ result.suggestions.forEach(suggestion => {
 **Problem**: `isLLMValidationAvailable()` returns `false`
 
 **Solutions**:
+
 1. Check `OPENROUTER_API_KEY` is set in `.env`
 2. Verify API key is valid at https://openrouter.ai/keys
 3. Check `acp-product-feed-spec.md` exists
@@ -332,6 +349,7 @@ result.suggestions.forEach(suggestion => {
 **Problem**: LLM validation returns errors
 
 **Solutions**:
+
 1. Check API key has sufficient credits
 2. Verify model name is correct
 3. Check network connectivity
@@ -342,6 +360,7 @@ result.suggestions.forEach(suggestion => {
 **Problem**: Validation takes too long
 
 **Solutions**:
+
 1. Reduce `maxConcurrent` parameter
 2. Switch to faster model (e.g., `gpt-4o-mini`)
 3. Validate in smaller batches
