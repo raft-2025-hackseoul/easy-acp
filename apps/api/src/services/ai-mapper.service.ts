@@ -27,33 +27,90 @@ export async function suggestFieldMapping(
       required: f.required,
     }));
 
-    const prompt = `You are a data mapping assistant. Map CSV column headers to ACP (Agentic Commerce Protocol) product feed fields.
+    const prompt = `You are an expert data mapping assistant specializing in the OpenAI Agent Commerce Protocol (ACP). Map CSV column headers to ACP product feed fields according to the official specification.
 
-CSV Headers: ${csvHeaders.join(', ')}
+## OpenAI ACP Overview
+The Agent Commerce Protocol (ACP) is OpenAI's product feed specification for ChatGPT commerce integration. Products must be registered at chatgpt.com/merchants. The feed supports CSV, TSV, XML, or JSON formats with updates every 15 minutes.
 
-${sampleData ? `Sample Data (first 3 rows):
-${JSON.stringify(sampleData.slice(0, 3), null, 2)}` : ''}
+## CSV Headers to Map
+${csvHeaders.join(', ')}
 
-ACP Fields:
+${
+  sampleData
+    ? `## Sample Data (first 3 rows)
+${JSON.stringify(sampleData.slice(0, 3), null, 2)}`
+    : ''
+}
+
+## Available ACP Fields
 ${JSON.stringify(acpFieldNames, null, 2)}
 
-For each CSV header, suggest the best matching ACP field. Return a JSON array with this structure:
+## Key ACP Field Requirements (from official spec)
+**Core Required Fields:**
+- id (max 100 chars) - Unique product identifier
+- title (max 150 chars) - Product name
+- description (max 5,000 chars, plain text only)
+- link - Product detail page URL (must resolve HTTP 200)
+- price - Format: "amount currency_code" (e.g., "99.99 USD")
+- availability - Values: in_stock, out_of_stock, preorder
+- enable_search - Boolean for ChatGPT search visibility
+- enable_checkout - Boolean for direct purchase (requires enable_search=true)
+- inventory_quantity - Non-negative integer
+- product_category - Taxonomy using ">" separator (e.g., "Electronics > Audio > Headphones")
+- material (max 100 chars) - Primary material composition
+- weight - With unit (e.g., "0.25 kg")
+- image_link - Main product image URL (JPEG/PNG)
+- seller_name (max 70 chars) - Merchant display name
+- seller_url - Merchant website URL
+- return_policy - Return policy URL
+- return_window - Days allowed for returns
+
+**Recommended Fields (for better ranking):**
+- gtin (8-14 digits) or mpn (max 70 chars) - At least one recommended
+- brand (max 70 chars) - Required except for movies, books, music
+- condition - Values: new, refurbished, used
+- popularity_score (0-5) - For ranking
+- return_rate (0-100%) - Quality signal
+- product_review_count, product_review_rating (0-5)
+- seller_privacy_policy, seller_tos - Required if checkout enabled
+
+## Mapping Instructions
+For each CSV header, identify the best matching ACP field by:
+1. Analyzing field names and their semantic meaning
+2. Examining sample data values and formats
+3. Considering ACP field requirements and constraints
+4. Matching data types (string, number, boolean, enum)
+5. Recognizing common field naming patterns:
+   - Product identifiers: sku, product_id, item_id → id
+   - Prices: cost, product_price, amount → price
+   - Stock: quantity, qty, stock, in_stock → inventory_quantity, availability
+   - Images: image, img, photo, picture → image_link
+   - Categories: category, cat, type, product_category → product_category
+   - Merchant info: seller, merchant, store → seller_name, seller_url
+
+## Response Format
+Return a JSON array with this exact structure:
 [
   {
     "sourceField": "csv_column_name",
     "targetField": "acp_field_name",
     "confidence": 0.95,
-    "reasoning": "brief explanation"
+    "reasoning": "Brief explanation of why this mapping makes sense"
   }
 ]
 
-Rules:
-1. Only suggest mappings where you're confident (confidence > 0.5)
-2. Each CSV field should map to at most one ACP field
-3. Consider field names, descriptions, and sample data
-4. If unsure, don't include the mapping
+## Mapping Rules
+1. Only suggest mappings with confidence > 0.5
+2. Each CSV field maps to at most ONE ACP field
+3. Consider both field names AND sample data values
+4. Prioritize required ACP fields over optional ones
+5. Match data types: numbers to numbers, booleans to booleans, etc.
+6. For price fields, look for currency codes in data
+7. For enum fields (availability, condition, gender), verify sample values match allowed values
+8. If multiple CSV fields could map to the same ACP field, choose the best match
+9. If uncertain, omit the mapping rather than guessing
 
-Return only valid JSON, no markdown formatting.`;
+Return ONLY valid JSON, no markdown formatting or explanations outside the JSON structure.`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -73,9 +130,7 @@ Return only valid JSON, no markdown formatting.`;
     const parsedResponse = JSON.parse(responseText);
 
     // Handle both direct array and wrapped array responses
-    const mappings = Array.isArray(parsedResponse)
-      ? parsedResponse
-      : parsedResponse.mappings || [];
+    const mappings = Array.isArray(parsedResponse) ? parsedResponse : parsedResponse.mappings || [];
 
     return mappings.filter((m: FieldMappingSuggestion) => m.confidence > 0.5);
   } catch (error) {
@@ -112,30 +167,74 @@ function basicFieldMapping(csvHeaders: string[]): FieldMappingSuggestion[] {
     const variations: Record<string, keyof ACPProduct> = {
       product_id: 'id',
       sku: 'id',
+      item_id: 'id',
       product_name: 'title',
       name: 'title',
       product_title: 'title',
       desc: 'description',
       product_description: 'description',
+      details: 'description',
       cost: 'price',
       product_price: 'price',
       amount: 'price',
+      retail_price: 'price',
       stock: 'inventory_quantity',
       quantity: 'inventory_quantity',
       qty: 'inventory_quantity',
+      stock_qty: 'inventory_quantity',
       in_stock: 'availability',
       stock_status: 'availability',
+      available: 'availability',
       image: 'image_link',
       img: 'image_link',
       photo: 'image_link',
       picture: 'image_link',
+      main_image: 'image_link',
       url: 'link',
       product_url: 'link',
+      product_link: 'link',
+      web_url: 'link',
       manufacturer: 'brand',
       make: 'brand',
+      brand_name: 'brand',
       type: 'product_type',
-      cat: 'category',
-      product_category: 'category',
+      cat: 'product_category',
+      category: 'product_category',
+      product_cat: 'product_category',
+      categories: 'product_category',
+      seller: 'seller_name',
+      merchant: 'seller_name',
+      store: 'seller_name',
+      vendor: 'seller_name',
+      seller_website: 'seller_url',
+      merchant_url: 'seller_url',
+      store_url: 'seller_url',
+      returns: 'return_policy',
+      return_policy_url: 'return_policy',
+      returns_url: 'return_policy',
+      return_days: 'return_window',
+      return_period: 'return_window',
+      returns_window: 'return_window',
+      product_weight: 'weight',
+      item_weight: 'weight',
+      shipping_weight: 'weight',
+      materials: 'material',
+      composition: 'material',
+      made_of: 'material',
+      upc: 'gtin',
+      ean: 'gtin',
+      isbn: 'gtin',
+      barcode: 'gtin',
+      part_number: 'mpn',
+      mfr_part_number: 'mpn',
+      model_number: 'mpn',
+      rating: 'product_review_rating',
+      review_rating: 'product_review_rating',
+      avg_rating: 'product_review_rating',
+      review_count: 'product_review_count',
+      num_reviews: 'product_review_count',
+      reviews: 'raw_review_data',
+      customer_reviews: 'raw_review_data',
     };
 
     const matchedField = variations[normalizedHeader];

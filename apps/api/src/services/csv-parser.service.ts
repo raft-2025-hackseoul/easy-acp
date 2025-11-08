@@ -44,7 +44,11 @@ export function parseCSV(fileContent: string): ParsedCSVResult {
             product[key] = value.toLowerCase() === 'true' || value === '1';
           }
           // Handle numeric fields
-          else if (key === 'inventory_quantity' || key === 'popularity_score' || key === 'return_rate') {
+          else if (
+            key === 'inventory_quantity' ||
+            key === 'popularity_score' ||
+            key === 'return_rate'
+          ) {
             const num = parseFloat(value);
             if (!isNaN(num)) {
               product[key] = num;

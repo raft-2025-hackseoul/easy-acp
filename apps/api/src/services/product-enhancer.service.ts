@@ -144,7 +144,9 @@ Return only valid JSON in the specified format.`,
       return this.parseEnhancementResult(result, product);
     } catch (error) {
       console.error('Product enhancement error:', error);
-      throw new Error(`Product enhancement failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Product enhancement failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -188,7 +190,9 @@ Return only valid JSON in the specified format.`,
       return this.parseIssueResolutionResult(result, product);
     } catch (error) {
       console.error('Issue resolution error:', error);
-      throw new Error(`Issue resolution failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Issue resolution failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -264,7 +268,10 @@ ${JSON.stringify(product, null, 2)}
   /**
    * Build issue resolution prompt
    */
-  private buildIssueResolutionPrompt(product: PartialACPProduct, issue: LLMValidationIssue): string {
+  private buildIssueResolutionPrompt(
+    product: PartialACPProduct,
+    issue: LLMValidationIssue
+  ): string {
     return `# Task: Resolve Specific Product Validation Issue
 
 ## ACP Product Feed Specification
@@ -328,7 +335,10 @@ ${issue.suggestion ? `**Suggested Fix**: ${issue.suggestion}` : ''}
   /**
    * Parse enhancement result
    */
-  private parseEnhancementResult(result: any, originalProduct: PartialACPProduct): ProductEnhancementResult {
+  private parseEnhancementResult(
+    result: any,
+    originalProduct: PartialACPProduct
+  ): ProductEnhancementResult {
     return {
       enhancedProduct: result.enhancedProduct || originalProduct,
       changes: (result.changes || []).map((change: any) => ({
@@ -345,7 +355,10 @@ ${issue.suggestion ? `**Suggested Fix**: ${issue.suggestion}` : ''}
   /**
    * Parse issue resolution result
    */
-  private parseIssueResolutionResult(result: any, originalProduct: PartialACPProduct): IssueResolutionResult {
+  private parseIssueResolutionResult(
+    result: any,
+    originalProduct: PartialACPProduct
+  ): IssueResolutionResult {
     return {
       suggestedFix: {
         field: result.suggestedFix?.field || 'unknown',

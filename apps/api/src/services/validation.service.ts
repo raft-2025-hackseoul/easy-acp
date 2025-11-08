@@ -97,7 +97,9 @@ export async function validateProductsCombined(
       const llmSampleSize = Math.min(options?.llmSampleSize || 5, 10);
       const productsToValidate = products.slice(0, llmSampleSize);
 
-      console.log(`🤖 LLM validating ${productsToValidate.length} of ${products.length} products...`);
+      console.log(
+        `🤖 LLM validating ${productsToValidate.length} of ${products.length} products...`
+      );
       const startTime = Date.now();
 
       llmValidation = await llmValidator.validateProducts(productsToValidate, {
@@ -111,7 +113,10 @@ export async function validateProductsCombined(
         llmValidation.overallSummary += ` (Sample of ${productsToValidate.length}/${products.length} products)`;
       }
     } catch (error) {
-      console.error('❌ LLM validation failed, continuing with traditional validation only:', error);
+      console.error(
+        '❌ LLM validation failed, continuing with traditional validation only:',
+        error
+      );
     }
   }
 

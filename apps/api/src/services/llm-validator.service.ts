@@ -73,10 +73,10 @@ class LLMValidatorService {
     try {
       // Try multiple possible paths (handles both dev and production)
       const possiblePaths = [
-        join(__dirname, '../specs/acp-product-feed-spec.md'),  // Built version (dist/)
-        join(__dirname, '../../src/specs/acp-product-feed-spec.md'),  // From dist/ to src/
-        join(process.cwd(), 'src/specs/acp-product-feed-spec.md'),  // From project root
-        join(process.cwd(), 'apps/api/src/specs/acp-product-feed-spec.md'),  // Monorepo root
+        join(__dirname, '../specs/acp-product-feed-spec.md'), // Built version (dist/)
+        join(__dirname, '../../src/specs/acp-product-feed-spec.md'), // From dist/ to src/
+        join(process.cwd(), 'src/specs/acp-product-feed-spec.md'), // From project root
+        join(process.cwd(), 'apps/api/src/specs/acp-product-feed-spec.md'), // Monorepo root
       ];
 
       for (const specPath of possiblePaths) {
@@ -140,7 +140,9 @@ Return only valid JSON in the specified format.`,
       return this.parseValidationResult(result);
     } catch (error) {
       console.error('LLM validation error:', error);
-      throw new Error(`LLM validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `LLM validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
