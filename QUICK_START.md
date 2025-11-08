@@ -19,11 +19,13 @@ npm run dev
 ```
 
 **What this does:**
+
 - Starts the React frontend at http://localhost:3000
 - Starts the Express backend at http://localhost:3001
 - Both apps auto-reload when you save files
 
 **You should see:**
+
 ```
 @repo/web:dev: VITE ready in XXX ms
 @repo/web:dev: ➜ Local: http://localhost:3000
@@ -43,14 +45,17 @@ You're now running a full-stack TypeScript application.
 ## Next Steps
 
 ### Edit the Frontend
+
 Open `apps/web/src/App.tsx` and make changes. The page will automatically reload.
 
 ### Edit the Backend
+
 Open `apps/api/src/index.ts` and add a new endpoint. The server will automatically restart.
 
 ### Example: Add a New API Endpoint
 
 1. Edit `apps/api/src/index.ts`:
+
 ```typescript
 app.get('/api/greeting', (_req: Request, res: Response) => {
   res.json({ message: 'Hello from your new endpoint!' });
@@ -64,6 +69,7 @@ app.get('/api/greeting', (_req: Request, res: Response) => {
 ### Example: Call the New Endpoint from Frontend
 
 1. Edit `apps/web/src/App.tsx`:
+
 ```typescript
 const [greeting, setGreeting] = useState('');
 
@@ -81,24 +87,27 @@ useEffect(() => {
 
 ## Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development (frontend + backend) |
-| `npm run build` | Build for production |
-| `npm run lint` | Check code quality |
-| `npm run format` | Auto-format code |
+| Command          | Description                            |
+| ---------------- | -------------------------------------- |
+| `npm run dev`    | Start development (frontend + backend) |
+| `npm run build`  | Build for production                   |
+| `npm run lint`   | Check code quality                     |
+| `npm run format` | Auto-format code                       |
 
 ## Troubleshooting
 
 **Port 3000 or 3001 already in use?**
+
 - Kill the process using that port, or
 - Change the port in the config files (see README.md)
 
 **Dependencies not installing?**
+
 - Make sure you have Node.js >= 18.0.0
 - Try `npm cache clean --force` then `npm install` again
 
 **Need more help?**
+
 - Check the main [README.md](./README.md)
 - Read the [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md) for advanced topics
 

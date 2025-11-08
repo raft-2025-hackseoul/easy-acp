@@ -20,10 +20,10 @@ Updated `llm-validator.service.ts` to try multiple possible paths:
 
 ```typescript
 const possiblePaths = [
-  join(__dirname, '../specs/acp-product-feed-spec.md'),  // Built version
-  join(__dirname, '../../src/specs/acp-product-feed-spec.md'),  // From dist/ to src/
-  join(process.cwd(), 'src/specs/acp-product-feed-spec.md'),  // From project root
-  join(process.cwd(), 'apps/api/src/specs/acp-product-feed-spec.md'),  // Monorepo root
+  join(__dirname, '../specs/acp-product-feed-spec.md'), // Built version
+  join(__dirname, '../../src/specs/acp-product-feed-spec.md'), // From dist/ to src/
+  join(process.cwd(), 'src/specs/acp-product-feed-spec.md'), // From project root
+  join(process.cwd(), 'apps/api/src/specs/acp-product-feed-spec.md'), // Monorepo root
 ];
 ```
 
@@ -39,6 +39,7 @@ node test-llm-validation.js
 ```
 
 Expected output:
+
 ```
 ✅ Loaded ACP spec from: /path/to/src/specs/acp-product-feed-spec.md
 LLM validation available: ✅ Yes
@@ -58,6 +59,7 @@ nano .env
 ```
 
 Add to `.env`:
+
 ```bash
 OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxx
 OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
@@ -71,6 +73,7 @@ npm run dev
 ```
 
 You should see:
+
 ```
 ✅ Loaded ACP spec from: /Users/pravda/development/personal/easy-acp/apps/api/src/specs/acp-product-feed-spec.md
 🚀 API server running on http://localhost:3001
@@ -185,6 +188,7 @@ When you validate a product, you'll get:
 If it's still not working:
 
 1. **Check the diagnostic output:**
+
    ```bash
    node test-llm-validation.js
    ```

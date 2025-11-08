@@ -36,14 +36,12 @@ The monorepo uses npm workspaces defined in the root `package.json`:
 
 ```json
 {
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "workspaces": ["apps/*", "packages/*"]
 }
 ```
 
 This allows:
+
 - Shared node_modules at the root
 - Cross-package dependencies using `"@repo/*"`
 - Single `npm install` for everything
@@ -69,6 +67,7 @@ Each app extends the appropriate shared config:
 ```
 
 Benefits:
+
 - Consistent settings across all apps
 - Single source of truth for TS configs
 - Easy updates (change once, apply everywhere)
@@ -78,17 +77,20 @@ Benefits:
 ### Frontend (apps/web)
 
 **Tech Stack:**
+
 - React 18 with TypeScript
 - Vite for build tooling and dev server
 - ESLint for code quality
 
 **Key Files:**
+
 - `vite.config.ts`: Vite configuration with dev server and proxy
 - `tsconfig.json`: TypeScript configuration
 - `src/main.tsx`: Application entry point
 - `src/App.tsx`: Root component
 
 **Dev Server Features:**
+
 - Hot Module Replacement (HMR)
 - API proxy to backend (`/api` → `http://localhost:3001`)
 - Fast refresh for React components
@@ -96,16 +98,19 @@ Benefits:
 ### Backend (apps/api)
 
 **Tech Stack:**
+
 - Express.js with TypeScript
 - tsx for development (TypeScript execution)
 - CORS enabled for cross-origin requests
 
 **Key Files:**
+
 - `src/index.ts`: Express server setup and routes
 - `tsconfig.json`: TypeScript configuration
 - Builds to CommonJS for Node.js compatibility
 
 **Dev Features:**
+
 - Auto-restart on file changes (tsx watch)
 - TypeScript type checking
 - Source maps for debugging
@@ -123,6 +128,7 @@ When you run `npm run dev`:
 ## Caching Strategy
 
 TurboRepo caches task outputs based on:
+
 - Input files (source code)
 - Dependencies
 - Environment variables
@@ -131,6 +137,7 @@ TurboRepo caches task outputs based on:
 **Cache Location:** `.turbo/cache/`
 
 **Cache Behavior:**
+
 - `build`: Cached (reused if inputs unchanged)
 - `lint`: Cached
 - `dev`: Not cached (always fresh)
@@ -141,11 +148,13 @@ TurboRepo caches task outputs based on:
 ### Create a New Shared Package
 
 1. Create directory in `packages/`:
+
 ```bash
 mkdir packages/my-package
 ```
 
 2. Add `package.json`:
+
 ```json
 {
   "name": "@repo/my-package",
@@ -161,6 +170,7 @@ mkdir packages/my-package
 ```
 
 3. Add to consuming app:
+
 ```json
 {
   "dependencies": {
@@ -172,11 +182,13 @@ mkdir packages/my-package
 ### Create a New App
 
 1. Create directory in `apps/`:
+
 ```bash
 mkdir apps/my-app
 ```
 
 2. Add `package.json` with required scripts:
+
 ```json
 {
   "name": "@repo/my-app",
@@ -195,6 +207,7 @@ mkdir apps/my-app
 ### TypeScript Errors
 
 Check which config is being used:
+
 ```bash
 cd apps/web
 npx tsc --showConfig
@@ -203,6 +216,7 @@ npx tsc --showConfig
 ### Build Issues
 
 See what TurboRepo is doing:
+
 ```bash
 npm run build -- --verbose
 ```
@@ -210,6 +224,7 @@ npm run build -- --verbose
 ### Cache Issues
 
 Clear the cache:
+
 ```bash
 rm -rf .turbo
 npm run build
@@ -218,16 +233,19 @@ npm run build
 ## Performance Tips
 
 1. **Use TurboRepo filters** to run tasks for specific packages:
+
 ```bash
 npx turbo run build --filter=@repo/web
 ```
 
 2. **Parallel execution** is automatic, but you can control it:
+
 ```bash
 npx turbo run build --concurrency=2
 ```
 
 3. **Remote caching** can be enabled for teams:
+
 ```json
 {
   "remoteCache": {
@@ -254,6 +272,7 @@ npx turbo run build --concurrency=2
 ### Scripts Naming
 
 Follow these conventions for TurboRepo:
+
 - `dev`: Development mode with watch
 - `build`: Production build
 - `lint`: Code quality checks
@@ -290,6 +309,7 @@ export interface HealthResponse {
 ```
 
 Use in both frontend and backend:
+
 ```typescript
 import { HealthResponse } from '@repo/types';
 ```
@@ -297,6 +317,7 @@ import { HealthResponse } from '@repo/types';
 ### Shared UI Components
 
 Create `packages/ui/` for React components:
+
 ```typescript
 // packages/ui/src/Button.tsx
 export const Button = ({ children }: Props) => (
@@ -307,6 +328,7 @@ export const Button = ({ children }: Props) => (
 ### Shared Utilities
 
 Create `packages/utils/` for helper functions:
+
 ```typescript
 // packages/utils/src/format.ts
 export const formatDate = (date: Date) => {

@@ -1,9 +1,11 @@
 # CSV Upload LLM Validation Fix
 
 ## Issue
+
 When uploading a CSV file, the LLM validation would timeout or not respond because it was trying to validate **all products** in the file, which could take several minutes for large files.
 
 ## Root Cause
+
 The `/api/product-feed/upload-with-llm` endpoint was calling `validateProductsCombined()` which would validate every single product with the LLM API:
 
 - 15 products × 3-5 seconds each = 45-75 seconds
@@ -12,6 +14,7 @@ The `/api/product-feed/upload-with-llm` endpoint was calling `validateProductsCo
 - Poor user experience
 
 ## Solution
+
 Modified the validation to use **sample-based LLM validation** by default:
 
 1. **Default behavior**: Validates only the first **5 products** with LLM
@@ -48,6 +51,7 @@ curl -X POST http://localhost:3001/api/product-feed/upload-with-llm \
 ```
 
 Response includes:
+
 ```json
 {
   "success": true,
@@ -71,12 +75,14 @@ Response includes:
 ### Custom Sample Size
 
 Validate first 10 products with LLM:
+
 ```bash
 curl -X POST "http://localhost:3001/api/product-feed/upload-with-llm?llmSampleSize=10" \
   -F "file=@products.csv"
 ```
 
 Validate all products (use with caution!):
+
 ```bash
 curl -X POST "http://localhost:3001/api/product-feed/upload-with-llm?llmSampleSize=50" \
   -F "file=@products.csv"
@@ -127,8 +133,8 @@ You can customize the default behavior by editing `product-feed.routes.ts`:
 
 ```typescript
 const validation = await validateProductsCombined(mappedProducts, {
-  llmSampleSize: 10,    // Default sample size
-  maxConcurrent: 5,     // Concurrent API requests
+  llmSampleSize: 10, // Default sample size
+  maxConcurrent: 5, // Concurrent API requests
 });
 ```
 
@@ -136,22 +142,24 @@ const validation = await validateProductsCombined(mappedProducts, {
 
 Assuming each LLM validation costs ~$0.01:
 
-| Products | Sample (5) | Sample (10) | All |
-|----------|-----------|-------------|-----|
-| 15       | $0.05     | $0.10       | $0.15 |
-| 50       | $0.05     | $0.10       | $0.50 |
-| 100      | $0.05     | $0.10       | $1.00 |
+| Products | Sample (5) | Sample (10) | All   |
+| -------- | ---------- | ----------- | ----- |
+| 15       | $0.05      | $0.10       | $0.15 |
+| 50       | $0.05      | $0.10       | $0.50 |
+| 100      | $0.05      | $0.10       | $1.00 |
 
 ## Troubleshooting
 
 ### Issue: LLM validation not included in response
 
 **Check**:
+
 ```bash
 curl http://localhost:3001/api/product-feed/llm/status
 ```
 
 If not available:
+
 - Verify `OPENROUTER_API_KEY` in `.env`
 - Restart the server
 - Check server console for errors
@@ -159,6 +167,7 @@ If not available:
 ### Issue: Timeout on large files
 
 **Solutions**:
+
 - Use default sample size (5)
 - Process in smaller batches
 - Use traditional validation for quick checks
@@ -167,6 +176,7 @@ If not available:
 ### Issue: Want to validate more products
 
 **Options**:
+
 1. Increase sample size: `?llmSampleSize=20`
 2. Process in batches using `/llm/validate` endpoint
 3. Implement background job processing
@@ -181,6 +191,7 @@ node debug-upload.js
 ```
 
 Expected output:
+
 ```
 ✅ Upload completed in 18.5s
 - Has LLM validation: true

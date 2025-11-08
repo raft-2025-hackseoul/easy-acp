@@ -61,6 +61,7 @@ sudo bash setup-ec2.sh
 ```
 
 This script will:
+
 - Update system packages
 - Install Docker and Docker Compose
 - Install Nginx
@@ -148,6 +149,7 @@ sudo bash setup-ssl.sh
 ```
 
 This script will:
+
 - Install Certbot
 - Verify DNS configuration
 - Create temporary Nginx config
@@ -227,6 +229,7 @@ cd /path/to/easy-acp
 ```
 
 The deployment script will:
+
 1. Test SSH connection
 2. Clone or update repository
 3. Build Docker images

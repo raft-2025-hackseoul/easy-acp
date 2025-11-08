@@ -40,16 +40,16 @@ Nginx (SSL termination, reverse proxy)
 
 ### Deployment Files
 
-| File | Purpose |
-|------|---------|
-| `docker-compose.yml` | Main container orchestration |
-| `docker-compose.prod.yml` | Production resource limits and logging |
-| `nginx/acp.wrkth.in.conf` | Nginx configuration for SSL and proxy |
-| `.env.production` | Template for environment variables |
-| `setup-ec2.sh` | One-time EC2 instance setup |
-| `setup-ssl.sh` | SSL certificate setup with Let's Encrypt |
-| `deploy-ec2.sh` | Deployment script (run from local machine) |
-| `EC2_DEPLOYMENT.md` | Complete deployment documentation |
+| File                      | Purpose                                    |
+| ------------------------- | ------------------------------------------ |
+| `docker-compose.yml`      | Main container orchestration               |
+| `docker-compose.prod.yml` | Production resource limits and logging     |
+| `nginx/acp.wrkth.in.conf` | Nginx configuration for SSL and proxy      |
+| `.env.production`         | Template for environment variables         |
+| `setup-ec2.sh`            | One-time EC2 instance setup                |
+| `setup-ssl.sh`            | SSL certificate setup with Let's Encrypt   |
+| `deploy-ec2.sh`           | Deployment script (run from local machine) |
+| `EC2_DEPLOYMENT.md`       | Complete deployment documentation          |
 
 ### Environment Variables
 
@@ -114,6 +114,7 @@ docker-compose down
 ### Other Cloud Providers
 
 The Docker Compose setup can be deployed to:
+
 - **DigitalOcean Droplets**
 - **Google Cloud Compute Engine**
 - **Azure Virtual Machines**

@@ -28,6 +28,7 @@ npm run dev
 ```
 
 Starts both frontend and backend in development mode with hot reload:
+
 - Frontend: http://localhost:3000
 - Backend: http://localhost:3001
 
@@ -91,6 +92,7 @@ This monorepo includes:
 ## Monorepo Architecture
 
 This project uses TurboRepo for:
+
 - **Parallel execution**: Tasks run simultaneously when possible
 - **Smart caching**: Builds are cached and reused
 - **Dependency graph**: Tasks run in the correct order
@@ -103,6 +105,7 @@ You don't need to understand these details - just run the commands above!
 ### Frontend Development
 
 Edit files in `apps/web/src/`:
+
 - `App.tsx`: Main application component
 - `main.tsx`: Application entry point
 - Add new components, pages, or styles as needed
@@ -112,6 +115,7 @@ The dev server will automatically reload on save.
 ### Backend Development
 
 Edit files in `apps/api/src/`:
+
 - `index.ts`: Main server file with routes
 - Add new routes, middleware, or services as needed
 
@@ -122,11 +126,12 @@ The server will automatically restart on save.
 The frontend is pre-configured to proxy `/api/*` requests to the backend.
 
 Example:
+
 ```typescript
 // In your React component
 fetch('/api/health')
-  .then(res => res.json())
-  .then(data => console.log(data));
+  .then((res) => res.json())
+  .then((data) => console.log(data));
 ```
 
 ## Project Structure
@@ -153,12 +158,14 @@ easy-acp-monorepo/
 If you need to work on just one app:
 
 ### Frontend Only
+
 ```bash
 cd apps/web
 npm run dev
 ```
 
 ### Backend Only
+
 ```bash
 cd apps/api
 npm run dev
@@ -169,11 +176,13 @@ However, using `npm run dev` from the root is recommended as it runs both togeth
 ## Environment Variables
 
 ### Frontend (`apps/web/.env`)
+
 ```env
 VITE_API_URL=http://localhost:3001
 ```
 
 ### Backend (`apps/api/.env`)
+
 ```env
 PORT=3001
 NODE_ENV=development
@@ -182,6 +191,7 @@ NODE_ENV=development
 ## Deployment
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
@@ -189,12 +199,14 @@ npm run build
 ### Run Production Build
 
 **Frontend:**
+
 ```bash
 cd apps/web
 npm run preview
 ```
 
 **Backend:**
+
 ```bash
 cd apps/api
 npm run start
@@ -205,12 +217,14 @@ npm run start
 ### Port Already in Use
 
 If ports 3000 or 3001 are in use:
+
 1. Stop the process using that port
 2. Or change the port in `apps/web/vite.config.ts` (frontend) or `apps/api/src/index.ts` (backend)
 
 ### Build Errors
 
 Try cleaning and reinstalling:
+
 ```bash
 npm run clean
 npm install
@@ -220,6 +234,7 @@ npm run build
 ### TypeScript Errors
 
 Make sure all dependencies are installed:
+
 ```bash
 npm install
 ```
