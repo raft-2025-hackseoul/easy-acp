@@ -39,10 +39,13 @@ function createPreview(payload: any) {
   }
 
   if (payload && typeof payload === 'object') {
-    return Object.keys(payload).reduce((acc, key) => {
-      acc[key] = Array.isArray(payload[key]) ? payload[key].length : payload[key];
-      return acc;
-    }, {} as Record<string, any>);
+    return Object.keys(payload).reduce(
+      (acc, key) => {
+        acc[key] = Array.isArray(payload[key]) ? payload[key].length : payload[key];
+        return acc;
+      },
+      {} as Record<string, any>
+    );
   }
 
   return payload;

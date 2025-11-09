@@ -56,16 +56,12 @@ export function OptimizationSuggestions({
   };
 
   const averageScore =
-    productOptimizations.reduce((sum, p) => sum + p.overallScore, 0) /
-    productOptimizations.length;
+    productOptimizations.reduce((sum, p) => sum + p.overallScore, 0) / productOptimizations.length;
   const averageImprovement =
     productOptimizations.reduce((sum, p) => sum + p.potentialImprovement, 0) /
     productOptimizations.length;
 
-  const totalSuggestions = productOptimizations.reduce(
-    (sum, p) => sum + p.optimizations.length,
-    0
-  );
+  const totalSuggestions = productOptimizations.reduce((sum, p) => sum + p.optimizations.length, 0);
   const acceptedCount = acceptedOptimizations.size;
 
   return (
@@ -120,25 +116,17 @@ export function OptimizationSuggestions({
                 <div className="product-info">
                   <h3>{product.productName}</h3>
                   <div className="product-meta">
-                    <span className="score">
-                      Score: {product.overallScore}/10
-                    </span>
-                    <span className="improvement">
-                      Potential: +{product.potentialImprovement}%
-                    </span>
+                    <span className="score">Score: {product.overallScore}/10</span>
+                    <span className="improvement">Potential: +{product.potentialImprovement}%</span>
                     <span className="suggestions-count">
                       {product.optimizations.length} suggestions
                       {highImpactCount > 0 && (
-                        <span className="high-impact-badge">
-                          {highImpactCount} high impact
-                        </span>
+                        <span className="high-impact-badge">{highImpactCount} high impact</span>
                       )}
                     </span>
                   </div>
                 </div>
-                <button className="expand-btn">
-                  {isExpanded ? '▼' : '▶'}
-                </button>
+                <button className="expand-btn">{isExpanded ? '▼' : '▶'}</button>
               </div>
 
               {isExpanded && (
@@ -196,4 +184,3 @@ export function OptimizationSuggestions({
     </div>
   );
 }
-

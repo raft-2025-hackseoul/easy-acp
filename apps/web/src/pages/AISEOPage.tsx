@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   acceptSuggestion,
@@ -29,7 +29,9 @@ export function AISEOPage() {
       const state = await ensureSuggestions();
       setProviderSyncState(state);
       if (state.suggestions.productOptimizations.length > 0) {
-        setCurrentIndex((index) => Math.min(index, state.suggestions.productOptimizations.length - 1));
+        setCurrentIndex((index) =>
+          Math.min(index, state.suggestions.productOptimizations.length - 1)
+        );
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to load AI SEO suggestions.');
@@ -67,33 +69,58 @@ export function AISEOPage() {
     ? providerSyncState?.overrides[currentOptimization.productId] || {}
     : {};
 
-  const handleSelect = async (field: string, useSuggested: boolean, suggestedValue: string) => {
-    if (!currentOptimization) return;
+  const handleSelect = useCallback(
+    async (field: string, useSuggested: boolean, suggestedValue: string) => {
+      if (!currentOptimization || !providerSyncState) return;
 
-    const currentOverride = overrides[field];
-    const selectingSuggested = useSuggested && currentOverride !== suggestedValue;
-    const selectingOriginal = !useSuggested && currentOverride !== undefined;
+      const currentOverride = overrides[field];
+      const selectingSuggested = useSuggested && currentOverride !== suggestedValue;
+      const selectingOriginal = !useSuggested && currentOverride !== undefined;
 
-    if (!selectingSuggested && !selectingOriginal) {
-      return;
-    }
-
-    setPendingField(field);
-    setError('');
-    try {
-      if (useSuggested) {
-        await acceptSuggestion(currentOptimization.productId, field, suggestedValue);
-      } else {
-        await removeSuggestion(currentOptimization.productId, field);
+      if (!selectingSuggested && !selectingOriginal) {
+        return;
       }
-      const updatedState = await getProviderSyncState();
-      setProviderSyncState(updatedState);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to update selection.');
-    } finally {
-      setPendingField(null);
-    }
-  };
+
+      // Optimistic update - update UI immediately
+      const previousState = providerSyncState;
+      const optimisticOverrides = { ...providerSyncState.overrides };
+
+      if (useSuggested) {
+        optimisticOverrides[currentOptimization.productId] = {
+          ...optimisticOverrides[currentOptimization.productId],
+          [field]: suggestedValue,
+        };
+      } else {
+        const productOverrides = { ...optimisticOverrides[currentOptimization.productId] };
+        delete productOverrides[field];
+        optimisticOverrides[currentOptimization.productId] = productOverrides;
+      }
+
+      setProviderSyncState({
+        ...providerSyncState,
+        overrides: optimisticOverrides,
+      });
+
+      setPendingField(field);
+      setError('');
+
+      try {
+        // API call now returns the updated state directly - no need for second call!
+        const updatedState = useSuggested
+          ? await acceptSuggestion(currentOptimization.productId, field, suggestedValue)
+          : await removeSuggestion(currentOptimization.productId, field);
+
+        setProviderSyncState(updatedState);
+      } catch (err) {
+        // Revert optimistic update on error
+        setProviderSyncState(previousState);
+        setError(err instanceof Error ? err.message : 'Unable to update selection.');
+      } finally {
+        setPendingField(null);
+      }
+    },
+    [currentOptimization, providerSyncState, overrides, setProviderSyncState]
+  );
 
   const handlePrevious = () => {
     setCurrentIndex((index) => Math.max(0, index - 1));
@@ -172,8 +199,8 @@ export function AISEOPage() {
         <div className="empty-state">
           <h2>No AI suggestions yet</h2>
           <p>
-            Generate a mapping on the Product Feed page first, then return here to review
-            AI-powered improvements.
+            Generate a mapping on the Product Feed page first, then return here to review AI-powered
+            improvements.
           </p>
           <button className="primary" onClick={handleBackToFeed}>
             Go to Product Feed setup
@@ -214,7 +241,9 @@ export function AISEOPage() {
                   <div className="comparison-columns">
                     <button
                       className={`value-card ${originalSelected ? 'selected' : ''}`}
-                      onClick={() => handleSelect(optimization.field, false, optimization.currentValue)}
+                      onClick={() =>
+                        handleSelect(optimization.field, false, optimization.currentValue)
+                      }
                       disabled={pendingField === optimization.field}
                     >
                       <span className="label">Current listing</span>
@@ -223,7 +252,9 @@ export function AISEOPage() {
                     </button>
                     <button
                       className={`value-card suggested ${suggestedSelected ? 'selected' : ''}`}
-                      onClick={() => handleSelect(optimization.field, true, optimization.suggestedValue)}
+                      onClick={() =>
+                        handleSelect(optimization.field, true, optimization.suggestedValue)
+                      }
                       disabled={pendingField === optimization.field}
                     >
                       <span className="label">AI suggestion</span>
@@ -249,4 +280,3 @@ export function AISEOPage() {
     </div>
   );
 }
-

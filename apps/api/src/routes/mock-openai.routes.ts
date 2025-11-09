@@ -24,9 +24,10 @@ router.post('/push', (req: Request, res: Response) => {
     });
   }
 
-  const url = typeof destinationUrl === 'string' && destinationUrl.trim().length > 0
-    ? destinationUrl
-    : 'https://mock.openai.com/merchant-feed';
+  const url =
+    typeof destinationUrl === 'string' && destinationUrl.trim().length > 0
+      ? destinationUrl
+      : 'https://mock.openai.com/merchant-feed';
 
   const state = recordMerchantPush(products, url);
 

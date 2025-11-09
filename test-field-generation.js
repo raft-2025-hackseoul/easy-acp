@@ -122,8 +122,12 @@ async function testGenerateMissingFields() {
       console.log('✅ Validation After Generation:');
       console.log(`   Valid Products: ${result.data.validation.validProducts}`);
       console.log(`   Invalid Products: ${result.data.validation.invalidProducts}`);
-      console.log(`   Remaining Missing Required: ${result.data.validation.uniqueMissingRequiredCount}`);
-      console.log(`   Remaining Missing Recommended: ${result.data.validation.uniqueMissingRecommendedCount}`);
+      console.log(
+        `   Remaining Missing Required: ${result.data.validation.uniqueMissingRequiredCount}`
+      );
+      console.log(
+        `   Remaining Missing Recommended: ${result.data.validation.uniqueMissingRecommendedCount}`
+      );
       console.log();
 
       return true;

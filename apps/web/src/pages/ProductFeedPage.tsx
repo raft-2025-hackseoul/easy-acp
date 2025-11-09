@@ -252,8 +252,8 @@ export function ProductFeedPage() {
       <div className="page-header">
         <h1>Product Feed Automation</h1>
         <p className="page-subtitle">
-          Automate WooCommerce ingestion, mapping, validation, and publishing to OpenAI&apos;s merchant
-          API.
+          Automate WooCommerce ingestion, mapping, validation, and publishing to OpenAI&apos;s
+          merchant API.
         </p>
       </div>
 

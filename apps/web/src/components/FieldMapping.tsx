@@ -50,11 +50,7 @@ export function FieldMapping({
 
   // Group fields by category
   const fieldsByCategory = useMemo(() => {
-    const mapped = new Map(
-      normalizedMappings
-        .filter((m) => m.target)
-        .map((m) => [m.target, m])
-    );
+    const mapped = new Map(normalizedMappings.filter((m) => m.target).map((m) => [m.target, m]));
 
     const required: typeof normalizedMappings = [];
     const recommended: typeof normalizedMappings = [];
@@ -106,9 +102,7 @@ export function FieldMapping({
     }
   };
 
-  const createFieldMappingData = (
-    mapping: typeof normalizedMappings[0]
-  ): FieldMappingType => {
+  const createFieldMappingData = (mapping: (typeof normalizedMappings)[0]): FieldMappingType => {
     const edited = editedMappings[mapping.target];
 
     return {
@@ -122,7 +116,7 @@ export function FieldMapping({
   };
 
   const createValidation = (
-    mapping: typeof normalizedMappings[0],
+    mapping: (typeof normalizedMappings)[0],
     field: ACPFieldMetadata
   ): FieldValidation => {
     const messages: Array<{
@@ -175,9 +169,7 @@ export function FieldMapping({
     };
   };
 
-  const renderFieldCards = (
-    mappings: typeof normalizedMappings
-  ) => {
+  const renderFieldCards = (mappings: typeof normalizedMappings) => {
     return mappings.map((mapping) => {
       const field = ACP_FIELDS.find((f) => f.name === mapping.target);
       if (!field) return null;
@@ -256,9 +248,7 @@ export function FieldMapping({
             <span className="category-badge required">Required</span>
             Required Fields ({fieldsByCategory.required.length})
           </h4>
-          <div className="field-cards-container">
-            {renderFieldCards(fieldsByCategory.required)}
-          </div>
+          <div className="field-cards-container">{renderFieldCards(fieldsByCategory.required)}</div>
         </div>
       )}
 
@@ -282,9 +272,7 @@ export function FieldMapping({
             <span className="category-badge optional">Optional</span>
             Optional Fields ({fieldsByCategory.optional.length})
           </h4>
-          <div className="field-cards-container">
-            {renderFieldCards(fieldsByCategory.optional)}
-          </div>
+          <div className="field-cards-container">{renderFieldCards(fieldsByCategory.optional)}</div>
         </div>
       )}
 

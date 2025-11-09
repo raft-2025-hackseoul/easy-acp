@@ -131,11 +131,7 @@ class AISEOService {
    */
   private getProductId(product: any, index: number): string {
     return (
-      product.id ||
-      product.product_id ||
-      product.sku ||
-      product.item_id ||
-      `product_${index + 1}`
+      product.id || product.product_id || product.sku || product.item_id || `product_${index + 1}`
     );
   }
 
@@ -266,7 +262,6 @@ class AISEOService {
     - Use plain, clear phrasing suitable for product feed optimization.
     - Respond ONLY with valid JSON and nothing else.
     `;
-    
 
     try {
       const response = await this.client.chat.completions.create({
@@ -407,7 +402,7 @@ Respond ONLY with valid JSON array in this exact format:
         const content = response.choices[0]?.message?.content || '[]';
         const cleanedContent = this.stripMarkdownFences(content);
         const batchOptimizations = JSON.parse(cleanedContent);
-        
+
         // Add originalIndex to each optimization
         batchOptimizations.forEach((opt: ProductOptimization, batchIdx: number) => {
           opt.originalIndex = i + batchIdx;
@@ -529,7 +524,7 @@ Respond ONLY with valid JSON array in this exact format:
         const content = response.choices[0]?.message?.content || '[]';
         const cleanedContent = this.stripMarkdownFences(content);
         const batchOptimizations = JSON.parse(cleanedContent);
-        
+
         // Add originalIndex to each optimization
         batchOptimizations.forEach((opt: ProductOptimization, batchIdx: number) => {
           opt.originalIndex = i + batchIdx;
@@ -589,4 +584,3 @@ Respond ONLY with valid JSON array in this exact format:
 
 // Export singleton instance
 export const aiSEOService = new AISEOService();
-

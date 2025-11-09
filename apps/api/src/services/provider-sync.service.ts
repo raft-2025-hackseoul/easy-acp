@@ -25,21 +25,134 @@ import { llmValidator, LLMValidationIssue } from './llm-validator.service';
 import { recordMerchantPush } from './mock-openai.service';
 import { aiSEOService, FieldOptimization, ProductOptimization } from './ai-seo.service';
 
-const REQUIRED_OPENAI_FIELDS = ['id', 'title', 'description', 'link', 'price'];
+const REQUIRED_OPENAI_FIELDS = [
+  'id',
+  'title',
+  'description',
+  'link',
+  'price',
+  'image_link',
+  'brand',
+  'product_category',
+  'gtin',
+  'material',
+  'weight',
+  'inventory_quantity',
+  'enable_search',
+  'enable_checkout',
+  'seller_name',
+  'seller_url',
+  'return_policy',
+  'return_window',
+];
 
 const DEFAULT_FIELD_MAPPING: FieldMapping[] = [
-  { providerField: 'product_id', openAIField: 'id', description: 'Unique product identifier', required: true },
-  { providerField: 'product_name', openAIField: 'title', description: 'Product title', required: true },
-  { providerField: 'product_description', openAIField: 'description', description: 'Detailed description', required: true },
+  {
+    providerField: 'product_id',
+    openAIField: 'id',
+    description: 'Unique product identifier',
+    required: true,
+  },
+  {
+    providerField: 'product_name',
+    openAIField: 'title',
+    description: 'Product title',
+    required: true,
+  },
+  {
+    providerField: 'product_description',
+    openAIField: 'description',
+    description: 'Detailed description',
+    required: true,
+  },
   { providerField: 'product_url', openAIField: 'link', description: 'Product URL', required: true },
-  { providerField: 'main_image', openAIField: 'image_link', description: 'Primary product image URL' },
-  { providerField: 'price_usd', openAIField: 'price', description: 'Price with currency', required: true },
-  { providerField: 'stock_status', openAIField: 'availability', description: 'Inventory availability' },
+  {
+    providerField: 'main_image',
+    openAIField: 'image_link',
+    description: 'Primary product image URL',
+  },
+  {
+    providerField: 'price_usd',
+    openAIField: 'price',
+    description: 'Price with currency',
+    required: true,
+  },
+  {
+    providerField: 'stock_status',
+    openAIField: 'availability',
+    description: 'Inventory availability',
+  },
   { providerField: 'brand_name', openAIField: 'brand', description: 'Brand or manufacturer' },
-  { providerField: 'category', openAIField: 'google_product_category', description: 'Product category' },
+  {
+    providerField: 'product_category',
+    openAIField: 'product_category',
+    description: 'Product category (hierarchical with ">")',
+  },
   { providerField: 'upc_code', openAIField: 'gtin', description: 'Global Trade Item Number' },
+
+  // ACP Required Fields
+  {
+    providerField: 'enable_search',
+    openAIField: 'enable_search',
+    description: 'Enable ChatGPT search visibility',
+  },
+  {
+    providerField: 'enable_checkout',
+    openAIField: 'enable_checkout',
+    description: 'Enable direct checkout',
+  },
+  { providerField: 'material', openAIField: 'material', description: 'Material composition' },
+  { providerField: 'weight', openAIField: 'weight', description: 'Weight with unit' },
+  {
+    providerField: 'inventory_quantity',
+    openAIField: 'inventory_quantity',
+    description: 'Stock quantity',
+  },
+  { providerField: 'seller_name', openAIField: 'seller_name', description: 'Seller name' },
+  { providerField: 'seller_url', openAIField: 'seller_url', description: 'Seller website URL' },
+  {
+    providerField: 'return_policy_url',
+    openAIField: 'return_policy',
+    description: 'Return policy URL',
+  },
+  {
+    providerField: 'return_window_days',
+    openAIField: 'return_window',
+    description: 'Return window (days)',
+  },
+
+  // Recommended Fields
+  { providerField: 'mpn', openAIField: 'mpn', description: 'Manufacturer Part Number' },
+  { providerField: 'condition', openAIField: 'condition', description: 'Product condition' },
+  {
+    providerField: 'popularity_score',
+    openAIField: 'popularity_score',
+    description: 'Popularity score 0-5',
+  },
+  {
+    providerField: 'seller_privacy_policy',
+    openAIField: 'seller_privacy_policy',
+    description: 'Privacy policy URL',
+  },
+  {
+    providerField: 'seller_tos',
+    openAIField: 'seller_tos',
+    description: 'Terms of service URL',
+  },
+
+  // Optional Fields
   { providerField: 'color', openAIField: 'color' },
   { providerField: 'size', openAIField: 'size' },
+  {
+    providerField: 'rating',
+    openAIField: 'product_review_rating',
+    description: 'Product rating',
+  },
+  {
+    providerField: 'review_count',
+    openAIField: 'product_review_count',
+    description: 'Review count',
+  },
 ];
 
 export function getSyncState() {

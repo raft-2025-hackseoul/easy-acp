@@ -28,9 +28,14 @@ console.log('Test 2: Seller TOS Conditional Requirement');
 const sellerTosField = ACP_FIELDS.find((f) => f.name === 'seller_tos');
 console.log(`  seller_tos has conditional requirement: ${!!sellerTosField.conditionallyRequired}`);
 if (sellerTosField.conditionallyRequired) {
-  console.log(`  Condition: ${sellerTosField.conditionallyRequired.when} = ${sellerTosField.conditionallyRequired.equals}`);
+  console.log(
+    `  Condition: ${sellerTosField.conditionallyRequired.when} = ${sellerTosField.conditionallyRequired.equals}`
+  );
 }
-console.assert(sellerTosField.conditionallyRequired !== undefined, 'seller_tos should have conditional requirement');
+console.assert(
+  sellerTosField.conditionallyRequired !== undefined,
+  'seller_tos should have conditional requirement'
+);
 console.log('  ✅ PASSED\n');
 
 // Test 3: Validate product with enable_checkout=true but missing seller_tos

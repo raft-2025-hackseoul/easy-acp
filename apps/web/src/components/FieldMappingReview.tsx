@@ -36,7 +36,9 @@ export function FieldMappingReview({
   // Update parent with filled fields count
   useEffect(() => {
     if (onFieldsUpdate) {
-      const filledFields = localMappings.filter((m) => m.source && m.source !== '').map((m) => m.target);
+      const filledFields = localMappings
+        .filter((m) => m.source && m.source !== '')
+        .map((m) => m.target);
       onFieldsUpdate(filledFields);
     }
   }, [localMappings, onFieldsUpdate]);
@@ -45,9 +47,9 @@ export function FieldMappingReview({
   const unmappedRequired = missingRequired.filter(
     (field) => !localMappings.some((m) => m.target === field && m.source)
   );
-  
+
   const mappedFields = localMappings.filter((m) => m.source && m.source !== '');
-  
+
   const unmappedRecommended = missingRecommended.filter(
     (field) => !localMappings.some((m) => m.target === field && m.source)
   );
@@ -67,7 +69,7 @@ export function FieldMappingReview({
     setLocalMappings((prev) =>
       prev.map((m) => (m.target === target ? { ...m, source: newSource } : m))
     );
-    
+
     onMappingChange(oldSource, newSource, target);
     setHasChanges(true);
   };
@@ -196,10 +198,7 @@ export function FieldMappingReview({
       )}
 
       <div className="mapping-actions-minimal">
-        <button
-          className={`save-button ${hasChanges ? 'has-changes' : ''}`}
-          onClick={handleSave}
-        >
+        <button className={`save-button ${hasChanges ? 'has-changes' : ''}`} onClick={handleSave}>
           {hasChanges ? 'Save Mappings' : 'Saved'}
         </button>
       </div>

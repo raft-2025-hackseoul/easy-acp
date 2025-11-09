@@ -9,6 +9,7 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 ### 1. Backend Changes
 
 #### New Mock WooCommerce API (`apps/api/src/routes/woocommerce-mock.routes.ts`)
+
 - **GET `/api/woocommerce/products`**: Fetches mock product data
   - Requires Authorization header with API token
   - Returns product data in JSON format (converted from CSV structure)
@@ -17,6 +18,7 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 - **GET `/api/woocommerce/test`**: Health check endpoint
 
 #### Updated Product Feed Routes (`apps/api/src/routes/product-feed.routes.ts`)
+
 - **POST `/api/product-feed/validate-json`**: New endpoint to validate JSON product data
   - Accepts array of product objects
   - Applies same validation logic as CSV upload
@@ -24,17 +26,20 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
   - Returns validation results with matched/missing fields
 
 #### Updated Main Server (`apps/api/src/index.ts`)
+
 - Added WooCommerce mock routes to Express app
 - Route mounted at `/api/woocommerce`
 
 ### 2. Frontend Changes
 
 #### New API Service Functions (`apps/web/src/services/api.ts`)
+
 - `fetchFromWooCommerce(apiToken: string)`: Fetches products from WooCommerce API
 - `validateJSONProducts(products: any[])`: Validates JSON product data
 - Added `EcommerceProviderResponse` interface
 
 #### New EcommerceIntegration Component (`apps/web/src/components/EcommerceIntegration.tsx`)
+
 - Direct WooCommerce connection interface
 - Clean, modern shadCN-style design
 - API token input with validation
@@ -43,6 +48,7 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 - Simplified single-provider UI (no provider selection needed)
 
 #### New FieldMappingReview Component (`apps/web/src/components/FieldMappingReview.tsx`)
+
 - Modern shadCN-style UI matching the design system
 - Three distinct sections with gradient backgrounds:
   - **Matched Fields**: Green gradient header, shows successfully mapped fields
@@ -54,6 +60,7 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 - Sticky section headers for better navigation
 
 #### Updated ProductFeedPage (`apps/web/src/pages/ProductFeedPage.tsx`)
+
 - Replaced FileUpload component with EcommerceIntegration component
 - New flow:
   1. Select ecommerce provider
@@ -67,24 +74,28 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 - Maintains all existing functionality (AI optimization, export, publish)
 
 #### New CSS Files
+
 - `apps/web/src/components/EcommerceIntegration.css`: Styling for provider selection and token input
 - `apps/web/src/components/FieldMappingReview.css`: Styling for field mapping review
 
 ## Features
 
 ### WooCommerce Connection
+
 - Direct connection interface (no provider selection needed)
 - Modern shadCN-style card with gradient header
 - WooCommerce branding with icon
 - Clean, focused single-purpose UI
 
 ### API Token Input
+
 - Single text input for API token
 - Demo mode accepts any non-empty token
 - Loading state with spinner during connection
 - Informational footer explaining demo mode
 
 ### Field Mapping Review
+
 - Clear visual separation of matched, missing required, and missing recommended fields
 - Color-coded badges (green/red/blue) for quick identification
 - Dropdown selectors for easy field remapping
@@ -92,6 +103,7 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 - Save functionality with console logging
 
 ### Mapping Persistence
+
 - Mappings are logged to console for now
 - Future enhancement: Save to database/localStorage
 - Maintains mapping state during session
@@ -99,12 +111,14 @@ Replaced the CSV file upload functionality with an ecommerce provider integratio
 ## Mock Data
 
 The mock WooCommerce API returns 4 sample products:
+
 1. Sony WH-1000XM5 Wireless Headphones ($349.99)
 2. Patagonia Organic Cotton T-Shirt ($29.99)
 3. Hydro Flask 32oz Wide Mouth ($39.99)
 4. Apple Watch Series 9 GPS ($429.99)
 
 Each product includes:
+
 - Product ID, name, description
 - Price, stock status, brand
 - Category, images, URLs
@@ -114,6 +128,7 @@ Each product includes:
 ## Technical Details
 
 ### API Flow
+
 ```
 User enters token
     ↓
@@ -129,7 +144,9 @@ Returns validation results with field mappings
 ```
 
 ### Validation Pipeline
+
 The existing validation pipeline is fully reused:
+
 - `suggestFieldMapping()`: AI-powered field mapping
 - `applyFieldMapping()`: Applies mappings to products
 - `categorizeProducts()`: Validates against ACP schema
@@ -137,13 +154,15 @@ The existing validation pipeline is fully reused:
 - `getUnmappedColumns()`: Identifies unmapped fields
 
 ### Data Format
+
 Products fetched from WooCommerce API are in the same format as CSV data:
+
 ```json
 {
   "product_id": "SKU001",
   "product_name": "Sony WH-1000XM5 Wireless Headphones",
   "price_usd": "349.99",
-  "stock_status": "in_stock",
+  "stock_status": "in_stock"
   // ... more fields
 }
 ```
@@ -173,6 +192,7 @@ Products fetched from WooCommerce API are in the same format as CSV data:
 ## Testing
 
 ### Backend
+
 ```bash
 # Test WooCommerce API
 curl http://localhost:3001/api/woocommerce/products \
@@ -185,6 +205,7 @@ curl -X POST http://localhost:3001/api/product-feed/validate-json \
 ```
 
 ### Frontend
+
 1. Navigate to Product Feed page
 2. Enter any text as API token in the WooCommerce integration card
 3. Click "Connect & Fetch Products"
@@ -197,6 +218,7 @@ curl -X POST http://localhost:3001/api/product-feed/validate-json \
 ## Files Created/Modified
 
 ### Created
+
 - `apps/api/src/routes/woocommerce-mock.routes.ts`
 - `apps/web/src/components/EcommerceIntegration.tsx`
 - `apps/web/src/components/EcommerceIntegration.css`
@@ -205,6 +227,7 @@ curl -X POST http://localhost:3001/api/product-feed/validate-json \
 - `ECOMMERCE_INTEGRATION_FEATURE.md` (this file)
 
 ### Modified
+
 - `apps/api/src/index.ts`
 - `apps/api/src/routes/product-feed.routes.ts`
 - `apps/web/src/services/api.ts`
@@ -220,7 +243,8 @@ curl -X POST http://localhost:3001/api/product-feed/validate-json \
 ## Design System
 
 The UI follows a modern shadCN-inspired design system with:
-- **Colors**: 
+
+- **Colors**:
   - Primary: #3b82f6 (blue)
   - Success: #22c55e (green)
   - Warning: #ef4444 (red)
@@ -236,6 +260,7 @@ The UI follows a modern shadCN-inspired design system with:
 ## Summary
 
 This feature transforms the product feed workflow from a manual CSV upload process to a streamlined WooCommerce integration. Users can now:
+
 1. Connect directly to WooCommerce with an API token
 2. Automatically fetch products
 3. Review AI-powered field mappings with clear visual hierarchy
@@ -243,4 +268,3 @@ This feature transforms the product feed workflow from a manual CSV upload proce
 5. Save mappings for future use (logged to console)
 
 The new UI is cleaner, more focused, and matches the modern shadCN design system used throughout the application.
-
