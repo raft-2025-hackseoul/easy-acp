@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   acceptSuggestion,
@@ -69,33 +69,58 @@ export function AISEOPage() {
     ? providerSyncState?.overrides[currentOptimization.productId] || {}
     : {};
 
-  const handleSelect = async (field: string, useSuggested: boolean, suggestedValue: string) => {
-    if (!currentOptimization) return;
+  const handleSelect = useCallback(
+    async (field: string, useSuggested: boolean, suggestedValue: string) => {
+      if (!currentOptimization || !providerSyncState) return;
 
-    const currentOverride = overrides[field];
-    const selectingSuggested = useSuggested && currentOverride !== suggestedValue;
-    const selectingOriginal = !useSuggested && currentOverride !== undefined;
+      const currentOverride = overrides[field];
+      const selectingSuggested = useSuggested && currentOverride !== suggestedValue;
+      const selectingOriginal = !useSuggested && currentOverride !== undefined;
 
-    if (!selectingSuggested && !selectingOriginal) {
-      return;
-    }
-
-    setPendingField(field);
-    setError('');
-    try {
-      if (useSuggested) {
-        await acceptSuggestion(currentOptimization.productId, field, suggestedValue);
-      } else {
-        await removeSuggestion(currentOptimization.productId, field);
+      if (!selectingSuggested && !selectingOriginal) {
+        return;
       }
-      const updatedState = await getProviderSyncState();
-      setProviderSyncState(updatedState);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to update selection.');
-    } finally {
-      setPendingField(null);
-    }
-  };
+
+      // Optimistic update - update UI immediately
+      const previousState = providerSyncState;
+      const optimisticOverrides = { ...providerSyncState.overrides };
+
+      if (useSuggested) {
+        optimisticOverrides[currentOptimization.productId] = {
+          ...optimisticOverrides[currentOptimization.productId],
+          [field]: suggestedValue,
+        };
+      } else {
+        const productOverrides = { ...optimisticOverrides[currentOptimization.productId] };
+        delete productOverrides[field];
+        optimisticOverrides[currentOptimization.productId] = productOverrides;
+      }
+
+      setProviderSyncState({
+        ...providerSyncState,
+        overrides: optimisticOverrides,
+      });
+
+      setPendingField(field);
+      setError('');
+
+      try {
+        // API call now returns the updated state directly - no need for second call!
+        const updatedState = useSuggested
+          ? await acceptSuggestion(currentOptimization.productId, field, suggestedValue)
+          : await removeSuggestion(currentOptimization.productId, field);
+
+        setProviderSyncState(updatedState);
+      } catch (err) {
+        // Revert optimistic update on error
+        setProviderSyncState(previousState);
+        setError(err instanceof Error ? err.message : 'Unable to update selection.');
+      } finally {
+        setPendingField(null);
+      }
+    },
+    [currentOptimization, providerSyncState, overrides, setProviderSyncState]
+  );
 
   const handlePrevious = () => {
     setCurrentIndex((index) => Math.max(0, index - 1));
