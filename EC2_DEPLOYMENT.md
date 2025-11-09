@@ -24,8 +24,8 @@ Complete guide for deploying Easy ACP to AWS EC2 with Docker Compose, SSL, and R
 
 ### EC2 Instance
 
-- **Instance Name**: `temp-instance-hackathon`
-- **OS**: Ubuntu 20.04 or later
+- **Instance IP**: `13.124.182.10`
+- **OS**: Amazon Linux 2
 - **Instance Type**: t3.small or larger (minimum 1GB RAM)
 - **Security Group**: Allow ports 22, 80, 443
 - **Elastic IP**: Recommended for stable DNS
@@ -41,10 +41,7 @@ Complete guide for deploying Easy ACP to AWS EC2 with Docker Compose, SSL, and R
 
 ```bash
 # Test connection
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon
-
-# If connection fails, use the public IP
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@<EC2_PUBLIC_IP>
+ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10
 ```
 
 ### Step 2: Run Setup Script
@@ -101,7 +98,7 @@ sudo ufw status
 
 ```bash
 # Get your EC2 public IP
-EC2_IP=$(ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon "curl -s http://checkip.amazonaws.com")
+EC2_IP=$(ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10 "curl -s http://checkip.amazonaws.com")
 
 # Create Route53 record
 aws route53 change-resource-record-sets \
@@ -225,7 +222,7 @@ From your local development machine:
 cd /path/to/easy-acp
 
 # Deploy to EC2
-./deploy-ec2.sh ubuntu@temp-instance-hackathon
+./deploy-ec2.sh ec2-user@13.124.182.10
 ```
 
 The deployment script will:
@@ -519,10 +516,10 @@ docker-compose up -d
 
 ```bash
 # SSH to EC2
-ssh -i ~/.ssh/workith-mail-dev.pem ubuntu@temp-instance-hackathon
+ssh -i ~/.ssh/workith-mail-dev.pem ec2-user@13.124.182.10
 
 # Deploy from local
-./deploy-ec2.sh ubuntu@temp-instance-hackathon
+./deploy-ec2.sh ec2-user@13.124.182.10
 
 # View logs on EC2
 cd /opt/easy-acp && docker-compose logs -f
