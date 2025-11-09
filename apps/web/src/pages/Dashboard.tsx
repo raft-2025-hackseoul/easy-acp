@@ -12,7 +12,7 @@ export function Dashboard() {
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-page">
       <motion.div 
         className="hero-section"
         initial={{ opacity: 0 }}

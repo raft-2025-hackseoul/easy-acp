@@ -1,4 +1,4 @@
-.dashboard {
+.dashboard-page {
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -6,7 +6,7 @@
   background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
 }
 
-.hero-section {
+.dashboard-page .hero-section {
   background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
   border-radius: 30px;
   padding: 6rem 2rem;
@@ -18,7 +18,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-.hero-section::before {
+.dashboard-page .hero-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -29,12 +29,12 @@
   opacity: 0.1;
 }
 
-.hero-content {
+.dashboard-page .hero-content {
   position: relative;
   z-index: 1;
 }
 
-.hero-title {
+.dashboard-page .hero-title {
   font-size: 3.5rem;
   font-weight: 700;
   margin: 0;
@@ -45,7 +45,7 @@
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.hero-description {
+.dashboard-page .hero-description {
   font-size: 1.4rem;
   margin: 1.5rem 0;
   max-width: 800px;
@@ -55,7 +55,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.key-features {
+.dashboard-page .key-features {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
@@ -66,7 +66,7 @@
   margin-right: auto;
 }
 
-.feature-card {
+.dashboard-page .feature-card {
   background: white;
   border-radius: 20px;
   padding: 1.75rem;
@@ -78,12 +78,12 @@
   background: rgba(255, 255, 255, 0.9);
 }
 
-.feature-card:hover {
+.dashboard-page .feature-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-.feature-icon {
+.dashboard-page .feature-icon {
   width: 44px;
   height: 44px;
   margin-bottom: 1.5rem;
@@ -94,12 +94,12 @@
   transition: all 0.3s ease;
 }
 
-.feature-card:hover .feature-icon {
+.dashboard-page .feature-card:hover .feature-icon {
   transform: scale(1.1);
   background: rgba(52, 152, 219, 0.15);
 }
 
-.feature-card h3 {
+.dashboard-page .feature-card h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 0.75rem 0;
@@ -110,7 +110,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-.feature-card p {
+.dashboard-page .feature-card p {
   font-size: 0.95rem;
   color: #34495e;
   line-height: 1.5;
@@ -119,51 +119,51 @@
 }
 
 @media (max-width: 1200px) {
-  .key-features {
+  .dashboard-page .key-features {
     grid-template-columns: repeat(2, 1fr);
     max-width: 800px;
   }
 }
 
 @media (max-width: 640px) {
-  .key-features {
+  .dashboard-page .key-features {
     grid-template-columns: 1fr;
     max-width: 100%;
   }
 }
 
-.hero-stats {
+.dashboard-page .hero-stats {
   display: flex;
   justify-content: center;
   gap: 3rem;
   margin: 2rem 0;
 }
 
-.stat-item {
+.dashboard-page .stat-item {
   text-align: center;
 }
 
-.stat-value {
+.dashboard-page .stat-value {
   font-size: 2.5rem;
   font-weight: 700;
   color: #fff;
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.stat-label {
+.dashboard-page .stat-label {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.8);
   margin-top: 0.5rem;
 }
 
-.hero-actions {
+.dashboard-page .hero-actions {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
 }
 
-.primary-button {
+.dashboard-page .primary-button {
   background: #3498db;
   color: white;
   padding: 0.8rem 2rem;
@@ -176,12 +176,12 @@
   transition: all 0.3s ease;
 }
 
-.primary-button:hover {
+.dashboard-page .primary-button:hover {
   background: #2980b9;
   transform: translateY(-2px);
 }
 
-.secondary-button {
+.dashboard-page .secondary-button {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   padding: 0.8rem 2rem;
@@ -191,16 +191,16 @@
   transition: all 0.3s ease;
 }
 
-.secondary-button:hover {
+.dashboard-page .secondary-button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.button-icon {
+.dashboard-page .button-icon {
   width: 20px;
   height: 20px;
 }
 
-.workflow-preview {
+.dashboard-page .workflow-preview {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -208,12 +208,12 @@
   margin-top: 3rem;
 }
 
-.workflow-step {
+.dashboard-page .workflow-step {
   display: flex;
   align-items: center;
 }
 
-.step-icon {
+.dashboard-page .step-icon {
   width: 48px;
   height: 48px;
   background: rgba(255, 255, 255, 0.1);
@@ -224,13 +224,13 @@
   color: white;
 }
 
-.step-line {
+.dashboard-page .step-line {
   width: 60px;
   height: 2px;
   background: rgba(255, 255, 255, 0.2);
 }
 
-.workflow-step:last-child .step-line {
+.dashboard-page .workflow-step:last-child .step-line {
   display: none;
 }
 
@@ -266,7 +266,7 @@
   text-align: center;
 }
 
-.progress-bar {
+.dashboard-page .progress-bar {
   height: 30px;
   background-color: #f5f5f5;
   border-radius: 15px;
@@ -275,7 +275,7 @@
   border: 1px solid #dee2e6;
 }
 
-.progress-fill {
+.dashboard-page .progress-fill {
   height: 100%;
   background: #2c3e50;
   transition: width 0.5s ease;
@@ -287,7 +287,7 @@
   font-weight: bold;
 }
 
-.progress-stats {
+.dashboard-page .progress-stats {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -295,20 +295,20 @@
   font-size: 0.9rem;
 }
 
-.progress-percentage {
+.dashboard-page .progress-percentage {
   font-size: 1.5rem;
   font-weight: bold;
   color: #2c3e50;
 }
 
-.tool-cards {
+.dashboard-page .tool-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin: 3rem 0;
 }
 
-.tool-card {
+.dashboard-page .tool-card {
   padding: 2rem;
   background-color: #ffffff;
   border-radius: 12px;
@@ -316,28 +316,28 @@
   transition: all 0.3s ease;
 }
 
-.tool-card:hover {
+.dashboard-page .tool-card:hover {
   border-color: #2c3e50;
   transform: translateY(-4px);
 }
 
-.tool-card h3 {
+.dashboard-page .tool-card h3 {
   margin: 0 0 0.5rem 0;
   color: #1a1a1a;
 }
 
-.tool-card p {
+.dashboard-page .tool-card p {
   color: #34495e;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
 }
 
-.tool-status {
+.dashboard-page .tool-status {
   font-size: 0.9rem;
   color: #445566;
 }
 
-.status-badge {
+.dashboard-page .status-badge {
   display: inline-block;
   padding: 0.3rem 0.8rem;
   border-radius: 12px;
@@ -348,72 +348,72 @@
   border: 1px solid;
 }
 
-.status-badge.not-started {
+.dashboard-page .status-badge.not-started {
   background-color: #f8f9fa;
   color: #445566;
   border-color: #dee2e6;
 }
 
-.status-badge.in-progress {
+.dashboard-page .status-badge.in-progress {
   background-color: #fff4e6;
   color: #c77700;
   border-color: #f39c12;
 }
 
-.status-badge.completed {
+.dashboard-page .status-badge.completed {
   background-color: #e8f5e9;
   color: #1e8449;
   border-color: #27ae60;
 }
 
-.status-badge.verified {
+.dashboard-page .status-badge.verified {
   background-color: #e3f2fd;
   color: #1565c0;
   border-color: #2196f3;
 }
 
-.dashboard-footer {
+.dashboard-page .dashboard-footer {
   margin-top: 4rem;
   text-align: center;
 }
 
-.help-section {
+.dashboard-page .help-section {
   padding: 2rem;
   background-color: #f8f9fa;
   border-radius: 12px;
   border: 2px solid #e0e0e0;
 }
 
-.help-section h4 {
+.dashboard-page .help-section h4 {
   margin: 0 0 0.5rem 0;
   color: #2c3e50;
 }
 
-.help-section p {
+.dashboard-page .help-section p {
   margin: 0;
   color: #34495e;
 }
 
-.help-section a {
+.dashboard-page .help-section a {
   color: #2c3e50;
   text-decoration: none;
   font-weight: 600;
 }
 
-.help-section a:hover {
+.dashboard-page .help-section a:hover {
   text-decoration: underline;
 }
 
 @media (max-width: 768px) {
-  .dashboard {
+  .dashboard-page {
     padding: 1rem;
   }
 
-  .dashboard-header h1 {
+  .dashboard-page .dashboard-header h1 {
     font-size: 2rem;
   }
 
-  .tool-cards {
+  .dashboard-page .tool-cards {
     grid-template-columns: 1fr;
   }
 }
