@@ -241,7 +241,10 @@ function validateConditionalRequirements(
       const fieldValue = product[field.name as keyof ACPProduct];
 
       // If the condition is met but the field is missing
-      if (triggerValue === equals && (fieldValue === undefined || fieldValue === null || fieldValue === '')) {
+      if (
+        triggerValue === equals &&
+        (fieldValue === undefined || fieldValue === null || fieldValue === '')
+      ) {
         errors.push({
           field: field.name,
           message: message || `${field.label} is required when ${when} is ${equals}`,

@@ -22,6 +22,7 @@ This document summarizes all changes made to implement a **deterministic, fixed 
 **File**: `/apps/api/src/specs/acp-product-feed-spec.md`
 
 **Changes**:
+
 - Added authoritative schema header declaring this as the "single source of truth"
 - Added schema rules section emphasizing:
   - All field names MUST use `snake_case`
@@ -38,6 +39,7 @@ This document summarizes all changes made to implement a **deterministic, fixed 
 **File**: `/packages/acp-types/src/acp-fields.ts`
 
 **Changes**:
+
 - Updated `material` field:
   - Changed `required: true` → `required: false`
   - Changed `category: 'core'` → `category: 'recommended'`
@@ -62,6 +64,7 @@ This document summarizes all changes made to implement a **deterministic, fixed 
 **File**: `/packages/acp-types/src/acp-product.ts`
 
 **Changes**:
+
 - Added comprehensive JSDoc header explaining:
   - Deterministic schema principles
   - snake_case field naming requirement
@@ -89,13 +92,17 @@ This document summarizes all changes made to implement a **deterministic, fixed 
 **New Functions Added**:
 
 #### `validateConditionalRequirements()`
+
 Validates fields with conditional requirements:
+
 - Checks `seller_privacy_policy` and `seller_tos` when `enable_checkout=true`
 - Ensures at least one of `gtin` or `mpn` is present
 - Validates `availability_date` when `availability='preorder'`
 
 #### `validateCharacterLimits()`
+
 Enforces character limits for all string fields:
+
 - Errors for required fields exceeding limits
 - Warnings for optional/recommended fields exceeding limits
 - Uses `maxLength` property from field metadata
@@ -110,6 +117,7 @@ Both functions integrated into main `validateACPProduct()` function.
 **File**: `/README.md`
 
 **Changes**:
+
 - Added new section: "🔒 ACP Schema - Deterministic & Fixed"
 - Documented four key schema principles:
   1. snake_case field names
@@ -126,28 +134,34 @@ Both functions integrated into main `validateACPProduct()` function.
 Created `/test-schema-validation.js` to verify all changes:
 
 ### ✅ Test 1: Material Field Categorization
+
 - Material is now `required: false`
 - Category is now `recommended`
 - Has `maxLength: 100`
 
 ### ✅ Test 2: Conditional Requirements
+
 - `seller_tos` has conditional requirement metadata
 - Condition: `enable_checkout = true`
 
 ### ✅ Test 3: Conditional Validation Enforcement
+
 - Products with `enable_checkout=true` require `seller_tos`
 - Products with `enable_checkout=true` require `seller_privacy_policy`
 - Validation correctly generates errors when missing
 
 ### ✅ Test 4: Character Limit Validation
+
 - Title exceeding 150 characters generates error
 - Validation message includes current length
 
 ### ✅ Test 5: GTIN/MPN Requirement
+
 - Products without both `gtin` and `mpn` generate error
 - Message: "Either GTIN or MPN is required"
 
 ### ✅ Test 6: Valid Product Passes
+
 - Fully valid products pass all validation
 - No errors generated for compliant products
 
@@ -157,39 +171,46 @@ Created `/test-schema-validation.js` to verify all changes:
 
 Based on OpenAI official specification:
 
-| Field | Old Category | New Category | Reason |
-|-------|--------------|--------------|--------|
-| `material` | Required (core) | Recommended | Matches OpenAI spec |
-| `seller_tos` | Recommended | Conditionally Required | Required when `enable_checkout=true` |
-| `seller_privacy_policy` | Recommended | Conditionally Required | Required when `enable_checkout=true` |
+| Field                   | Old Category    | New Category           | Reason                               |
+| ----------------------- | --------------- | ---------------------- | ------------------------------------ |
+| `material`              | Required (core) | Recommended            | Matches OpenAI spec                  |
+| `seller_tos`            | Recommended     | Conditionally Required | Required when `enable_checkout=true` |
+| `seller_privacy_policy` | Recommended     | Conditionally Required | Required when `enable_checkout=true` |
 
 ---
 
 ## Schema Determinism Guarantees
 
 ### 1. Field Names
+
 - ✅ All field names use `snake_case` format
 - ✅ No runtime transformations of field names
 - ✅ TypeScript interfaces define exact field names
 
 ### 2. Export Functions
+
 **CSV Export** (`csv-parser.service.ts`):
+
 ```typescript
-Papa.unparse(products) // Uses object keys directly (snake_case)
+Papa.unparse(products); // Uses object keys directly (snake_case)
 ```
 
 **JSON Export**:
+
 ```typescript
-JSON.stringify(products) // Preserves exact field names
+JSON.stringify(products); // Preserves exact field names
 ```
 
 ### 3. Field Mapping
+
 **AI Mapper** (`ai-mapper.service.ts`):
+
 ```typescript
 mapped[targetField] = sourceValue; // targetField is snake_case from ACP_FIELDS
 ```
 
 ### 4. Validation
+
 All validation uses field names from `ACP_FIELDS` which are snake_case.
 
 ---
@@ -197,6 +218,7 @@ All validation uses field names from `ACP_FIELDS` which are snake_case.
 ## Files Modified
 
 ### Core Implementation (8 files):
+
 1. `/apps/api/src/specs/acp-product-feed-spec.md` - Authoritative specification
 2. `/packages/acp-types/src/acp-product.ts` - Type definitions with JSDoc
 3. `/packages/acp-types/src/acp-fields.ts` - Field metadata with maxLength
@@ -204,6 +226,7 @@ All validation uses field names from `ACP_FIELDS` which are snake_case.
 5. `/README.md` - Project documentation
 
 ### Test Files (1 file):
+
 6. `/test-schema-validation.js` - Validation test suite
 
 ---
@@ -211,12 +234,14 @@ All validation uses field names from `ACP_FIELDS` which are snake_case.
 ## Build Verification
 
 ### TypeScript Compilation
+
 ```bash
 ✓ All packages compiled successfully
 ✓ No type errors
 ```
 
 ### Production Build
+
 ```bash
 ✓ Built in 881ms
 ✓ 463 modules transformed
@@ -224,6 +249,7 @@ All validation uses field names from `ACP_FIELDS` which are snake_case.
 ```
 
 ### Development Server
+
 ```bash
 ✅ Dev server running at http://localhost:3000
 ✅ Hot module replacement working
@@ -253,23 +279,29 @@ All validation uses field names from `ACP_FIELDS` which are snake_case.
 ## OpenAI Specification Alignment
 
 ### Field Name Format: ✅ COMPLIANT
+
 All field names match OpenAI spec exactly:
+
 - `id`, `title`, `description` (not `product_id`, `product_title`, etc.)
 - `image_link`, `seller_name`, `return_policy` (not `imageLink`, `sellerName`, `returnPolicy`)
 - `enable_search`, `enable_checkout` (not `enableSearch`, `enableCheckout`)
 
 ### Required Fields: ✅ COMPLIANT
+
 All 17 required fields properly categorized per OpenAI spec.
 
 ### Recommended Fields: ✅ COMPLIANT
+
 Field like `material`, `brand`, `gtin` correctly marked as recommended.
 
 ### Conditional Requirements: ✅ IMPLEMENTED
+
 - Seller policies required for checkout
 - GTIN/MPN either-or requirement
 - Availability date for preorders
 
 ### Character Limits: ✅ ENFORCED
+
 All OpenAI character limits enforced in validation.
 
 ---

@@ -108,6 +108,36 @@ SKU123, Headphones, https://example.com/img.jpg
 
 See the [ACP Specification](apps/api/src/specs/acp-product-feed-spec.md) for complete field definitions.
 
+## Features
+
+### 🤖 AI SEO Optimizer (New!)
+
+Optimize your product listings for maximum visibility in ChatGPT's ACP using AI-powered analysis:
+
+- **Real-time Trend Analysis**: ChatGPT searches for current market trends related to your products
+- **Smart Optimization Suggestions**: Get field-by-field recommendations to improve product visibility
+- **Impact Assessment**: Each suggestion is rated (high/medium/low) to prioritize changes
+- **Export Optimized Feeds**: Download your improved product catalog ready for upload
+
+[Learn more about AI SEO →](AI_SEO_FEATURE.md)
+
+### 📦 Product Feed Automator
+
+Transform your product CSV into ACP-compliant feeds:
+
+- **AI-Powered Field Mapping**: Automatically map your CSV columns to ACP fields
+- **Real-time Validation**: Instant feedback on required and recommended fields
+- **LLM Validation**: Advanced AI validation for data quality
+- **Multiple Export Formats**: CSV and JSON export options
+
+### ✅ API Validator
+
+Validate your ACP implementation against OpenAI's specification.
+
+### 🔌 PSP Connector
+
+Connect payment service providers to your ACP integration.
+
 ## What's Inside?
 
 This monorepo includes:

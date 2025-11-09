@@ -40,7 +40,7 @@ print_info "Setting up SSL for domain: $DOMAIN"
 # Install Certbot
 print_info "Installing Certbot..."
 dnf install -y python3 python3-pip augeas-libs
-python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade pip || true  # Ignore pip upgrade failures
 python3 -m pip install certbot certbot-nginx
 
 print_info "Checking DNS configuration..."

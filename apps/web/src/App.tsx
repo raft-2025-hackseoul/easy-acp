@@ -5,6 +5,7 @@ import { Dashboard } from './pages/Dashboard';
 import { APIValidatorPage } from './pages/APIValidatorPage';
 import { PSPConnectorPage } from './pages/PSPConnectorPage';
 import { ProductFeedPage } from './pages/ProductFeedPage';
+import { AISEOPage } from './pages/AISEOPage';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               <Route path="/api-validator" element={<APIValidatorPage />} />
               <Route path="/psp-connector" element={<PSPConnectorPage />} />
               <Route path="/product-feed" element={<ProductFeedPage />} />
+              <Route path="/ai-seo" element={<AISEOPage />} />
             </Routes>
           </main>
           <footer className="app-footer">

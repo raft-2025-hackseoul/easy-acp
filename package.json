@@ -27,6 +27,7 @@
   },
   "packageManager": "npm@9.0.0",
   "dependencies": {
-    "framer-motion": "^12.23.24"
+    "framer-motion": "^12.23.24",
+    "uuid": "^13.0.0"
   }
 }

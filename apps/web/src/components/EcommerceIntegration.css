@@ -1,0 +1,139 @@
+.ecommerce-integration {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.integration-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Card Header */
+.card-header {
+  padding: 1.5rem;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.card-header p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Card Content */
+.card-content {
+  padding: 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  transition: all 0.15s;
+  box-sizing: border-box;
+  background: white;
+  color: #0f172a;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px;
+  ring-color: rgba(59, 130, 246, 0.1);
+}
+
+.input-field:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input-field::placeholder {
+  color: #94a3b8;
+}
+
+.input-help {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0.375rem 0 0 0;
+}
+
+.connect-button {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  background: #0f172a;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.connect-button:hover:not(:disabled) {
+  background: #1e293b;
+}
+
+.connect-button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ecommerce-integration {
+    margin: 1rem;
+  }
+
+  .card-header {
+    padding: 1.25rem;
+  }
+
+  .card-content {
+    padding: 1.25rem;
+  }
+}

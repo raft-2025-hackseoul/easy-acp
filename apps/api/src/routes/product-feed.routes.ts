@@ -174,4 +174,75 @@ router.get('/fields', async (_req: Request, res: Response) => {
   }
 });
 
+/**
+ * Validate JSON product data from ecommerce provider
+ * POST /api/product-feed/validate-json
+ */
+router.post('/validate-json', async (req: Request, res: Response) => {
+  try {
+    const { products } = req.body;
+
+    if (!Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Products must be a non-empty array',
+      });
+    }
+
+    // Extract headers from first product
+    const headers = Object.keys(products[0]);
+
+    // Extract sample data for AI mapping
+    const sampleData = products.slice(0, 3) as unknown as Record<string, string>[];
+
+    // Suggest field mappings using AI
+    const fieldMappings = await suggestFieldMapping(headers, sampleData);
+
+    // Apply field mapping
+    const mappedProducts = applyFieldMapping(
+      products as unknown as Record<string, string>[],
+      fieldMappings
+    );
+
+    // Validate products
+    const categorized = categorizeProducts(mappedProducts as PartialACPProduct[]);
+
+    // Get unmapped columns
+    const unmappedColumns = getUnmappedColumns(headers, fieldMappings);
+
+    // Validate field data completeness
+    const dataValidation = validateFieldData(mappedProducts, fieldMappings);
+
+    res.json({
+      success: true,
+      data: {
+        totalRows: products.length,
+        validProducts: categorized.valid.length,
+        invalidProducts: categorized.invalid.length,
+        products: mappedProducts,
+        fieldMappings: fieldMappings.map((m) => ({
+          source: m.sourceField,
+          target: m.targetField,
+        })),
+        unmappedColumns,
+        dataValidation,
+        validation: {
+          missingRequired: categorized.summary.missingRequired,
+          missingRecommended: categorized.summary.missingRecommended,
+          uniqueMissingRequiredCount: categorized.summary.uniqueMissingRequiredCount,
+          uniqueMissingRecommendedCount: categorized.summary.uniqueMissingRecommendedCount,
+          totalErrors: categorized.summary.totalErrors,
+          totalWarnings: categorized.summary.totalWarnings,
+        },
+      },
+    });
+  } catch (error) {
+    console.error('Validate JSON error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    });
+  }
+});
+
 export default router;

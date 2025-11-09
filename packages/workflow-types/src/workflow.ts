@@ -2,7 +2,7 @@
  * Workflow and User Tracking Types for ACP Compliance Platform
  */
 
-export type ToolType = 'api-validator' | 'psp-connector' | 'product-feed';
+export type ToolType = 'product-feed' | 'api-validator' | 'psp-connector';
 
 export type StepStatus = 'not-started' | 'in-progress' | 'completed' | 'verified';
 
@@ -35,25 +35,6 @@ export interface Workflow {
   currentStep: number;
 }
 
-export interface APIValidatorData {
-  status: StepStatus;
-  apiCreated: boolean;
-  apiResponse?: string;
-  isValid?: boolean;
-  validationErrors?: string[];
-  completedBy?: User;
-  completedAt?: Date;
-}
-
-export interface PSPConnectorData {
-  status: StepStatus;
-  pspType?: 'stripe' | 'own-psp';
-  stripeConnected?: boolean;
-  documentsReviewed?: boolean;
-  completedBy?: User;
-  completedAt?: Date;
-}
-
 export interface ProductFeedData {
   status: StepStatus;
   uploadedFile?: string;
@@ -70,8 +51,26 @@ export interface ProductFeedData {
   completedAt?: Date;
 }
 
+export interface APIValidatorData {
+  status: StepStatus;
+  apiCreated?: boolean;
+  apiResponse?: string;
+  isValid?: boolean;
+  validationErrors?: string[];
+  completedBy?: User;
+  completedAt?: Date;
+}
+
+export interface PSPConnectorData {
+  status: StepStatus;
+  pspType?: 'stripe' | 'own-psp';
+  documentsReviewed?: boolean;
+  completedBy?: User;
+  completedAt?: Date;
+}
+
 export interface WorkflowData {
+  productFeed: ProductFeedData;
   apiValidator: APIValidatorData;
   pspConnector: PSPConnectorData;
-  productFeed: ProductFeedData;
 }
