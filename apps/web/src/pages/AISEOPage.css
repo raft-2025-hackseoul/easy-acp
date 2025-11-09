@@ -327,6 +327,30 @@
   box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
 }
 
+.completion-actions {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.complete-button {
+  background: #111827;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.complete-button:hover {
+  background: #1f2937;
+}
+
 @media (max-width: 768px) {
   .ai-seo-page {
     padding: 1.5rem 1rem 3rem;
@@ -346,4 +370,3 @@
     grid-template-columns: 1fr;
   }
 }
-

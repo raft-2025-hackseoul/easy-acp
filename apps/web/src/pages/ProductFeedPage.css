@@ -30,44 +30,64 @@
 }
 
 .roadmap {
-  display: grid;
-  gap: 0.75rem;
+  display: flex;
+  gap: 1rem;
   margin-bottom: 2rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.roadmap::-webkit-scrollbar {
+  display: none;
 }
 
 .roadmap-step {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   align-items: flex-start;
   padding: 1rem 1.25rem;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   background: #ffffff;
+  min-width: 280px;
+  flex: 1;
 }
 
 .roadmap-step h3 {
   margin: 0 0 0.4rem 0;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #18181b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .roadmap-step p {
   margin: 0;
   color: #4b5563;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .roadmap-index {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .roadmap-completed .roadmap-index {
@@ -319,6 +339,17 @@
   font-weight: 600;
 }
 
+@media (max-width: 1200px) {
+  .roadmap {
+    margin: 0 -1rem 2rem -1rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .roadmap-step {
+    min-width: 240px;
+  }
+}
+
 @media (max-width: 768px) {
   .product-feed-page {
     padding: 1.5rem 1rem 3rem;
@@ -339,6 +370,15 @@
   }
 
   .roadmap-step {
-    align-items: center;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+  }
+
+  .roadmap-step h3 {
+    font-size: 0.9rem;
+  }
+
+  .roadmap-step p {
+    font-size: 0.8rem;
   }
 }

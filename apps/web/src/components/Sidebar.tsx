@@ -22,12 +22,37 @@ export function Sidebar() {
     }
   };
 
-  const navLinks = [
-    { path: '/', label: 'Dashboard' },
-    { path: '/api-validator', label: 'API Validator' },
-    { path: '/psp-connector', label: 'PSP Connector' },
-    { path: '/product-feed', label: 'Product Feed' },
-    { path: '/ai-seo', label: 'AI SEO' },
+    const navLinks = [
+    { 
+      path: '/', 
+      label: 'Dashboard',
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+      )
+    },
+    { 
+      path: '/product-feed', 
+      label: 'Product Feed',
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+          <line x1="12" y1="22.08" x2="12" y2="12" />
+        </svg>
+      )
+    },
+    { 
+      path: '/ai-seo', 
+      label: 'AI SEO',
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+      )
+    }
   ];
 
   return (
@@ -47,7 +72,10 @@ export function Sidebar() {
             to={link.path}
             className={`sidebar-nav-link ${isActive(link.path) ? 'active' : ''}`}
           >
-            {link.label}
+            <div className="nav-icon-container">
+              {link.icon}
+            </div>
+            <span className="nav-label">{link.label}</span>
           </Link>
         ))}
       </nav>

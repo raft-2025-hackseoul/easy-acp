@@ -13,6 +13,7 @@ import {
   setMerchantUrl,
 } from '../services/api';
 import { useWorkflow } from '../context/WorkflowContext';
+import { WorkflowStep } from '../components/WorkflowStep';
 import './ProductFeedPage.css';
 
 const ROADMAP: Array<{ step: ProviderRoadmapStep; title: string; description: string }> = [
@@ -70,7 +71,7 @@ export function ProductFeedPage() {
   const navigate = useNavigate();
   const { providerSyncState, refreshProviderSync, providerSyncLoading } = useWorkflow();
   const [tokenInput, setTokenInput] = useState('');
-  const [merchantUrlInput, setMerchantUrlInput] = useState('');
+  const [merchantUrlInput, setMerchantUrlInput] = useState('https://openai.com/merchant/3rerjskdf');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState<LoadingState>(initialLoading);
 
@@ -80,14 +81,35 @@ export function ProductFeedPage() {
     }
   }, [providerSyncState, providerSyncLoading, refreshProviderSync]);
 
+  // Sync input fields with provider state only on initial load
   useEffect(() => {
-    if (providerSyncState?.token && providerSyncState.token !== tokenInput) {
+    if (providerSyncState?.token && !tokenInput) {
       setTokenInput(providerSyncState.token);
     }
-    if (providerSyncState?.merchantUrl && providerSyncState.merchantUrl !== merchantUrlInput) {
+    if (providerSyncState?.merchantUrl && !merchantUrlInput) {
       setMerchantUrlInput(providerSyncState.merchantUrl);
     }
-  }, [providerSyncState, tokenInput, merchantUrlInput]);
+  }, [providerSyncState]); // Only run when providerSyncState changes
+
+  // Handle merchant URL save completion
+  useEffect(() => {
+    const isMerchantUrlSaved = providerSyncState?.merchantUrl && 
+                              providerSyncState.merchantUrl === merchantUrlInput &&
+                              providerSyncState.roadmapStep === 'push';
+
+    if (isMerchantUrlSaved && !loading.merchant) {
+      // Call API to update roadmap step
+      const updateStep = async () => {
+        try {
+          await setMerchantUrl(merchantUrlInput.trim());
+          await refreshProviderSync();
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'Failed to complete merchant configuration step');
+        }
+      };
+      void updateStep();
+    }
+  }, [providerSyncState?.roadmapStep, providerSyncState?.merchantUrl, merchantUrlInput, loading.merchant]);
 
   const handleConnect = async () => {
     setLoading((prev) => ({ ...prev, connect: true }));
@@ -133,6 +155,7 @@ export function ProductFeedPage() {
     setError('');
     try {
       await setMerchantUrl(merchantUrlInput.trim());
+      // Refresh to get updated state with new step
       await refreshProviderSync();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save merchant URL');
@@ -162,8 +185,23 @@ export function ProductFeedPage() {
     setLoading((prev) => ({ ...prev, push: true }));
     setError('');
     try {
+      // Push the products to OpenAI merchant endpoint
       await pushToMerchant();
+
+      // Show success message
+      alert('Successfully synchronized products to OpenAI merchant platform! Your product feed is now live.');
+
+      // Mark step as completed
+      // Refresh state to show updated push status
       await refreshProviderSync();
+
+      // Mark UI as completed
+      const stepIndex = ROADMAP.findIndex((item) => item.step === 'completed');
+      const newDerivedStatus = ROADMAP.map((_, index) => {
+        if (index <= stepIndex) return 'completed';
+        return 'upcoming';
+      });
+      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to push to merchant');
     } finally {
@@ -219,18 +257,6 @@ export function ProductFeedPage() {
         </p>
       </div>
 
-      <section className="roadmap">
-        {ROADMAP.map((item, index) => (
-          <div key={item.step} className={`roadmap-step roadmap-${derivedStatus[index]}`}>
-            <div className="roadmap-index">{index + 1}</div>
-            <div>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </div>
-          </div>
-        ))}
-      </section>
-
       {error && (
         <div className="error-banner">
           <strong>Something went wrong.</strong>
@@ -238,11 +264,14 @@ export function ProductFeedPage() {
         </div>
       )}
 
-      <section className="card">
-        <header>
-          <h2>WooCommerce connection</h2>
-          <p>Use a read-only API token for this demo environment.</p>
-        </header>
+      <WorkflowStep
+        title="WooCommerce Connection"
+        stepNumber={1}
+        isActive={currentStep === 'connect'}
+        isCompleted={derivedStatus[0] === 'completed'}
+        defaultExpanded={true}
+      >
+        <p className="text-gray-600 mb-4">Use a read-only API token for this demo environment.</p>
         <div className="form-row">
           <label htmlFor="woocommerce-token">API token</label>
           <input
@@ -252,91 +281,115 @@ export function ProductFeedPage() {
             onChange={(event) => setTokenInput(event.target.value)}
             placeholder="woo_XXXXXXXXXXXXXXXX"
             disabled={loading.connect}
+            className="w-full p-2 border rounded-md"
           />
         </div>
-        <div className="actions">
+        <div className="actions mt-4 flex gap-3">
           <button
             onClick={handleConnect}
             disabled={!canConnect || loading.connect}
-            className="primary"
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
           >
             {loading.connect ? 'Connecting…' : 'Connect WooCommerce'}
           </button>
-          <button onClick={handleReset} className="ghost">
+          <button 
+            onClick={handleReset}
+            className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+          >
             Reset demo
           </button>
         </div>
-      </section>
+      </WorkflowStep>
 
       {providerSyncState?.provider && (
-        <section className="card">
-          <header>
-            <h2>Product feed</h2>
-            <p>Pull the latest products from WooCommerce.</p>
-          </header>
+        <WorkflowStep
+          title="Product Feed Import"
+          stepNumber={2}
+          isActive={currentStep === 'fetch'}
+          isCompleted={derivedStatus[1] === 'completed'}
+          defaultExpanded={currentStep === 'fetch'}
+        >
+          <p className="text-gray-600 mb-4">Pull the latest products from WooCommerce.</p>
           {providerSyncState.feed ? (
-            <div className="feed-summary">
+            <div className="grid grid-cols-3 gap-4 mb-4 bg-gray-50 p-4 rounded-lg">
               <div>
-                <span className="label">Products synced</span>
-                <strong>{providerSyncState.feed.total}</strong>
+                <span className="text-sm text-gray-600 block">Products synced</span>
+                <strong className="text-lg">{providerSyncState.feed.total}</strong>
               </div>
               <div>
-                <span className="label">Last sync</span>
-                <strong>{new Date(providerSyncState.feed.syncedAt).toLocaleString()}</strong>
+                <span className="text-sm text-gray-600 block">Last sync</span>
+                <strong className="text-lg">{new Date(providerSyncState.feed.syncedAt).toLocaleString()}</strong>
               </div>
               <div>
-                <span className="label">Sync reference</span>
-                <code>{providerSyncState.feed.syncId}</code>
+                <span className="text-sm text-gray-600 block">Sync reference</span>
+                <code className="text-sm bg-gray-100 px-2 py-1 rounded">{providerSyncState.feed.syncId}</code>
               </div>
             </div>
           ) : (
-            <p className="placeholder">No feed imported yet.</p>
+            <p className="text-gray-500 italic mb-4">No feed imported yet.</p>
           )}
-          <div className="actions">
-            <button onClick={handleFetch} disabled={!canFetch || loading.fetch} className="primary">
+          <div className="flex gap-3">
+            <button
+              onClick={handleFetch}
+              disabled={!canFetch || loading.fetch}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            >
               {loading.fetch ? 'Importing…' : 'Import product feed'}
             </button>
           </div>
-        </section>
+        </WorkflowStep>
       )}
 
       {providerSyncState?.feed && (
-        <section className="card">
-          <header>
-            <h2>Field mapping & validation</h2>
-            <p>Map WooCommerce fields to ACP and review validation highlights.</p>
-          </header>
+        <WorkflowStep
+          title="Field Mapping & Validation"
+          stepNumber={3}
+          isActive={currentStep === 'map'}
+          isCompleted={derivedStatus[2] === 'completed'}
+          defaultExpanded={currentStep === 'map'}
+        >
+          <p className="text-gray-600 mb-4">Map WooCommerce fields to ACP and review validation highlights.</p>
           {providerSyncState.mapping.length > 0 ? (
-            <div className="mapping-table">
-              <table>
-                <thead>
+            <div className="overflow-x-auto mb-4">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                   <tr>
-                    <th>WooCommerce field</th>
-                    <th>OpenAI field</th>
-                    <th>Description</th>
-                    <th>Requirement</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WooCommerce field</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OpenAI field</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requirement</th>
                   </tr>
                 </thead>
-                <tbody>{mappingRows}</tbody>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {mappingRows}
+                </tbody>
               </table>
             </div>
           ) : (
-            <p className="placeholder">Mapping not generated yet.</p>
+            <p className="text-gray-500 italic mb-4">Mapping not generated yet.</p>
           )}
 
           {providerSyncState.validation.status === 'validating' && (
-            <p className="status-badge">Validating with LLM…</p>
+            <p className="text-sm bg-blue-50 text-blue-700 px-4 py-2 rounded-md mb-4">
+              Validating with LLM…
+            </p>
           )}
 
           {providerSyncState.validation.summary && (
-            <div className="validation-summary">
-              <strong>{providerSyncState.validation.summary}</strong>
+            <div className="bg-gray-50 p-4 rounded-lg mb-4">
+              <strong className="block mb-2">{providerSyncState.validation.summary}</strong>
               {validationIssues.length > 0 && (
-                <ul>
+                <ul className="space-y-2">
                   {validationIssues.map((issue, index) => (
-                    <li key={`${issue.field || 'general'}-${index}`}>
-                      <span className={`issue-tag issue-${issue.severity}`}>{issue.severity}</span>
-                      <span>{issue.message}</span>
+                    <li key={`${issue.field || 'general'}-${index}`} className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        issue.severity === 'error' ? 'bg-red-100 text-red-800' :
+                        issue.severity === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {issue.severity}
+                      </span>
+                      <span className="text-gray-700">{issue.message}</span>
                     </li>
                   ))}
                 </ul>
@@ -344,92 +397,125 @@ export function ProductFeedPage() {
             </div>
           )}
 
-          <div className="actions">
-            <button onClick={handleMap} disabled={!canMap} className="primary">
+          <div className="flex gap-3">
+            <button 
+              onClick={handleMap}
+              disabled={!canMap || loading.map}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            >
               {loading.map ? 'Mapping…' : 'Generate mapping & validate'}
             </button>
           </div>
-        </section>
+        </WorkflowStep>
       )}
 
       {providerSyncState?.mapping.length ? (
-        <section className="card">
-          <header>
-            <h2>AI SEO suggestions</h2>
-            <p>Review one product at a time and choose improved titles/descriptions.</p>
-          </header>
-          <div className="actions">
+        <WorkflowStep
+          title="AI SEO Suggestions"
+          stepNumber={4}
+          isActive={currentStep === 'seo'}
+          isCompleted={derivedStatus[3] === 'completed'}
+          defaultExpanded={currentStep === 'seo'}
+        >
+          <p className="text-gray-600 mb-4">Review one product at a time and choose improved titles/descriptions.</p>
+          <div className="flex gap-3">
             <button
               onClick={handleGenerateSuggestions}
-              disabled={!canGenerateSuggestions}
-              className="primary"
+              disabled={!canGenerateSuggestions || loading.suggestions}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
             >
               {loading.suggestions ? 'Preparing…' : 'Open AI SEO review'}
             </button>
           </div>
-        </section>
+        </WorkflowStep>
       ) : null}
 
       {providerSyncState?.mapping.length ? (
-        <section className="card">
-          <header>
-            <h2>Merchant configuration</h2>
-            <p>
-              Provide the destination URL where OpenAI should send purchase-ready shoppers. This is
-              mocked for the demo but required in production.
-            </p>
-          </header>
-          <div className="form-row">
-            <label htmlFor="merchant-url">Merchant URL</label>
+        <WorkflowStep
+          title="Merchant Configuration"
+          stepNumber={5}
+          isActive={currentStep === 'push'}
+          isCompleted={derivedStatus[4] === 'completed'}
+          defaultExpanded={currentStep === 'push'}
+        >
+          <p className="text-gray-600 mb-4">
+            Provide the destination URL where OpenAI should send purchase-ready shoppers. This is
+            mocked for the demo but required in production.
+          </p>
+          <div className="form-row mb-4">
+            <label htmlFor="merchant-url" className="block text-sm font-medium text-gray-700 mb-1">
+              Merchant URL
+            </label>
             <input
               id="merchant-url"
               type="url"
               placeholder="https://shop.example.com"
               value={merchantUrlInput}
-              onChange={(event) => setMerchantUrlInput(event.target.value)}
+              onChange={(event) => {
+                setMerchantUrlInput(event.target.value);
+                setError(''); // Clear any previous errors
+              }}
               disabled={loading.merchant}
+              className="w-full p-2 border rounded-md"
             />
           </div>
-          <div className="actions">
-            <button onClick={handleMerchantSave} disabled={!canSaveMerchant} className="primary">
+          <div className="flex gap-3">
+            <button
+              onClick={handleMerchantSave}
+              disabled={!canSaveMerchant || loading.merchant}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            >
               {loading.merchant ? 'Saving…' : 'Save merchant URL'}
             </button>
           </div>
-        </section>
+        </WorkflowStep>
       ) : null}
 
       {providerSyncState?.merchantUrl && (
-        <section className="card">
-          <header>
-            <h2>Publish to OpenAI</h2>
-            <p>Push the mapped feed and accepted suggestions to the mocked OpenAI merchant API.</p>
-          </header>
+        <WorkflowStep
+          title="Publish to OpenAI"
+          stepNumber={6}
+          isActive={currentStep === 'completed'}
+          isCompleted={derivedStatus[5] === 'completed'}
+          defaultExpanded={currentStep === 'completed'}
+        >
+          <p className="text-gray-600 mb-4">
+            Push the mapped feed and accepted suggestions to the mocked OpenAI merchant API.
+          </p>
           {providerSyncState.pushStatus ? (
-            <div className="push-summary">
+            <div className="grid grid-cols-3 gap-4 mb-4 bg-gray-50 p-4 rounded-lg">
               <div>
-                <span className="label">Last push</span>
-                <strong>
+                <span className="text-sm text-gray-600 block">Last push</span>
+                <strong className="text-lg">
                   {new Date(providerSyncState.pushStatus.lastPushedAt).toLocaleString()}
                 </strong>
               </div>
               <div>
-                <span className="label">Destination</span>
-                <strong>{providerSyncState.pushStatus.destinationUrl}</strong>
+                <span className="text-sm text-gray-600 block">Destination</span>
+                <strong className="text-lg break-all">
+                  {providerSyncState.pushStatus.destinationUrl}
+                </strong>
               </div>
               <div>
-                <span className="label">Products pushed</span>
-                <strong>{providerSyncState.pushStatus.totalProducts}</strong>
+                <span className="text-sm text-gray-600 block">Products pushed</span>
+                <strong className="text-lg">
+                  {providerSyncState.pushStatus.totalProducts}
+                </strong>
               </div>
             </div>
           ) : (
-            <p className="placeholder">No pushes recorded yet.</p>
+            <p className="text-gray-500 italic mb-4">No pushes recorded yet.</p>
           )}
-          <div className="actions">
-            <button onClick={handlePush} disabled={!canPush} className="primary">
+          <div className="flex gap-3">
+            <button 
+              onClick={handlePush}
+              disabled={!canPush || loading.push}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            >
               {loading.push ? 'Pushing…' : 'Push feed to OpenAI'}
             </button>
           </div>
-        </section>
+        </WorkflowStep>
       )}
     </div>
   );
