@@ -256,6 +256,9 @@ export async function pushMappedProductsToMerchant() {
     payloadSample: mappedProducts.slice(0, 2),
   });
 
+  // Mark the final step as completed after successful push
+  advanceRoadmap('completed');
+
   return getSyncState();
 }
 

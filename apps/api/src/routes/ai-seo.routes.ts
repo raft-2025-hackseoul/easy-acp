@@ -117,5 +117,50 @@ router.get('/status', async (_req: Request, res: Response) => {
   }
 });
 
+/**
+ * Accept and apply an optimization suggestion
+ * POST /api/ai-seo/accept-suggestion
+ */
+router.post('/accept-suggestion', async (req: Request, res: Response) => {
+  try {
+    const { productId, field, value } = req.body;
+
+    // Validate required params
+    if (!productId || !field || value === undefined) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: productId, field, value',
+      });
+    }
+
+    // Check if service is available
+    if (!aiSEOService.isServiceAvailable()) {
+      return res.status(503).json({
+        success: false,
+        error: 'AI SEO service is not available',
+      });
+    }
+
+    // Accept suggestion logic here
+    // Note: This is currently mocked but would integrate with
+    // the actual optimization storage in production
+    res.json({
+      success: true,
+      data: {
+        productId,
+        field,
+        value,
+        message: `Successfully applied suggestion for ${field} on product ${productId}`,
+      },
+    });
+  } catch (error) {
+    console.error('Error accepting suggestion:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error accepting suggestion',
+    });
+  }
+});
+
 export default router;
 

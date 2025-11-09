@@ -6,13 +6,13 @@ import {
   getProviderSyncState,
   removeSuggestion,
 } from '../services/api';
-import type { ProviderSyncState } from '../services/api';
+import type { ProviderSyncState, ProviderRoadmapStep } from '../services/api';
 import { useWorkflow } from '../context/WorkflowContext';
 import './AISEOPage.css';
 
 export function AISEOPage() {
   const navigate = useNavigate();
-  const { providerSyncState, setProviderSyncState } = useWorkflow();
+  const { providerSyncState, setProviderSyncState, workflow, updateStep, currentUser } = useWorkflow();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [pendingField, setPendingField] = useState<string | null>(null);
@@ -102,6 +102,31 @@ export function AISEOPage() {
   const handleNext = () => {
     if (!optimizations.length) return;
     setCurrentIndex((index) => Math.min(optimizations.length - 1, index + 1));
+  };
+
+  const handleComplete = async () => {
+    try {
+      const feedStep = workflow.steps.find((s) => s.tool === 'product-feed');
+      if (feedStep) {
+        // Mark the current step (AI SEO) as completed
+        const updatedState = await getProviderSyncState();
+        const newState = {
+          ...updatedState,
+          roadmapStep: 'push' as ProviderRoadmapStep // Move to next step (merchant URL)
+        };
+        setProviderSyncState(newState);
+        
+        // Update workflow step status
+        updateStep(feedStep.id, {
+          status: 'completed',
+          completedBy: currentUser,
+          completedAt: new Date(),
+        });
+      }
+      navigate('/product-feed');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to complete AI SEO step');
+    }
   };
 
   const handleBackToFeed = () => {
@@ -210,6 +235,14 @@ export function AISEOPage() {
                 </div>
               );
             })}
+          </div>
+          <div className="completion-actions">
+            <button
+              onClick={handleComplete}
+              className="complete-button"
+            >
+              Finish & Return to Product Feed
+            </button>
           </div>
         </section>
       )}

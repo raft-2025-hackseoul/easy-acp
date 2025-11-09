@@ -70,6 +70,8 @@ router.post('/merchant', (req: Request, res: Response) => {
   try {
     const { merchantUrl } = req.body;
     const state = updateMerchantUrl(merchantUrl);
+    // When merchant URL is set, automatically move to completed step
+    state.roadmapStep = 'completed';
     res.json({ success: true, data: state });
   } catch (error) {
     res.status(400).json({
@@ -82,6 +84,8 @@ router.post('/merchant', (req: Request, res: Response) => {
 router.post('/push', async (_req: Request, res: Response) => {
   try {
     const state = await pushMappedProductsToMerchant();
+    // Mark the final step as completed
+    state.roadmapStep = 'completed';
     res.json({ success: true, data: state });
   } catch (error) {
     res.status(400).json({
